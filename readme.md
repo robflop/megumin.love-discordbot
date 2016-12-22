@@ -4,7 +4,7 @@ A discord bot to go along with my website, [megumin.love](https://megumin.love)!
 Written using discord.js, using opusscript and request packages.
 
 ## Usage
-- Fill out your bot token and change the ownerID in config.js to your devmode discord ID.
+- Fill out your bot token and change the ownerID in config.json to your devmode discord ID.
 - Adjust config.json to your liking
 - ``npm install`` to install all dependencies
 - Run it!
