@@ -2,5 +2,7 @@
 	"token": "APP_TOKEN",
 	"soundPath": "sounds/",
 	"shutdownLog": "shutdown.log",
-	"gameChangeLog":"gamechange.log"
+	"gameChangeLog": "gamechange.log",
+	"soundLog" : "sound.log",
+	"ownerID": "108988529383616512"
 }
