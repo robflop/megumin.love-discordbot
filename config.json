@@ -1,0 +1,6 @@
+{
+	"token": "APP_TOKEN",
+	"soundPath": "sounds/",
+	"shutdownLog": "shutdown.log",
+	"gameChangeLog":"gamechange.log"
+}
