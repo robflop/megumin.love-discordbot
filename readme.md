@@ -12,4 +12,4 @@ Written using discord.js, using opusscript and request packages.
 ###### Information
 The default version of the bot uses the ``sounds/`` directory to look for sounds.
 Change this to your liking.
-Shutdown, gamechange and sound logs are saved in the same directory the base file, app.js, is saved in by default.
+Shutdown, gamechange and sound logs are saved in the ``log/`` directory by default.

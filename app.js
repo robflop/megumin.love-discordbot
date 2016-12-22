@@ -35,7 +35,6 @@ bot.on('message', msg => {
 					msg.member.voiceChannel.leave();
 					console.log(`Disconnected from ${msg.member.voiceChannel.name}!`);
 				});
-				player.on('debug', console.log);
 			});
 		}
 		else{
