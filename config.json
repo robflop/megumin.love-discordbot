@@ -5,5 +5,6 @@
 	"logPath": "log/",
 	"shutdownLog": "shutdown.log",
 	"gameChangeLog": "gamechange.log",
-	"soundLog" : "sound.log"
+	"soundLog" : "sound.log",
+	"errorLog" : "error.log"
 }
