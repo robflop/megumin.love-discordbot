@@ -1,6 +1,6 @@
 {
 	"token": "APP_TOKEN",
-	"ownerID": "108988529383616512",
+	"ownerID": "OWNER_ID",
 	"soundPath": "sounds/",
 	"logPath": "log/",
 	"shutdownLog": "shutdown.log",

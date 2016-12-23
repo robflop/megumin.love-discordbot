@@ -19,10 +19,10 @@ bot.on('message', msg => {
         request('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body){
 			if(error){
 					console.log(`An error has occured during '${msg.content}': ${error}`);
-					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}]${error}`);
-					console.log(`Error logged to ${config.logPath}${config.errorLog}`);
+					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}]${error}`);
+					console.log(`Error during '${msg.content}' logged to ${config.logPath}${config.errorLog}`);
 				}
-            msg.channel.sendMessage("Current count is: " + body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."));
+            msg.channel.sendMessage(`Current count is: ${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}`);
         });
     };
 	if(msg.content == "!submit") {
@@ -33,8 +33,8 @@ bot.on('message', msg => {
 			request('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body){
 				if(error){
 					console.log(`An error has occured during '${msg.content}': ${error}`);
-					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}]${error}`);
-					console.log(`Error logged to ${config.logPath}${config.errorLog}`);
+					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}]${error}`);
+					console.log(`Error during '${msg.content}' logged to ${config.logPath}${config.errorLog}`);
 				}
 			}); 
 			msg.member.voiceChannel.join().then(connection => {
@@ -60,14 +60,14 @@ bot.on('message', msg => {
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
 			console.log(`${msg.author.username}#${msg.author.discriminator} tried to change the bot's game, but failed!`);
-			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
 			console.log(`Logged into "${config.logPath}${config.logName}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			return;
 		}
 		else {
 			bot.user.setGame(msg.content.substr(8));
-			msg.reply(`successfully set my game to '${msg.content.substr(8)}' !`);
-			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
+			msg.reply(`successfully set my game to '${msg.content.substr(8)} ' !`);
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
 			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${bot.user.username}'s game set to '${msg.content.substr(8)} ' ! (${msg.author.username}#${msg.author.discriminator})`)
 		};
@@ -75,14 +75,14 @@ bot.on('message', msg => {
 	if(msg.content == "!clearGame") {
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
-			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
 			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${msg.author.username}#${msg.author.discriminator} tried to clear the bot's game, but failed!`);
 			return;
 		}
 		else {
 			bot.user.setGame();	
-			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
 			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator})`);
 			msg.reply("game status cleared!");
@@ -91,14 +91,14 @@ bot.on('message', msg => {
 	if(msg.content == "!shutdown") {
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
-			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
+			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
 			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${msg.author.username}#${msg.author.discriminator} tried to shutdown the bot, but failed!`);
 			return;
 		}
 		else {
 			msg.reply(`${bot.user.username} shutting down! Bye!`);
-			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
+			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
 			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${bot.user.username} shutting down! (${msg.author.username}#${msg.author.discriminator})`);
 			setTimeout(function(){process.exit(0)}, 1500);
