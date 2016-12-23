@@ -1,5 +1,6 @@
 const request = require('request');
 const fs = require('fs');
+const moment = require('moment');
 const Discord = require('discord.js');
 const config = require('./config.json');
 const bot = new Discord.Client();
@@ -31,6 +32,8 @@ bot.on('message', msg => {
 				var sound = sounds[Math.floor(Math.random()*sounds.length)];
 				const player = connection.playFile(config.soundPath + sound);
 				console.log(`"${config.soundPath + sound}" played in ${msg.member.voiceChannel.name}! (${msg.author.username}#${msg.author.discriminator})`);
+				fs.appendFileSync(`${config.logPath}${config.soundLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`, function(error){});
+				console.log(`Logged into "${config.logPath}${config.soundLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 				player.on('end', () => {
 					msg.member.voiceChannel.leave();
 					console.log(`Disconnected from ${msg.member.voiceChannel.name}!`);
@@ -46,22 +49,30 @@ bot.on('message', msg => {
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
 			console.log(`${msg.author.username}#${msg.author.discriminator} tried to change the bot's game, but failed!`);
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command, but failed!`, function(error){});
+			console.log(`Logged into "${config.logPath}${config.logName}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			return;
 		}
 		else {
 			bot.user.setGame(msg.content.substr(8));
 			msg.reply(`successfully set my game to '${msg.content.substr(8)}' !`);
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`, function(error){});
+			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${bot.user.username}'s game set to '${msg.content.substr(8)} ' ! (${msg.author.username}#${msg.author.discriminator})`)
 		};
 	};
 	if(msg.content == "!clearGame") {
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`, function(error){});
+			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${msg.author.username}#${msg.author.discriminator} tried to clear the bot's game, but failed!`);
 			return;
 		}
 		else {
 			bot.user.setGame();	
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`, function(error){});
+			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator})`);
 			msg.reply("game status cleared!");
 		};
@@ -69,11 +80,15 @@ bot.on('message', msg => {
 	if(msg.content == "!shutdown") {
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
+			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command, but failed!`, function(error){});
+			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${msg.author.username}#${msg.author.discriminator} tried to shutdown the bot, but failed!`);
 			return;
 		}
 		else {
 			msg.reply(`${bot.user.username} shutting down! Bye!`);
+			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`, function(error){});
+			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${bot.user.username} shutting down! (${msg.author.username}#${msg.author.discriminator})`);
 			setTimeout(function(){process.exit(0)}, 1500);
 		};
