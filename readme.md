@@ -1,7 +1,7 @@
 # Megumin.love Discord bot
 A discord bot to go along with my website, [megumin.love](https://megumin.love)!
 
-Written using discord.js, using opusscript and request packages.
+Written using discord.js, using opusscript, request and moment packages.
 
 ## Usage
 - Fill out your bot token and change the ownerID in config.json to your devmode discord ID.
