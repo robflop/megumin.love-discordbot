@@ -5,6 +5,24 @@ const Discord = require('discord.js');
 const config = require('./config.json');
 const bot = new Discord.Client();
 
+var timeout = {
+  "users": [],
+    "check": function(userID, msg) {
+        if (timeout.users.indexOf(userID) > -1) {
+			msg.reply(`calm down with the commands for a sec! Please wait ${config.commandCooldown} seconds.`);
+            return true;
+        } else if (config.ownerID !== userID) {
+            timeout.set(userID);
+            return false;
+        }
+    },
+  "set": function(userID) {
+        timeout.users.push(userID);
+        setTimeout(function() {
+            timeout.users.splice(timeout.users.indexOf(userID), 1);
+        }, (config.commandCooldown * 1000));
+    }
+};
 
 bot.on('ready', () => {
 	console.log(bot.user.username + " ready! ");
@@ -13,29 +31,33 @@ bot.on('ready', () => {
 
 bot.on('message', msg => {
 	if(msg.content == "!help") {
+		if (timeout.check(msg.author.id, msg)) return;
 		msg.channel.sendMessage("__**Available commands are:**__ \n '!help' -- displays this message \n '!counter' -- display the website's current counter \n '!submit' -- get info on submitting sounds for the website/bot \n '!randomsound' -- Have the bot join the voice channel you are in and it'll play a random sound from the website \n '!setGame' -- sets the bot's playing status [Bot owner only] \n '!clearGame' -- clears the bot's playing status [Bot owner only] \n '!shutdown' -- shuts down the bot [Bot owner only]");
 	}; 
     if(msg.content == "!counter") {
+		if (timeout.check(msg.author.id, msg)) return;
         request('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body){
 			if(error){
 					console.log(`An error has occured during '${msg.content}': ${error}`);
 					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}]${error}`);
 					console.log(`Error during '${msg.content}' logged to ${config.logPath}${config.errorLog}`);
-				}
+				};
             msg.channel.sendMessage(`Current count is: ${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}`);
         });
     };
 	if(msg.content == "!submit") {
+		if (timeout.check(msg.author.id, msg)) return;
 		msg.reply("Want to submit a sound for the website/bot? No problem, send me an email at `me@robflop.pw` including your cropped mp3/aac/ogg sound file! All sounds need to fit the website's theme.");	
-	}
+	};
 	if(msg.content == "!randomsound") {
+		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.member.voiceChannel){
 			request('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body){
 				if(error){
 					console.log(`An error has occured during '${msg.content}': ${error}`);
 					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}]${error}`);
 					console.log(`Error during '${msg.content}' logged to ${config.logPath}${config.errorLog}`);
-				}
+				};
 			}); 
 			msg.member.voiceChannel.join().then(connection => {
 				console.log(`Connected to ${msg.member.voiceChannel.name}!`);
@@ -57,6 +79,7 @@ bot.on('message', msg => {
 		};
 	};
 	if(msg.content.startsWith("!setGame")) {
+		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
 			console.log(`${msg.author.username}#${msg.author.discriminator} tried to change the bot's game, but failed!`);
@@ -73,6 +96,7 @@ bot.on('message', msg => {
 		};
 	};
 	if(msg.content == "!clearGame") {
+		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
 			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
@@ -89,6 +113,7 @@ bot.on('message', msg => {
 		};
 	};
 	if(msg.content == "!shutdown") {
+		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
 			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
