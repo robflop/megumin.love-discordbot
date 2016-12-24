@@ -50,9 +50,9 @@ bot.on('message', msg => {
 		if (timeout.check(msg.author.id, msg)) return;
         request('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body){
 			if(error){
-					console.log(`An error has occured during '${msg.content}': ${error}`);
+					console.log(`An error has occured during '${msg.content}' on the '${msg.guild}' server: ${error}`);
 					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}]${error}`);
-					console.log(`Error during '${msg.content}' logged to ${config.logPath}${config.errorLog}`);
+					console.log(`Error during '${msg.content}' on the '${msg.guild}' server logged to ${config.logPath}${config.errorLog}`);
 				};
             msg.channel.sendMessage(`Current count is: ${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}`);
         });
@@ -66,22 +66,22 @@ bot.on('message', msg => {
 		if(msg.member.voiceChannel){
 			request('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body){
 				if(error){
-					console.log(`An error has occured during '${msg.content}': ${error}`);
+					console.log(`An error has occured during '${msg.content}' on the '${msg.guild}' server: ${error}`);
 					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}]${error}`);
-					console.log(`Error during '${msg.content}' logged to ${config.logPath}${config.errorLog}`);
+					console.log(`Error during '${msg.content}' on '${msg.guild}' logged to ${config.logPath}${config.errorLog}`);
 				};
 			}); 
 			msg.member.voiceChannel.join().then(connection => {
-				console.log(`Connected to ${msg.member.voiceChannel.name}!`);
+				console.log(`Connected to '${msg.member.voiceChannel.name}'  on the '${msg.guild}' server!`);
 				var sounds = ["eugh1.mp3", "eugh2.mp3", "eugh3.mp3", "eugh4.mp3", "explosion.mp3", "itai.mp3", "n.mp3", "name.mp3", "plosion.mp3", "pull.mp3", "sion.mp3", "yamero.mp3"]; 
 				var sound = sounds[Math.floor(Math.random()*sounds.length)];
 				const player = connection.playFile(config.soundPath + sound);
-				console.log(`"${config.soundPath + sound}" played in ${msg.member.voiceChannel.name}! (${msg.author.username}#${msg.author.discriminator})`);
-				fs.appendFileSync(`${config.logPath}${config.soundLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
-				console.log(`Logged into "${config.logPath}${config.soundLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
+				console.log(`"${config.soundPath + sound}" played in '${msg.member.voiceChannel.name}' on the '${msg.guild}' server! (${msg.author.username}#${msg.author.discriminator})`);
+				fs.appendFileSync(`${config.logPath}${config.soundLog}`, `\n[${moment().format('DD/MM/YYYY H:mm:ss')}] ${msg.author.username}#${msg.author.discriminator} used the '${msg.content}' command on the '${msg.guild} server!`);
+				console.log(`Logged into "${config.logPath}${config.soundLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 				player.on('end', () => {
 					msg.member.voiceChannel.leave();
-					console.log(`Disconnected from ${msg.member.voiceChannel.name}!`);
+					console.log(`Disconnected from '${msg.member.voiceChannel.name}' on the '${msg.guild}' server!`);
 				});
 			});
 		}
@@ -94,33 +94,33 @@ bot.on('message', msg => {
 		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
-			console.log(`${msg.author.username}#${msg.author.discriminator} tried to change the bot's game, but failed!`);
-			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
-			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
+			console.log(`${msg.author.username}#${msg.author.discriminator} tried to change the bot's game on the '${msg.guild}' server, but failed!`);
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command on the '${msg.guild}' server, but failed!`);
+			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 			return;
 		}
 		else {
 			bot.user.setGame(msg.content.substr(8));
 			msg.reply(`successfully set my game to '${msg.content.substr(8)} ' !`);
-			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
-			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
-			console.log(`${bot.user.username}'s game set to '${msg.content.substr(8)} ' ! (${msg.author.username}#${msg.author.discriminator})`)
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
+			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+			console.log(`${bot.user.username}'s game set to '${msg.content.substr(8)} ' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`)
 		};
 	};
 	if(msg.content == "!clearGame") {
 		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
-			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
-			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
-			console.log(`${msg.author.username}#${msg.author.discriminator} tried to clear the bot's game, but failed!`);
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command on the '${msg.guild}' server, but failed!`);
+			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+			console.log(`${msg.author.username}#${msg.author.discriminator} tried to clear the bot's game on the '${msg.guild}' server, but failed!`);
 			return;
 		}
 		else {
 			bot.user.setGame();	
-			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
-			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
-			console.log(`${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator})`);
+			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
+			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+			console.log(`${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 			msg.reply("game status cleared!");
 		};
 	};
@@ -128,16 +128,16 @@ bot.on('message', msg => {
 		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
-			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
-			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
-			console.log(`${msg.author.username}#${msg.author.discriminator} tried to shutdown the bot, but failed!`);
+			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command  on the '${msg.guild}' server, but failed!`);
+			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+			console.log(`${msg.author.username}#${msg.author.discriminator} tried to shutdown the bot on the '${msg.guild}' server!, but failed!`);
 			return;
 		}
 		else {
 			msg.reply(`${bot.user.username} shutting down! Bye!`);
-			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
-			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
-			console.log(`${bot.user.username} shutting down! (${msg.author.username}#${msg.author.discriminator})`);
+			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
+			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+			console.log(`${bot.user.username} shutting down! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 			setTimeout(function(){process.exit(0)}, 1500);
 		};
 	};
@@ -145,13 +145,14 @@ bot.on('message', msg => {
 		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
-			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
-			console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command on the '${msg.guild}' server, but failed!`);
+			console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 		}
 		else {
 			msg.channel.sendMessage(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`);
-			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
-			console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
+			console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 		};
 	};
 });
