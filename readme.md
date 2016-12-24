@@ -3,7 +3,9 @@ A discord bot to go along with my website, [megumin.love](https://megumin.love)!
 
 Written using discord.js, using opusscript, request and moment packages.
 
-## Usage
+Add the bot to your server: [Invite me](https://discordapp.com/oauth2/authorize?&client_id=257126756069277696&scope=bot)
+
+## Self-hosting usage
 - Fill out your bot token and change the ownerID in config.json to your devmode discord ID.
 - Adjust config.json to your liking
 - ``npm install`` to install all dependencies
