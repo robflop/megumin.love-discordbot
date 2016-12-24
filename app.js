@@ -13,8 +13,8 @@ bot.on('ready', () => {
 
 bot.on('message', msg => {
 	if(msg.content == "!help") {
-		// Todo
-	};
+		msg.channel.sendMessage("__**Available commands are:**__ \n '!help' -- displays this message \n '!counter' -- display the website's current counter \n '!submit' -- get info on submitting sounds for the website/bot \n '!randomsound' -- Have the bot join the voice channel you are in and it'll play a random sound from the website \n '!setGame' -- sets the bot's playing status [Bot owner only] \n '!clearGame' -- clears the bot's playing status [Bot owner only] \n '!shutdown' -- shuts down the bot [Bot owner only]");
+	}; 
     if(msg.content == "!counter") {
         request('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body){
 			if(error){
@@ -26,7 +26,7 @@ bot.on('message', msg => {
         });
     };
 	if(msg.content == "!submit") {
-		msg.channel.sendMessage("Want to submit a sound for the website/bot? No problem, send me an email at `me@robflop.pw` including your cropped mp3/aac/ogg sound file! All sounds need to fit the website's theme.");	
+		msg.reply("Want to submit a sound for the website/bot? No problem, send me an email at `me@robflop.pw` including your cropped mp3/aac/ogg sound file! All sounds need to fit the website's theme.");	
 	}
 	if(msg.content == "!randomsound") {
 		if(msg.member.voiceChannel){
@@ -61,7 +61,7 @@ bot.on('message', msg => {
 			msg.reply("you are not authorized to use this command!");
 			console.log(`${msg.author.username}#${msg.author.discriminator} tried to change the bot's game, but failed!`);
 			fs.appendFileSync(`${config.logPath}${config.gameChangeLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
-			console.log(`Logged into "${config.logPath}${config.logName}" ! (${msg.author.username}#${msg.author.discriminator})`);
+			console.log(`Logged into "${config.logPath}${config.gameChangeLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			return;
 		}
 		else {
