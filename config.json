@@ -4,9 +4,9 @@
 	"soundPath": "sounds/",
 	"logPath": "log/",
 	"shutdownLog": "shutdown.log",
-	"gameChangeLog": "gamechange.log",
 	"soundLog": "sound.log",
 	"errorLog": "error.log",
 	"serverLog": "server.log",
+	"profileLog" :"profile.log",
 	"commandCooldown": 3
 }
