@@ -25,14 +25,26 @@ var timeout = {
 };
 
 bot.on('ready', () => {
-	console.log(bot.user.username + " ready! ");
+	console.log(`${bot.user.username} ready!`);
 	bot.user.setGame('on megumin.love');
 });
+
+bot.on('guildCreate', guild => {
+	console.log(`${bot.user.username} has joined a new server! ("${guild.name}")`);
+	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${bot.user.username} has joined the '${guild.name}' server!`);
+	console.log(`Logged into "${config.logPath}${config.serverLog}" !`);
+});
+
+bot.on('guildDelete', guild => {
+	console.log(`${bot.user.username} has left a server! ("${guild.name}")`);
+	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${bot.user.username} has left the '${guild.name}' server!`);
+	console.log(`Logged into "${config.logPath}${config.serverLog}" !`);
+}); 
 
 bot.on('message', msg => {
 	if(msg.content == "!help") {
 		if (timeout.check(msg.author.id, msg)) return;
-		msg.channel.sendMessage("__**Available commands are:**__ \n '!help' -- displays this message \n '!counter' -- display the website's current counter \n '!submit' -- get info on submitting sounds for the website/bot \n '!randomsound' -- Have the bot join the voice channel you are in and it'll play a random sound from the website \n '!setGame' -- sets the bot's playing status [Bot owner only] \n '!clearGame' -- clears the bot's playing status [Bot owner only] \n '!shutdown' -- shuts down the bot [Bot owner only]");
+		msg.channel.sendMessage("__**Available commands are:**__ \n\n '!help' -- displays this message \n '!counter' -- display the website's current counter \n '!submit' -- get info on submitting sounds for the website/bot \n '!randomsound' -- Have the bot join the voice channel you are in and it'll play a random sound from the website \n '!setGame' -- sets the bot's playing status [Bot owner only] \n '!clearGame' -- clears the bot's playing status [Bot owner only] \n '!shutdown' -- shuts down the bot [Bot owner only]\n '!stats' -- display various bot stats [Bot owner only]");
 	}; 
     if(msg.content == "!counter") {
 		if (timeout.check(msg.author.id, msg)) return;
@@ -127,6 +139,19 @@ bot.on('message', msg => {
 			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 			console.log(`${bot.user.username} shutting down! (${msg.author.username}#${msg.author.discriminator})`);
 			setTimeout(function(){process.exit(0)}, 1500);
+		};
+	};
+	if(msg.content == "!stats") {
+		if (timeout.check(msg.author.id, msg)) return;
+		if(msg.author.id !== config.ownerID){
+			msg.reply("you are not authorized to use this command!");
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command, but failed!`);
+			console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
+		}
+		else {
+			msg.channel.sendMessage(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`);
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command!`);
+			console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator})`);
 		};
 	};
 });

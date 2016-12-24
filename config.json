@@ -7,5 +7,6 @@
 	"gameChangeLog": "gamechange.log",
 	"soundLog": "sound.log",
 	"errorLog": "error.log",
+	"serverLog": "server.log",
 	"commandCooldown": 3
 }
