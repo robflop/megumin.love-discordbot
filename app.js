@@ -31,13 +31,13 @@ bot.on('ready', () => {
 
 bot.on('guildCreate', guild => {
 	console.log(`${bot.user.username} has joined a new server! ("${guild.name}")`);
-	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${bot.user.username} has joined the '${guild.name}' server!`);
+	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][SERVERS] ${bot.user.username} has joined the '${guild.name}' server!`);
 	console.log(`Logged into "${config.logPath}${config.serverLog}" !`);
 });
 
 bot.on('guildDelete', guild => {
 	console.log(`${bot.user.username} has left a server! ("${guild.name}")`);
-	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${bot.user.username} has left the '${guild.name}' server!`);
+	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][SERVERS] ${bot.user.username} has left the '${guild.name}' server!`);
 	console.log(`Logged into "${config.logPath}${config.serverLog}" !`);
 }); 
 
@@ -51,7 +51,7 @@ bot.on('message', msg => {
         request('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body){
 			if(error){
 					console.log(`An error has occured during '${msg.content}' on the '${msg.guild}' server: ${error}`);
-					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}]${error}`);
+					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][ERROR]${error}`);
 					console.log(`Error during '${msg.content}' on the '${msg.guild}' server logged to ${config.logPath}${config.errorLog}`);
 				};
             msg.channel.sendMessage(`Current count is: ${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}`);
@@ -67,7 +67,7 @@ bot.on('message', msg => {
 			request('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body){
 				if(error){
 					console.log(`An error has occured during '${msg.content}' on the '${msg.guild}' server: ${error}`);
-					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}]${error}`);
+					fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][ERROR]${error}`);
 					console.log(`Error during '${msg.content}' on '${msg.guild}' logged to ${config.logPath}${config.errorLog}`);
 				};
 			}); 
@@ -128,14 +128,14 @@ bot.on('message', msg => {
 		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
-			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command  on the '${msg.guild}' server, but failed!`);
+			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][POWER] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command  on the '${msg.guild}' server, but failed!`);
 			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 			console.log(`${msg.author.username}#${msg.author.discriminator} tried to shutdown the bot on the '${msg.guild}' server!, but failed!`);
 			return;
 		}
 		else {
 			msg.reply(`${bot.user.username} shutting down! Bye!`);
-			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
+			fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][POWER] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
 			console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 			console.log(`${bot.user.username} shutting down! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 			setTimeout(function(){process.exit(0)}, 1500);
@@ -145,13 +145,12 @@ bot.on('message', msg => {
 		if (timeout.check(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID){
 			msg.reply("you are not authorized to use this command!");
-			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command on the '${msg.guild}' server, but failed!`);
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][STATISTICS] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content}" command on the '${msg.guild}' server, but failed!`);
 			console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 		}
 		else {
 			msg.channel.sendMessage(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`);
-			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
-			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][STATISTICS] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content}" command on the '${msg.guild}' server!`);
 			console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 		};
 	};
@@ -163,9 +162,8 @@ bot.on('message', msg => {
 			console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 		}
 		else {
-			console.log(`"${msg.content.substr(11)}"`);
 			bot.user.setAvatar(msg.content.substr(11));
-			msg.reply(`successfully set my avatar to '${msg.content.substr(10)} ' ! (May not have worked if ratelimit capped)`);
+			msg.reply(`successfully set my avatar to '${msg.content.substr(10)} ' ! \n(May not have worked if ratelimit capped)`);
 			fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][AVATAR] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(0,10)}" command on the '${msg.guild}' server!`);
 			console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 			console.log(`${bot.user.username}'s avatar set to '${msg.content.substr(11)} ' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`)
@@ -180,7 +178,7 @@ bot.on('message', msg => {
 		}
 		else {
 			bot.user.setUsername(msg.content.substr(9));
-			msg.reply(`successfully set my username to '${msg.content.substr(9)} ' ! (May not have worked if ratelimit capped)`);
+			msg.reply(`successfully set my username to '${msg.content.substr(9)} ' ! \n(May not have worked if ratelimit capped)`);
 			fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(0,8)}" command on the '${msg.guild}' server!`);
 			console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 			console.log(`${bot.user.username}'s username set to ' ${msg.content.substr(9)} ' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`)
