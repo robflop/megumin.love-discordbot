@@ -19,5 +19,7 @@ Optional: Once you've got it running on a linux server, install node-opus for be
 - The default version of the bot uses the ``sounds/`` directory to look for sounds.- 
 - Shutdown, gamechange, sound logs, error logs and server logs are saved in the ``log/`` directory by default.
 - By default, a command cooldown of 3 seconds is applied.
+- The default bot prefix is "robbot,". 
+- Commands require there to be one space to be between the prefix and the command. Example: "robbot, help" -- "robbot,help" will not work.
 
-Change these settings to your liking.
+Change the configuration to your liking.

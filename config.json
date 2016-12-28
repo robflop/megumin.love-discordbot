@@ -8,5 +8,6 @@
 	"errorLog": "error.log",
 	"serverLog": "server.log",
 	"profileLog" :"profile.log",
-	"commandCooldown": 3
+	"commandCooldown": 3,
+	"commandPrefix": "robbot,"
 }
