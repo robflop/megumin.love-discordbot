@@ -1,10 +1,10 @@
-const request = require('request');
-const fs = require('fs');
-const moment = require('moment');
-const Discord = require('discord.js');
-const config = require('./config.json');
-const bot = new Discord.Client();
-// load required files/packages and initialize bot
+const request = require('request'); // for website interaction
+const fs = require('fs'); // for log writing
+const moment = require('moment'); // part of log writing
+const Discord = require('discord.js'); // obvious bot base
+const prism = require('prism-media'); // prism for smoother file playing of very short files
+const config = require('./config.json'); // import configuration
+const bot = new Discord.Client(); // initialize bot instance
 
 var timeout = { // timeout function for command cooldown
   "users": [],
@@ -12,7 +12,7 @@ var timeout = { // timeout function for command cooldown
         if (timeout.users.indexOf(userID) > -1) { // If the user is on timeout don't let them use the command
 			msg.reply(`calm down with the commands for a sec! Please wait ${config.commandCooldown} seconds.`);
             return true;
-        } else if (config.ownerID !== userID) { // If the user is not on timeout let them use the command and add their user id to the timeout
+        } else if (config.ownerID !== userID) { // If the user is not the bot owner and is not on timeout let them use the command and add their user id to the timeout
             timeout.set(userID);
             return false;
         }
@@ -77,7 +77,12 @@ bot.on('message', msg => {// listen to all messages sent
 		if(msg.content.indexOf("randomsound") - config.commandPrefix.length == 1) { // Check if "randomsound" comes right after the bot prefix, with one space inbetween
 			var command = "randomsound";
 			if (timeout.check(msg.author.id, msg)){ return; }; // Check for cooldown
-			if(msg.member.voiceChannel){
+			if(msg.member.voiceChannel){ // check if the user that used the command is in a voice channel on the server the command came from
+				if(msg.guild.voiceConnection !== null) { // Check if the bot is already in a voice channel of the server the command came from
+					msg.reply('please wait for the current sound to finish!'); 
+					return;  // if a voice connection exists, do nothing (besides sending above message)
+				} 
+				else { // if a voice connection on the server the command came from doesn't exist, do the following
 				request('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body){ // increment the counter on-site
 					if(error){
 						console.log(`An error has occured during '${msg.content}' on the '${msg.guild}' server: ${error}`);
@@ -97,9 +102,9 @@ bot.on('message', msg => {// listen to all messages sent
 						msg.member.voiceChannel.leave(); // leave voice channel after file finishes playing
 						console.log(`Disconnected from '${msg.member.voiceChannel.name}' on the '${msg.guild}' server!`);
 					});
-				});
+				})};
 			}
-			else{ // if message author not in a voice channel, tell them to join one
+			else { // if message author not in a voice channel, tell them to join one
 				msg.reply("join a voice channel first!");
 				return;
 			};
