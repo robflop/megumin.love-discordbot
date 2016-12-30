@@ -27,7 +27,7 @@ var timeout = { // timeout function for command cooldown
 
 bot.on('ready', () => { // ready message once bot is loaded 
 	console.log(`${bot.user.username} ready!`); // console log a ready message
-	bot.user.setGame('on megumin.love'); // set default game status
+	bot.user.setGame("try 'robbot, help' !"); // set default game status
 });
 
 bot.on('guildCreate', guild => { // listen to joins
@@ -43,6 +43,15 @@ bot.on('guildDelete', guild => { // listen to leaves
 	// Log which server was left and when
 	console.log(`Logged into "${config.logPath}${config.serverLog}" !`);
 }); 
+
+setInterval(function () { 
+	if(bot.user.presence.game.name == "try 'robbot, help' !") { // if the current status is ...
+		bot.user.setGame("on megumin.love"); //  set it to ...
+	}
+	else if(bot.user.presence.game.name == "on megumin.love") { // but if the current status is ...
+		bot.user.setGame("try 'robbot, help' !"); // then set it to ...
+	}
+}, 300000); // repeat every 5 minutes
 
 bot.on('message', msg => { // listen to all messages sent
 	if(msg.author.bot){ return; };// Ignore any bot messages
