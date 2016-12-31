@@ -7,7 +7,8 @@
 	"soundLog": "sound.log",
 	"errorLog": "error.log",
 	"serverLog": "server.log",
-	"profileLog" :"profile.log",
+	"profileLog": "profile.log",
+	"ignoreLog": "ignore.log",
 	"commandCooldown": 3,
 	"commandPrefix": "robbot,"
 }

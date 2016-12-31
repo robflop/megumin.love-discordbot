@@ -1,7 +1,7 @@
 # Megumin.love Discord bot
 A discord bot to go along with my website, [megumin.love](https://megumin.love)!
 
-Written using discord.js, using opusscript, request and moment packages.
+Written using discord.js, using opusscript, request, moment and prism-media packages.
 
 Add the bot to your server: [Invite me](https://discordapp.com/oauth2/authorize?&client_id=257126756069277696&scope=bot)
 
