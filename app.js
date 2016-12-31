@@ -32,14 +32,14 @@ bot.on('ready', () => { // ready message once bot is loaded
 
 bot.on('guildCreate', guild => { // listen to joins
 	console.log(`${bot.user.username} has joined a new server! ("${guild.name}")`);
-	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][SERVERS] ${bot.user.username} has joined the '${guild.name}' server!`); 
+	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][SERVERS] ${bot.user.username} has joined the '${guild.name}' server!`); 
 	// Log which server was joined and when
 	console.log(`Logged into "${config.logPath}${config.serverLog}" !`);
 });
 
 bot.on('guildDelete', guild => { // listen to leaves
 	console.log(`${bot.user.username} has left a server! ("${guild.name}")`);
-	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][SERVERS] ${bot.user.username} has left the '${guild.name}' server!`); 
+	fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][SERVERS] ${bot.user.username} has left the '${guild.name}' server!`); 
 	// Log which server was left and when
 	console.log(`Logged into "${config.logPath}${config.serverLog}" !`);
 }); 
@@ -84,7 +84,7 @@ bot.on('message', msg => { // listen to all messages sent
         		request('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) { // GET the counter number
 					if(error) {
 							console.log(`An error has occured during '${msg.content}' on the '${msg.guild}' server: ${error}`);
-							fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][ERROR]${error}`); // Log any request errors
+							fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][ERROR]${error}`); // Log any request errors
 							console.log(`Error during '${msg.content.substr(config.commandPrefix.length + 1, command.length)}}' on the '${msg.guild}' server logged to ${config.logPath}${config.errorLog}`);
 					};
             		msg.channel.sendMessage(`Current count is: ${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}`); // Format counter to x.xxx.xxx 
@@ -123,7 +123,7 @@ bot.on('message', msg => { // listen to all messages sent
 					request('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body) { // increment the counter on-site
 						if(error) {
 							console.log(`An error has occured during '${msg.content}' on the '${msg.guild}' server: ${error}`);
-							fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][ERROR]${error}`); // Log any request errors 
+							fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][ERROR]${error}`); // Log any request errors 
 							console.log(`Error during '${msg.content.substr(config.commandPrefix.length + 1, command.length)}' on '${msg.guild}' logged to ${config.logPath}${config.errorLog}`);
 						};
 					}); 
@@ -163,7 +163,7 @@ bot.on('message', msg => { // listen to all messages sent
 				if(msg.author.id !== config.ownerID){ // Check for authorization
 					msg.reply("you are not authorized to use this command!");
 					console.log(`${msg.author.username}#${msg.author.discriminator} tried to change the bot's game on the '${msg.guild}' server, but failed!`);
-					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][STATUS] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 					return; // abort command execution
 				}
@@ -175,7 +175,7 @@ bot.on('message', msg => { // listen to all messages sent
 					Example: "robbot, setGame test" -> cut out the length of the prefix and " setGame ". 
 					*/
 					msg.reply(`successfully set my game to '${msg.content.substr(config.commandPrefix.length + 9)}' ! \n (May not have worked if ratelimit has been capped)`);
-					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][STATUS] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 					console.log(`${bot.user.username}'s game set to '${msg.content.substr(config.commandPrefix.length + 9)}'! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`)
 				};
@@ -190,14 +190,14 @@ bot.on('message', msg => { // listen to all messages sent
 				if (timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 				if(msg.author.id !== config.ownerID) { // Check for authorization
 					msg.reply("you are not authorized to use this command!");
-					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][STATUS] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 					console.log(`${msg.author.username}#${msg.author.discriminator} tried to clear the bot's game on the '${msg.guild}' server, but failed!`);
 					return; // abort command execution
 				}
 				else {
 					bot.user.setGame();	// set game to nothing, clearing it
-					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][STATUS] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 					console.log(`${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 					msg.reply("game status cleared! \n (May not have worked if ratelimit has been capped)");
@@ -213,12 +213,12 @@ bot.on('message', msg => { // listen to all messages sent
 				if (timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 				if(msg.author.id !== config.ownerID) { // Check for authorization
 					msg.reply("you are not authorized to use this command!");
-					fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][STATISTICS] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATISTICS] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 				}
 				else {
 					msg.channel.sendMessage(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`);
-					fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][STATISTICS] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATISTICS] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.serverLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 				};
 			}
@@ -232,7 +232,7 @@ bot.on('message', msg => { // listen to all messages sent
 				if (timeout.check(msg.author.id, msg)){ return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 				if(msg.author.id !== config.ownerID){ // Check for authorization
 					msg.reply("you are not authorized to use this command!");
-					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][AVATAR] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][AVATAR] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 				}
 				else {
@@ -243,7 +243,7 @@ bot.on('message', msg => { // listen to all messages sent
 					Example: "robbot, setAvatar test" -> cut out the length of the prefix and " setAvatar ". 
 					*/
 					msg.reply(`successfully set my avatar to '${msg.content.substr(config.commandPrefix.length + 11)}' ! \n(May not have worked if ratelimit capped)`);
-					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][AVATAR] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][AVATAR] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 					console.log(`${bot.user.username}'s avatar set to '${msg.content.substr(config.commandPrefix.length + 11)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`)
 				};
@@ -258,7 +258,7 @@ bot.on('message', msg => { // listen to all messages sent
 				if (timeout.check(msg.author.id, msg)){ return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 				if(msg.author.id !== config.ownerID){ // Check for authorization
 					msg.reply("you are not authorized to use this command!");
-					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 				}
 				else {
@@ -269,7 +269,7 @@ bot.on('message', msg => { // listen to all messages sent
 					Example: "robbot, setName test" -> cut out the length of the prefix and " setName ". 
 					*/
 					msg.reply(`successfully set my username to '${msg.content.substr(config.commandPrefix.length + 9)}' ! \n(May not have worked if ratelimit capped)`);
-					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} used the 	"${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
+					fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} used the 	"${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.profileLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 					console.log(`${bot.user.username}'s username set to '${msg.content.substr(config.commandPrefix.length + 9)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`)
 				}; 
@@ -286,14 +286,14 @@ bot.on('message', msg => { // listen to all messages sent
 			if (timeout.check(msg.author.id, msg)){ return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 			if(msg.author.id !== config.ownerID){ // Check for authorization
 				msg.reply("you are not authorized to use this command!");
-				fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][POWER] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
+				fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][POWER] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server, but failed!`); // Log command use, when and by whom
 				console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
-				console.log(`${msg.author.username}#${msg.author.discriminator} tried to shutdown the bot on the '${msg.guild}' server!, but failed!`);
+				console.log(`${msg.author.username}#${msg.author.discriminator} tried to shutdown the bot on the '${msg.guild}' server, but failed!`);
 				return; // abort command execution
 			}
 			else {
 				msg.reply(`${bot.user.username} shutting down! Bye!`);
-				fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:MM:SS')}][POWER] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
+				fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][POWER] ${msg.author.username}#${msg.author.discriminator} used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 				console.log(`Logged into "${config.logPath}${config.shutdownLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 				console.log(`${bot.user.username} shutting down! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 				setTimeout(function(){ // set timeout for bot shutdown
