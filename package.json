@@ -11,9 +11,7 @@
     "request": "^2.79.0"
   },
   "devDependencies": {},
-  "scripts": {
-    "start": "node app.js"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/robflop/megumin.love-discordbot.git"
