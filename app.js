@@ -60,13 +60,14 @@ setInterval(function () {
 bot.on('message', msg => { // listen to all messages sent
 	if(msg.author.bot) { return; };// Ignore any bot messages
 	if(msg.content.startsWith(config.commandPrefix)) { // Only listen to messages starting with the bot prefix
+		if(msg.content == config.commandPrefix) { return; } // Ignore empty commands (messages containing just the prefix)
 		const permission = msg.channel.permissionsFor(bot.user); // For permission checking on the bot's side later on in the commands
 		var command = ""; // For ignoring and logging purposes, placeholder at this point 
 		if(ignoreList.indexOf(msg.author.id) == -1) { // Check if the user is on the ignore list ("-1" meaning they are not, anything above means they are)
 			if(msg.content.indexOf("help") - config.commandPrefix.length == 1) { // Check if "help" comes right after the bot prefix, with one space inbetween
 					var command = "help"; // for logging purposes
 					if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
-					msg.author.sendMessage("__**Available commands are:**__ \n\n 'help' -- displays this message \n 'about' -- get general bot info \n 'counter' -- display the website's current counter \n 'submit' -- get info on submitting sounds for the website/bot \n 'randomsound' -- Have the bot join the voice channel you are in and it'll play a random sound from the website \n 'setGame' -- sets the bot's playing status [Bot owner only] \n 'clearGame' -- clears the bot's playing status [Bot owner only] \n 'stats' -- display various bot stats [Bot owner only] \n 'setAvatar' -- changes the bot's avatar [Bot owner only] \n 'setName' -- changes the bot's username [Bot owner only] \n 'ignore' -- Make the bot ignore a user, use a 2nd time to revert [Bot owner only] \n 'shutdown' -- shuts down the bot [Bot owner only]");
+					msg.author.sendMessage("__**Available commands are:**__ \n\n 'help' -- displays this message \n 'about' -- get general bot info \n 'counter' -- display the website's current counter \n 'submit' -- get info on submitting sounds for the website/bot \n 'randomsound' -- Have the bot join the voice channel you are in and it'll play a random sound from the website \n 'setGame' -- sets the bot's playing status [Bot owner only] \n 'clearGame' -- clears the bot's playing status [Bot owner only] \n 'stats' -- display various bot stats [Bot owner only] \n 'setAvatar' -- changes the bot's avatar [Bot owner only] \n 'setName' -- changes the bot's username [Bot owner only] \n 'ignore' -- Make the bot ignore a user, use a 2nd time to revert [Bot owner only] \n 'POST' -- update the server count on the Discord Bots website (enable the command in the config) [Bot owner only] \n 'shutdown' -- shuts down the bot [Bot owner only]");	
 			}; 
 			if(msg.content.indexOf("about") - config.commandPrefix.length == 1) { // Check if "about" comes right after the bot prefix, with one space inbetween
 				if(permission.hasPermission('SEND_MESSAGES')) { // Check if bot can send messages to the channel
@@ -82,11 +83,12 @@ bot.on('message', msg => { // listen to all messages sent
 				var command = "counter"; // for logging purposes
 				if(permission.hasPermission('SEND_MESSAGES')) {  // Check if bot can send messages to the channel 
 					if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
-        			request('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) { // GET the counter number
-						if(error) {
-								console.log(`An error has occured during '${msg.content}' on the '${msg.guild}' server: ${error}`);
-								fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][ERROR]${error}`); // Log any request errors
-								console.log(`Error during '${msg.content.substr(config.commandPrefix.length + 1, command.length)}}' on the '${msg.guild}' server logged to ${config.logPath}${config.errorLog}`);
+        			request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) { // GET the counter number
+						if(error || response.statusCode !== 200) { // Check for errors or response codes other than 200 (OK)
+							console.log(`An unusual response code was emitted when GETting the counter: ${response.statusCode}`);
+							fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); // Log any unusual request responses
+							console.log(`Logged to ${config.logPath}${config.requestLog}`);
+							return; // abort command execution
 						};
             			msg.channel.sendMessage(`Current count is: ${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}`); // Format counter to x.xxx.xxx 
         			});
@@ -121,11 +123,12 @@ bot.on('message', msg => { // listen to all messages sent
 							};
 						} 
 						else { // if a voice connection on the server the command came from doesn't exist, do the following
-						request('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body) { // increment the counter on-site
-							if(error) {
-								console.log(`An error has occured during '${msg.content}' on the '${msg.guild}' server: ${error}`);
-								fs.appendFileSync(`${config.logPath}${config.errorLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][ERROR]${error}`); // Log any request errors 
-								console.log(`Error during '${msg.content.substr(config.commandPrefix.length + 1, command.length)}' on '${msg.guild}' logged to ${config.logPath}${config.errorLog}`);
+						request.get('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body) { // increment the counter on-site
+							if(error || response.statusCode !== 200) { // Check for errors or response codes other than 200 (OK)
+								console.log(`An unusual response code was emitted when GETting the counter increment script: ${response.statusCode}`);
+								fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); // Log any unusual request responses
+								console.log(`Logged to ${config.logPath}${config.requestLog}`);
+								return; // abort command execution
 							};
 						}); 
 						msg.member.voiceChannel.join().then(connection => { // check if message author is in a voice channel, if true join it
@@ -318,6 +321,32 @@ bot.on('message', msg => { // listen to all messages sent
 					};
 					fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} used the 	"${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 					console.log(`Logged into "${config.logPath}${config.ignoreLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);					
+				};
+			};
+			if(config.useDiscordBots) {
+				if(msg.content.indexOf('POST') - config.commandPrefix.length == 1) { // check if "POST" comes right after the bot prefix with one space inbetween
+					var command = "POST"; // for logging purposes
+					request.post( // Send POST request
+						{
+							headers: { // Set discordbots API header and json content type
+								'Authorization': `${config.discordBotsAPI}`, // send Discord Bots API Token in auth header
+								'Content-type': 'application/json; charset=utf-8' // set encoding to JSON + UTF-8
+							},
+							url: `https://bots.discord.pw/api/bots/${bot.user.id}/stats`, // set URL to discordbots api stats
+							body: `{"server_count": ${bot.guilds.size}}` // send the bot's server count in body
+						}, 
+						function (error, response, body) {
+							if(error || response.statusCode !== 200) { // Check for errors or response codes other than 200 (OK)
+								console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
+								fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); // Log any unusual request responses
+								console.log(`Logged to ${config.logPath}${config.requestLog}`);
+								return; // abort command execution
+							};
+							fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST] POST request sent (${response.statusCode})`); // Log what was done
+							console.log(`Logged into "${config.logPath}${config.requestLog}" !`);
+							msg.channel.sendMessage('POST request sent');
+						}
+					);
 				};
 			};
 			if(msg.content.indexOf("shutdown") - config.commandPrefix.length == 1) { // Check if "shutdown" comes right after the bot prefix, with one space inbetween

@@ -5,10 +5,12 @@
 	"logPath": "log/",
 	"shutdownLog": "shutdown.log",
 	"soundLog": "sound.log",
-	"errorLog": "error.log",
+	"requestLog": "request.log",
 	"serverLog": "server.log",
 	"profileLog": "profile.log",
 	"ignoreLog": "ignore.log",
 	"commandCooldown": 3,
-	"commandPrefix": "robbot,"
+	"commandPrefix": "robbot,",
+	"useDiscordBots": false,
+	"discordBotsAPI": "API_TOKEN"
 }
