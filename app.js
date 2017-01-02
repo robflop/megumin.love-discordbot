@@ -325,28 +325,51 @@ bot.on('message', msg => { // listen to all messages sent
 			};
 			if(config.useDiscordBots) {
 				if(msg.content.indexOf('POST') - config.commandPrefix.length == 1) { // check if "POST" comes right after the bot prefix with one space inbetween
-					var command = "POST"; // for logging purposes
-					request.post( // Send POST request
-						{
-							headers: { // Set discordbots API header and json content type
-								'Authorization': `${config.discordBotsAPI}`, // send Discord Bots API Token in auth header
-								'Content-type': 'application/json; charset=utf-8' // set encoding to JSON + UTF-8
-							},
-							url: `https://bots.discord.pw/api/bots/${bot.user.id}/stats`, // set URL to discordbots api stats
-							body: `{"server_count": ${bot.guilds.size}}` // send the bot's server count in body
-						}, 
-						function (error, response, body) {
-							if(error || response.statusCode !== 200) { // Check for errors or response codes other than 200 (OK)
-								console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
-								fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); // Log any unusual request responses
-								console.log(`Logged to ${config.logPath}${config.requestLog}`);
-								return; // abort command execution
-							};
-							fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST] POST request sent (${response.statusCode})`); // Log what was done
-							console.log(`Logged into "${config.logPath}${config.requestLog}" !`);
-							msg.channel.sendMessage('POST request sent');
-						}
-					);
+					/*
+					INFO: The POST command goes into action whether the confirmation mesage can be sent or not. 
+					Some messages will be PM'd if there is no send permission, some will not be sent at all if there is not.
+					*/
+					if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
+					if(msg.author.id !== config.ownerID) { // Check for authorization
+						if(permission.hasPermission('SEND_MESSAGES')) { // Check if bot can send messages to the channel 
+							msg.reply("you are not authorized to use this command!");
+						};
+						fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${msg.author.username}#${msg.author.discriminator} on the '${msg.guild}' server tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command, but failed!`); // Log command use, when and by whom
+						console.log(`Logged into "${config.logPath}${config.requestLog}" ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+						console.log(`${msg.author.username}#${msg.author.discriminator} on the '${msg.guild}' server tried to POST the bot's DiscordBots server list, but failed!`);
+						return; // abort command execution
+					}
+					else {
+						var command = "POST"; // for logging purposes
+						request.post( // Send POST request
+							{
+								headers: { // Set discordbots API header and json content type
+									'Authorization': `${config.discordBotsAPI}`, // send Discord Bots API Token in auth header
+									'Content-type': 'application/json; charset=utf-8' // set encoding to JSON + UTF-8
+								},
+								url: `https://bots.discord.pw/api/bots/${bot.user.id}/stats`, // set URL to discordbots api stats
+								body: `{"server_count": ${bot.guilds.size}}` // send the bot's server count in body
+							}, 
+							function (error, response, body) {
+								if(error || response.statusCode !== 200) { // Check for errors or response codes other than 200 (OK)
+									console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
+									fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); // Log any unusual request responses
+									console.log(`Logged to ${config.logPath}${config.requestLog}`);
+									if(permission.hasPermission('SEND_MESSAGES')) { // Check if bot can send messages to the channel 
+										msg.reply(`an error during the POST request has occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
+									}
+									else {
+										msg.author.sendMessage(`An error during the POST request has occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
+									}
+									return; // abort command execution
+								};
+								fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST] POST request sent (${response.statusCode})`); // Log what was done
+								console.log(`The '${command}' command was used by ${msg.author.username}#${msg.author.discriminator} on the '${msg.guild}' server!`);
+								console.log(`Logged into "${config.logPath}${config.requestLog}" !`);
+								msg.reply('POST request sent successfully!');
+							}
+						);
+					};
 				};
 			};
 			if(msg.content.indexOf("shutdown") - config.commandPrefix.length == 1) { // Check if "shutdown" comes right after the bot prefix, with one space inbetween
