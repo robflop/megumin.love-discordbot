@@ -41,7 +41,6 @@ fs.watch('./'+pluginpath+'/', function (event, filename) {                      
 // Don't fuck with the functions below, because it's magic.
 require.uncache = function (moduleName) {
     require.searchCache(moduleName, function (mod) {
-    	console.log("deleting the cache for: "+moduleName);
         delete require.cache[mod.id];
     });
 };

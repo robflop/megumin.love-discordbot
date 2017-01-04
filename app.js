@@ -66,7 +66,6 @@ bot.on('message', msg => { // listen to all messages sent
 	if (Object.keys(Plugins.plugins).indexOf(actualCmd) > -1) { 									   // If actual command maps to something we can answer to
 		Plugins.plugins[actualCmd].main(bot, msg, timeout, permission); 							   // Run the command.
 	}
-	console.log(Plugins.plugins);
 	return; // Just in case, return empty
 });
 
