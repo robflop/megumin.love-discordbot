@@ -7,7 +7,6 @@ var Plugins = require('./plugin_handler.js'); // Plugin/Command Handler
 
 bot.on('ready', () => { // ready message once bot is loaded
 	Events.ready(bot);
-	console.log(timeout);
 });
 
 bot.on('guildCreate', guild => { // listen to joins
@@ -63,11 +62,11 @@ bot.on('message', msg => { // listen to all messages sent
 	Packages not needed for the base file (this one) are only defined in the commands that need them.
 	*/ 
 
-	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0];
-	if (Object.keys(Plugins.plugins).indexOf(actualCmd) > -1) {
-		Plugins.plugins[actualCmd].main(bot, msg, timeout, permission);
+	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0]; 	// Get the actual command
+	if (Object.keys(Plugins.plugins).indexOf(actualCmd) > -1) { 							// If actual command maps to something we can answer to
+		Plugins.plugins[actualCmd].main(bot, msg, timeout, permission); 					// Run the command.
 	}
-	return;
+	return; 																				// Just in case, return empty
 });
 
 bot.login(config.token); // Log the bot in with token set in config

@@ -1,39 +1,44 @@
 var fs = require('fs');
 
-var pluginpath = "plugins"
-var normalizedPath = require("path").join(__dirname, pluginpath);
+var pluginpath = "plugins"; // folder to load commands from
+var normalizedPath = require("path").join(__dirname, pluginpath); // fix the path to be used in condition checks
 
 var pluginList = []; // To check if the file is changed, or added/removed/renamed.
-var plugins = {};
+var plugins = {}; // Actual command list
 
 // Load all plugins from the dir
-fs.readdirSync(normalizedPath).forEach(function(file) {
-	var ModuleName = file.slice(0, -3);
-	plugins[ModuleName] = require("./"+pluginpath+"/" + file);
-	pluginList.push(file);
+fs.readdirSync(normalizedPath).forEach(function(file) {                             // Look at all the files in the specificed folder
+	var ModuleName = file.slice(0, -3);                                             // remove ".js" bit from the file names
+	plugins[ModuleName] = require("./"+pluginpath+"/" + file);                      // Require the files
+	pluginList.push(file);                                                          // Also keep track of all the files we loaded for some checks below.
 });
-exports.plugins = plugins;
+exports.plugins = plugins;                                                          // Let the app.js know of our available commands
 
 // Reload plugins automatically on add/remove/change
-fs.watch('./'+pluginpath+'/', function (event, filename) {
-    if (filename) {
-    	// console.log(event, filename);
-       	var ModuleName = filename.slice(0, -3);
-        if (pluginList.indexOf(filename) > -1) {
-        	var removed = pluginList.splice(pluginList.indexOf(filename), 1);
-        	delete plugins[ModuleName];
-        	require.uncache("./"+pluginpath+"/" +filename);
+fs.watch('./'+pluginpath+'/', function (event, filename) {                          // Watch the directory
+    if (filename) {                                                                 // if changes occur
+       	var ModuleName = filename.slice(0, -3);                                     // Remove ".js" bit from the file names
+        if (pluginList.indexOf(filename) > -1) {                                    // If the changed file exists in our loaded files list
+           	var removed = pluginList.splice(pluginList.indexOf(filename), 1);       // Remove it from the list for now
+        	delete plugins[ModuleName];                                             // Free memory and cache
+        	require.uncache("./"+pluginpath+"/" +filename);                         // Remove the file from the node.js cache, so that re-requiring gives us the new code
         }
-        else {
-        	pluginList.push(filename);
-        	plugins[ModuleName] = require("./"+pluginpath+"/" + filename);
+        else {                                                                      // If changed file doesn't exist
+        	pluginList.push(filename);                                              // Add it to our list of loaded files
+        	plugins[ModuleName] = require("./"+pluginpath+"/" + filename);          // And add it to our command list
         }
-        // console.log(pluginList);
-        exports.plugins = plugins;
+        exports.plugins = plugins;                                                  // Update our list of commands in app.js
     }
 });
+/*
+    While watching the directory, edited/renamed files trigger the events twice:
+    Once with the old name, and once with the new name.
+    Therefore, a changed file is safe to remove from loaded files list, since it'll be re-added in the next trigger.
 
-// Don't fuck with the functions below, because it's magic!
+    However, added/removed files trigger it once, solving a problem rather nicely on its own.
+*/
+
+// Don't fuck with the functions below, because it's magic.
 require.uncache = function (moduleName) {
     require.searchCache(moduleName, function (mod) {
     	console.log("deleting the cache for: "+moduleName);
