@@ -8,7 +8,7 @@ var plugins = {}; // Actual command list
 
 // Load all plugins from the dir
 fs.readdirSync(normalizedPath).forEach(function(file) {                             // Look at all the files in the specificed folder
-	var ModuleName = file.slice(0, -3);                                             // remove ".js" bit from the file names
+	var ModuleName = file.slice(0, -3).toLowerCase();                               // remove ".js" bit from the file names, and make it lowercase
 	plugins[ModuleName] = require("./"+pluginpath+"/" + file);                      // Require the files
 	pluginList.push(file);                                                          // Also keep track of all the files we loaded for some checks below.
 });
@@ -17,7 +17,7 @@ exports.plugins = plugins;                                                      
 // Reload plugins automatically on add/remove/change
 fs.watch('./'+pluginpath+'/', function (event, filename) {                          // Watch the directory
     if (filename) {                                                                 // if changes occur
-       	var ModuleName = filename.slice(0, -3);                                     // Remove ".js" bit from the file names
+       	var ModuleName = filename.slice(0, -3).toLowerCase();                       // Remove ".js" bit from the file names, and make it lowercase
         if (pluginList.indexOf(filename) > -1) {                                    // If the changed file exists in our loaded files list
            	var removed = pluginList.splice(pluginList.indexOf(filename), 1);       // Remove it from the list for now
         	delete plugins[ModuleName];                                             // Free memory and cache
