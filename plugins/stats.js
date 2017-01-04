@@ -2,7 +2,7 @@ const config = require('../config.json'); // import configuration
 const fs = require('fs'); // for log writing
 const moment = require('moment'); // part of log writing
 
-module.exports = function stats(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) {
 	if(!permission.hasPermission('SEND_MESSAGES')) {  // If the bot can't send to the channel...
 		msg.author.sendMessage("I can't send messages to that channel!"); // ...PM the user...
 		return;	// ... and abort command execution.

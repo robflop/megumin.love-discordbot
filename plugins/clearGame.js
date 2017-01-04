@@ -2,7 +2,7 @@ const fs = require('fs'); // for log writing
 const moment = require('moment'); // part of log writing
 const config = require('../config.json'); // import configuration
 
-module.exports = function clearGame(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) {
 	var command = "clearGame"; // for logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) { // If the user is not authorized ...

@@ -1,20 +1,21 @@
 const Discord = require('discord.js'); // obvious bot base
 const config = require('./config.json'); // import configuration
-const commands = require('./commands/'); // import all command files
 const ignoreList = require('./ignore.json'); // load array of ignored users
 const bot = new Discord.Client(); // initialize bot instance
+var Events = require('./event_handler.js'); // Event Handler
+var Plugins = require('./plugin_handler.js'); // Plugin/Command Handler
 
-bot.on('ready', () => { // ready message once bot is loaded 
-	commands.otherEvents.ready(bot);
+bot.on('ready', () => { // ready message once bot is loaded
+	Events.ready(bot);
 });
 
 bot.on('guildCreate', guild => { // listen to joins
-	commands.otherEvents.join(bot);
+	Events.join(bot);
 });
 
 bot.on('guildDelete', guild => { // listen to leaves
-	commands.otherEvents.leave(bot);
-}); 
+	Events.leave(bot);
+});
 
 var timeout = { // timeout function for command cooldown, courtesy of u/pilar6195 on reddit
 	"users": [],
@@ -35,7 +36,7 @@ var timeout = { // timeout function for command cooldown, courtesy of u/pilar619
     }
 };
 
-setInterval(function () { 
+setInterval(function () {
 	if(bot.user.presence.game.name == "try 'robbot, help' !") { // if the current status is ...
 		bot.user.setGame("on megumin.love"); //  set it to ...
 	}
@@ -60,48 +61,12 @@ bot.on('message', msg => { // listen to all messages sent
 	to every command by default, whether used by the command or not. Other necessary packages are defined in the command files.
 	Packages not needed for the base file (this one) are only defined in the commands that need them.
 	*/ 
-	if(msg.content.indexOf("help") - config.commandPrefix.length == 1) { // help command
-		commands.help(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("about") - config.commandPrefix.length == 1) { // about command
-		commands.about(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("counter") - config.commandPrefix.length == 1) { // counter command
-		commands.counter(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("submit") - config.commandPrefix.length == 1) { // submit command
-		commands.submit(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("randomsound") - config.commandPrefix.length == 1) { // randomsound command
-		commands.randomsound(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("setGame") - config.commandPrefix.length == 1) { // setGame command
-		commands.setGame(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("clearGame") - config.commandPrefix.length == 1) { // clearGame command
-		commands.clearGame(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("stats") - config.commandPrefix.length == 1) { // stats command
-		commands.stats(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("setAvatar") - config.commandPrefix.length == 1) { // setAvatar command
-		commands.setAvatar(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("setName") - config.commandPrefix.length == 1) { // setName command
-		commands.setName(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("ignore") - config.commandPrefix.length == 1) { // ignore command
-		commands.ignore(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("POST") - config.commandPrefix.length == 1) { // POST command
-		commands.POST(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("showLog") - config.commandPrefix.length == 1) { // showLog command
-		commands.showLog(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("shutdown") - config.commandPrefix.length == 1) { // shutdown command
-		commands.shutdown(bot, msg, timeout, permission); // call command from file
-	};
+
+	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0].toLowerCase();  // Get the actual command in lowercase
+	if (Object.keys(Plugins.plugins).indexOf(actualCmd) > -1) { 									   // If actual command maps to something we can answer to
+		Plugins.plugins[actualCmd].main(bot, msg, timeout, permission); 							   // Run the command.
+	}
+	return; // Just in case, return empty
 });
 
 bot.login(config.token); // Log the bot in with token set in config
