@@ -2,7 +2,7 @@ const config = require('../config.json'); // import configuration
 const fs = require('fs'); // for log writing
 const moment = require('moment'); // part of log writing
 // INFO: The command will execute whether or not the bot can send messages to the channel. Erorr messages will be sent via PM if it can't.
-module.exports = function setAvatar(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) {
 	var command = "setAvatar"; // for logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) {  // If the user is not authorized ...

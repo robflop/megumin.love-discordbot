@@ -1,4 +1,4 @@
-module.exports = function submit(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) {
 	if(!permission.hasPermission('SEND_MESSAGES')) {
 		msg.author.sendMessage("I can't send messages to that channel!"); // If it can't send to the channel, PM the user
 		return;

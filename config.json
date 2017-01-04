@@ -1,6 +1,6 @@
 {
-	"token": "APP_TOKEN",
-	"ownerID": "OWNER_ID",
+	"token": "TOKEN",
+	"ownerID": "ID",
 	"soundPath": "sounds/",
 	"logPath": "log/",
 	"shutdownLog": "shutdown.log",
@@ -10,7 +10,7 @@
 	"profileLog": "profile.log",
 	"ignoreLog": "ignore.log",
 	"commandCooldown": 3,
-	"commandPrefix": "robbot,",
+	"commandPrefix": "bot,",
 	"useDiscordBots": false,
 	"discordBotsAPI": "API_TOKEN"
 }

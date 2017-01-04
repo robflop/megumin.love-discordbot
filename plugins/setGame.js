@@ -2,8 +2,9 @@ const config = require('../config.json'); // import configuration
 const fs = require('fs'); // for log writing
 const moment = require('moment'); // part of log writing
 
-module.exports = function setGame(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) {
 	var command = "setGame"; // for logging purposes
+	console.log("setGame log: "+ msg);
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) { // If the user is not authorized ...
 		msg.reply("you are not authorized to use this command!"); // ... notify the user...
@@ -11,7 +12,7 @@ module.exports = function setGame(bot, msg, timeout, permission) {
 		fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // ... log command use, when and by whom...
 		return; // ... and abort command execution.
 	};
-	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2)
+	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
 	bot.user.setGame(arg); 
 	/* 
 	Cut off the command part of the message and set the bot's game. 

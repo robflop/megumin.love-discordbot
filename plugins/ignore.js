@@ -5,7 +5,7 @@ const ignoreList = require('../ignore.json'); // load array of ignored users
 /*
 INFO: The ignore command goes into effect whether the bot can send the confirmation message or not.
 */
-module.exports = function ignore(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) {
 	var command = "ignore"; // for logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) { // If the user is not authorized ...
