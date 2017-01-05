@@ -29,4 +29,4 @@ exports.main = function(bot, msg, timeout, permission) { // export command funct
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][AVATAR] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 	console.log(`${bot.user.username}'s avatar set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`)
 };
-exports.desc = "change the bot's Avatar [Bot owner only]"; // export command description
+exports.desc = "change the bot's avatar [Bot owner only]"; // export command description

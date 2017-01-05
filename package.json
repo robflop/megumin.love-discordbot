@@ -1,5 +1,5 @@
 {
-  "name": "megumin.love-discordbot",
+  "name": "robbot",
   "version": "1.5.0",
   "description": "Discord bot to along with the website megumin.love, built with discord.js",
   "main": "app.js",
@@ -14,12 +14,13 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/robflop/megumin.love-discordbot.git"
+    "url": "git+https://github.com/robflop/robbot.git"
   },
   "keywords": [
     "megumin.love",
     "discord.js",
-    "bot",
+    "robbot",
+	"bot",
     "robflop",
 	"discord",
 	"node.js"
@@ -27,7 +28,7 @@
   "author": "robflop",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/robflop/megumin.love-discordbot/issues"
+    "url": "https://github.com/robflop/robbot/issues"
   },
-  "homepage": "https://github.com/robflop/megumin.love-discordbot#readme"
+  "homepage": "https://github.com/robflop/robbot#readme"
 }
