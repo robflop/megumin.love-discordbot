@@ -1,6 +1,6 @@
 {
   "name": "megumin.love-discordbot",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "description": "Discord bot to along with the website megumin.love, built with discord.js",
   "main": "app.js",
   "dependencies": {
@@ -18,9 +18,11 @@
   },
   "keywords": [
     "megumin.love",
-    "discordjs",
+    "discord.js",
     "bot",
-    "robflop"
+    "robflop",
+	"discord",
+	"node.js"
   ],
   "author": "robflop",
   "license": "ISC",
