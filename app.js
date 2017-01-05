@@ -10,11 +10,11 @@ bot.on('ready', () => { // ready message once bot is loaded
 });
 
 bot.on('guildCreate', guild => { // listen to joins
-	Events.join(bot);
+	Events.join(bot, guild);
 });
 
 bot.on('guildDelete', guild => { // listen to leaves
-	Events.leave(bot);
+	Events.leave(bot, guild);
 });
 
 var timeout = { // timeout function for command cooldown, courtesy of u/pilar6195 on reddit
