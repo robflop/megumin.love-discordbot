@@ -1,40 +1,69 @@
-const config = require('../config.json'); // import configuration
-const fs = require('fs'); // for log writing
-const moment = require('moment'); // part of log writing
-const ignoreList = require('../ignore.json'); // load array of ignored users
+const config = require('../config.json'); // Import configuration
+const fs = require('fs'); // For log writing
+const moment = require('moment'); // Part of log writing
+const ignoreLists = require('../ignore_handler.js'); // Load object of ignored users
 /*
 INFO: The ignore command goes into effect whether the bot can send the confirmation message or not.
 */
-exports.main = function(bot, msg, timeout, permission) { // export command function
-	var command = "ignore"; // for logging purposes
-	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
-	if(msg.author.id !== config.ownerID) { // If the user is not authorized ...
-		msg.reply("you are not authorized to use this command!"); // ... notify the user...
-		fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} on the '${msg.guild}' server tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command, but failed!`); // ... log command use, when and by whom...
-		console.log(`${msg.author.username}#${msg.author.discriminator} on the '${msg.guild}' server tried to make the bot ignore a user, but failed!`);
-		return; // ... and abort command execution.
+exports.main = function(bot, msg, timeout, permission) { // Export command's function
+	var command = "ignore"; // For logging purposes
+	if(timeout.check(msg.author.id, msg)) { return; }; 
+	// Check for cooldown, if on cooldown notify user of it and abort command execution
+	if(msg.author.id !== config.ownerID) { 
+		// If the user is not authorized...
+		msg.reply("you are not authorized to use this command!"); 
+		// ...notify the user...
+		return; // ...and abort command execution.
 	};
-	var UserID = msg.content.substr(config.commandPrefix.length + command.length + 2); // Select the mention part of the message (<@(!)..>) for ignoreList purposes
-	var match = UserID.match(/<@!?(\d+)>/); // Search for mention syntax, regex courtesy of /u/geo1088 on reddit.
-	if(!match) { // If no user mentioned, tell the command caller
-		msg.reply('mention a user to put on the list!');	
-		return; // abort command execution
+	var UserID = msg.content.substr(config.commandPrefix.length + command.length + 2); 
+	// Select the mention part of the message (<@(!)..>) for ignoreList purposes
+	var match = UserID.match(/<@!?(\d+)>/); 
+	// Search for mention syntax, regex courtesy of /u/geo1088 on reddit.
+	if(!match) { // If noone mentioned...
+		msg.reply('mention a user to put on the list!');
+		// ...notify the user...
+		return; // ...and abort command execution.
 	};
-	var strippedID = match[1]; // strippedID is now the raw UserID
-	var index = ignoreList.indexOf(strippedID); // Get the index of the stripped ID
-	if(strippedID !== config.ownerID) { // If the UserID does not correspond to the bot owner ID ...
-		if(index == -1) { // 1) ... and is not on the list already ...
-			msg.reply(`i am now ignoring ${UserID} !`);
-			ignoreList.push(strippedID); // ... push the stripped UserID into the ignore list ... 
-			fs.writeFile('ignore.json', JSON.stringify(ignoreList)); // ... and save the array to the file.
-			fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list on the '${msg.guild}' server!`);
-		}
-		else { // 2) ... but is on the list already ...
-			msg.reply(`i am no longer ignoring ${UserID} !`); 
-			ignoreList.splice(index, 1); // ... take them out of the list ...
-			fs.writeFile('ignore.json', JSON.stringify(ignoreList)); // ... and save the array to the file.
-			fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully removed a user from the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list on the '${msg.guild}' server!`);							
-		}
-	};	
+	var strippedID = match[1]; 
+	// strippedID is now the raw UserID
+	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`)) {
+		// If the ignore list (file) for the server the command is called on exists...
+		var index = ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(strippedID); 
+		// ...get the index of the stripped ID on the list. (Check if it is on the list)
+		if(strippedID !== config.ownerID) { 
+			// If the UserID does not correspond to the bot owner ID...
+			if(index == -1) { 
+				// 1) ...and is not on the server's list already...
+				ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].push(strippedID); 
+				// ...push the stripped UserID into the server's ignore list... 
+				fs.writeFile(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`])); 
+				// ...save the object to the server's file...
+				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+				msg.reply(`i am now ignoring ${UserID} !`); 
+				// ...and notify user of the successful addition.
+			}
+			else { 
+				// 2) ...but is on the server's list already...
+				ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].splice(index, 1); 
+				// ...take them out of the server's list...
+				fs.writeFile(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`])); 
+				// ...save the object to the server's file...
+				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully removed a user from the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);	
+				msg.reply(`i am no longer ignoring ${UserID} !`); 
+				// ...and notify user of the successful removal.
+			}
+		};
+	}
+	else { // If no ignore list (file) for the server the command came from exists...
+		ignoreLists.ignoreLists[`ignore_${msg.guild.id}`] = []; 
+		// ...define the ignore list of the server in the ignoreLists object...
+		ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].push(strippedID); 
+		// ...push the stripped UserID into the now-defined ignore list of the server...
+		fs.writeFile(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`])); 
+		// ...save the file...
+		fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+		msg.reply(`i am now ignoring ${UserID} !`); 
+		// ...and notify user of the successful addition.
+	}
 };
-exports.desc = "make the bot ignore a user, use a 2nd time to revert [Bot owner only]"; // export command description
+exports.desc = "make the bot ignore a user, use a 2nd time to revert [Bot owner only]"; // Export command description

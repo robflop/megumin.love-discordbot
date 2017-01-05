@@ -21,6 +21,11 @@ Optional: If you've got it running on a linux server, consider installing node-o
 
 (Opusscript used for development on Windows.)
 
+**IMPORTANT INFO:**
+
+If you change one of the folder paths, you actually have to create the folder aswell. 
+Otherwise the bot WILL crash. I will not provide support for such cases.
+
 ### Adding commands
 Adding commands to robbot is very easy. The command handler will automatically register any .js file within the commands folder so
 the only thing you have to do is make your command file, write the code for it(*), and restart the bot. 
@@ -31,7 +36,7 @@ Use it with ``<prefix> <command>``. It will also be listed in the 'help' command
 ###### (**) Your code must export the contents in a function which passes ``bot, msg, timeout, permission`` under ``exports.main``, aswell as a command description under ``exports.desc``, see existing commands for examples.*
 
 #### Information
-- The default version of the bot loads commands from ``commands/``, uses the ``sounds/`` directory to look for sounds, and saves logs in ``log/``.
+- The default version of the bot loads commands from ``commands/``, uses the ``sounds/`` directory to look for sounds, and saves logs in ``logs/``.
 - Default names for the log filenames are the respective config names. (serverLog = server.log, shutdownLog = shutdown.log etc).
 - By default, a command cooldown of 3 seconds is applied and the default prefix is set to "robbot,".
 - Commands, while case insensitive, require there to be one space to be between the prefix and the command. (See example below).

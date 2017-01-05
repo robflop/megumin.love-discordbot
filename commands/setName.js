@@ -1,14 +1,18 @@
-const config = require('../config.json'); // import configuration
-const fs = require('fs'); // for log writing
-const moment = require('moment'); // part of log writing
+const config = require('../config.json'); // Import configuration
+const fs = require('fs'); // For log writing
+const moment = require('moment'); // Part of log writing
+
 // INFO: The command will execute whether or not the bot can send messages to the channel.
-exports.main = function(bot, msg, timeout, permission) { // export command function
-	var command = "setName"; // for logging purposes
-	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
-	if(msg.author.id !== config.ownerID) {  // If the user is not authorized ...
-		msg.reply("you are not authorized to use this command!"); // ... notify the user...
-		fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server, but failed!`); // ... log command use, when and by whom...
-		return; // ... and abort command execution.
+
+exports.main = function(bot, msg, timeout, permission) { // Export command function
+	var command = "setName"; // For logging purposes
+	if(timeout.check(msg.author.id, msg)) { return; }; 
+	// Check for cooldown, if on cooldown notify user of it and abort command execution
+	if(msg.author.id !== config.ownerID) {  
+		// If the user is not authorized...
+		msg.reply("you are not authorized to use this command!"); 
+		// ...notify the user...
+		return; // ...and abort command execution.
 	};
 	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2)
 	/* 
@@ -17,12 +21,16 @@ exports.main = function(bot, msg, timeout, permission) { // export command funct
 	Example: "robbot, setName test" -> cut out the length of the prefix and " setName ". 
 	*/
 	if(msg.content.length == config.commandPrefix.length + command.length + 1) {
+	// If there is no argument (only prefix and command)...
 		msg.reply("specify a name to set the bot to!");
-		return;	
+		// ...notify the user...
+		return;	// ...and abort command execution.
 	};
-	bot.user.setUsername(arg); // set the bot's username to the arg
+	// If there is an argument given,...
+	bot.user.setUsername(arg); // ...then set the bot's username to the arg...
+	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // ...and log command use, when and by whom.
+	console.log(`${bot.user.username}'s username set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	msg.reply(`successfully set my username to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! \n(May not have worked if ratelimit capped)`);
-	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
-	console.log(`${bot.user.username}'s username set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`) 
+	// Notify user of successful command execution
 };
-exports.desc = "change the bot's username [Bot owner only]"; // export command description
+exports.desc = "change the bot's username [Bot owner only]"; // Export command description
