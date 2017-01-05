@@ -4,7 +4,6 @@ const moment = require('moment'); // part of log writing
 
 exports.main = function(bot, msg, timeout, permission) { // export command function
 	var command = "setGame"; // for logging purposes
-	console.log("setGame log: "+ msg);
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) { // If the user is not authorized ...
 		msg.reply("you are not authorized to use this command!"); // ... notify the user...

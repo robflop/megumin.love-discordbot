@@ -4,7 +4,7 @@ const moment = require('moment'); // part of log writing
 
 exports.main = function(bot, msg, timeout, permission) { // export command function
 	var command = "showLog"; // for logging purposes
-	var possibleLogs = [
+	var possibleLogs = [ // Whitelist of logs allowed to display
 		config.shutdownLog,
 		config.soundLog,
 		config.requestLog,

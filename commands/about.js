@@ -1,7 +1,7 @@
 exports.main = function(bot, msg, timeout, permission) { // export command function
-	if(!permission.hasPermission('SEND_MESSAGES')) {
-		msg.author.sendMessage("I can't send messages to that channel!"); 
-		return; 
+	if(!permission.hasPermission('SEND_MESSAGES')) { // if the bot can't send to the channel...
+		msg.author.sendMessage("I can't send messages to that channel!"); // ... PM the user...
+		return; // ... and abort command execution.
 	}
 	var command = "about"; // for logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution

@@ -5,9 +5,9 @@ const moment = require('moment'); // part of log writing
 
 exports.main = function(bot, msg, timeout, permission) { // export command function
 	var command = "counter"; // for logging purposes
-	if(!permission.hasPermission('SEND_MESSAGES')) {  // If it can't send to the channel, PM the user
-		msg.author.sendMessage("I can't send messages to that channel!"); 
-		return;											  
+	if(!permission.hasPermission('SEND_MESSAGES')) {  // If the bot can't send to the channel...
+		msg.author.sendMessage("I can't send messages to that channel!"); // ... notify the user ...
+		return;	// ... and abort command execution.
 	}
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 	request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) { // GET the counter number
