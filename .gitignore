@@ -3,6 +3,9 @@ logs
 *.log
 npm-debug.log*
 
+# ignore files
+ignores
+
 # Runtime data
 pids
 *.pid

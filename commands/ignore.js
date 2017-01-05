@@ -55,15 +55,18 @@ exports.main = function(bot, msg, timeout, permission) { // Export command's fun
 		};
 	}
 	else { // If no ignore list (file) for the server the command came from exists...
-		ignoreLists.ignoreLists[`ignore_${msg.guild.id}`] = []; 
-		// ...define the ignore list of the server in the ignoreLists object...
-		ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].push(strippedID); 
-		// ...push the stripped UserID into the now-defined ignore list of the server...
-		fs.writeFile(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`])); 
-		// ...save the file...
-		fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
-		msg.reply(`i am now ignoring ${UserID} !`); 
-		// ...and notify user of the successful addition.
+		if(strippedID !== config.ownerID) {
+		// ...and the UserID does not correspond to the bot owner ID...
+			ignoreLists.ignoreLists[`ignore_${msg.guild.id}`] = []; 
+			// ...define the ignore list of the server in the ignoreLists object...
+			ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].push(strippedID); 
+			// ...push the stripped UserID into the now-defined ignore list of the server...
+			fs.writeFile(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`])); 
+			// ...save the file...
+			fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+			msg.reply(`i am now ignoring ${UserID} !`); 
+			// ...and notify user of the successful addition.
+		}
 	}
 };
 exports.desc = "make the bot ignore a user, use a 2nd time to revert [Bot owner only]"; // Export command description
