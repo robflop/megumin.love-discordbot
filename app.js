@@ -1,20 +1,21 @@
 const Discord = require('discord.js'); // obvious bot base
-const config = require('./config.json'); // import configuration
-const commands = require('./commands/'); // import all command files
-const ignoreList = require('./ignore.json'); // load array of ignored users
 const bot = new Discord.Client(); // initialize bot instance
+const config = require('./config.json'); // import configuration
+const ignoreList = require('./ignore.json'); // load array of ignored users
+var Events = require('./event_handler.js'); // load event handler
+var Commands = require('./command_handler.js'); // load command handler
 
-bot.on('ready', () => { // ready message once bot is loaded 
-	commands.otherEvents.ready(bot);
+bot.on('ready', () => { // ready message once bot is loaded
+	Events.ready(bot);
 });
 
 bot.on('guildCreate', guild => { // listen to joins
-	commands.otherEvents.join(bot);
+	Events.join(bot);
 });
 
 bot.on('guildDelete', guild => { // listen to leaves
-	commands.otherEvents.leave(bot);
-}); 
+	Events.leave(bot);
+});
 
 var timeout = { // timeout function for command cooldown, courtesy of u/pilar6195 on reddit
 	"users": [],
@@ -23,19 +24,19 @@ var timeout = { // timeout function for command cooldown, courtesy of u/pilar619
 			msg.reply(`calm down with the commands for a sec! Please wait ${config.commandCooldown} seconds.`);
             return true;
         } else if (config.ownerID !== userID) { // If the user is not the bot owner and is not on timeout let them use the command and add their user id to the timeout
-            timeout.set(userID);
+            timeout.set(userID); // use set function on the userID
             return false;
         }
     },
     "set": function(userID) {
-    	timeout.users.push(userID);
-    	setTimeout(function() {
-            timeout.users.splice(timeout.users.indexOf(userID), 1);
+    	timeout.users.push(userID); // push the userID into the timeout array
+    	setTimeout(function() { // set timeout for, well, the timeout
+            timeout.users.splice(timeout.users.indexOf(userID), 1); // take out the user after timeout is up
         }, (config.commandCooldown * 1000)); // Set the cooldown to the configured amount
     }
 };
 
-setInterval(function () { 
+setInterval(function () {
 	if(bot.user.presence.game.name == "try 'robbot, help' !") { // if the current status is ...
 		bot.user.setGame("on megumin.love"); //  set it to ...
 	}
@@ -60,48 +61,17 @@ bot.on('message', msg => { // listen to all messages sent
 	to every command by default, whether used by the command or not. Other necessary packages are defined in the command files.
 	Packages not needed for the base file (this one) are only defined in the commands that need them.
 	*/ 
-	if(msg.content.indexOf("help") - config.commandPrefix.length == 1) { // help command
-		commands.help(bot, msg, timeout, permission); // call command from file
+	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0].toLowerCase();
+	/*	
+	Replace (cut out) bot prefix, cut out whitespaces at start and end,
+	split prefix, command and arg into array and convert to lowercase
+	*/
+	if (Object.keys(Commands.commands).indexOf(actualCmd) > -1) { 
+		// If the given command is an actual command that is available...
+		Commands.commands[actualCmd].main(bot, msg, timeout, permission);
+		// ...run the command.
 	};
-	if(msg.content.indexOf("about") - config.commandPrefix.length == 1) { // about command
-		commands.about(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("counter") - config.commandPrefix.length == 1) { // counter command
-		commands.counter(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("submit") - config.commandPrefix.length == 1) { // submit command
-		commands.submit(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("randomsound") - config.commandPrefix.length == 1) { // randomsound command
-		commands.randomsound(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("setGame") - config.commandPrefix.length == 1) { // setGame command
-		commands.setGame(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("clearGame") - config.commandPrefix.length == 1) { // clearGame command
-		commands.clearGame(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("stats") - config.commandPrefix.length == 1) { // stats command
-		commands.stats(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("setAvatar") - config.commandPrefix.length == 1) { // setAvatar command
-		commands.setAvatar(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("setName") - config.commandPrefix.length == 1) { // setName command
-		commands.setName(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("ignore") - config.commandPrefix.length == 1) { // ignore command
-		commands.ignore(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("POST") - config.commandPrefix.length == 1) { // POST command
-		commands.POST(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("showLog") - config.commandPrefix.length == 1) { // showLog command
-		commands.showLog(bot, msg, timeout, permission); // call command from file
-	};
-	if(msg.content.indexOf("shutdown") - config.commandPrefix.length == 1) { // shutdown command
-		commands.shutdown(bot, msg, timeout, permission); // call command from file
-	};
+	return; // Just in case, return empty for anything else.
 });
 
 bot.login(config.token); // Log the bot in with token set in config

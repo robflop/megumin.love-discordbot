@@ -3,7 +3,7 @@ const request = require('request'); // for website interaction
 const fs = require('fs'); // for log writing
 const moment = require('moment'); // part of log writing
 
-module.exports = function counter(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) { // export command function
 	var command = "counter"; // for logging purposes
 	if(!permission.hasPermission('SEND_MESSAGES')) {  // If it can't send to the channel, PM the user
 		msg.author.sendMessage("I can't send messages to that channel!"); 
@@ -20,3 +20,4 @@ module.exports = function counter(bot, msg, timeout, permission) {
     	msg.channel.sendMessage(`Current count is: ${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}`); // Format counter to x.xxx.xxx 
 	});
 };
+exports.desc = "display the website's current counter"; // export command description

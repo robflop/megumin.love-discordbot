@@ -1,6 +1,7 @@
 {
 	"token": "APP_TOKEN",
 	"ownerID": "OWNER_ID",
+	"commandPath": "commands/",
 	"soundPath": "sounds/",
 	"logPath": "log/",
 	"shutdownLog": "shutdown.log",
