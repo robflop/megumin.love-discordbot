@@ -2,7 +2,7 @@ const config = require('../config.json'); // import configuration
 const fs = require('fs'); // for log writing
 const moment = require('moment'); // part of log writing
 
-exports.main = function(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) { // export command function
 	var command = "setGame"; // for logging purposes
 	console.log("setGame log: "+ msg);
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
@@ -28,3 +28,4 @@ exports.main = function(bot, msg, timeout, permission) {
 	};
 	msg.reply(`successfully set my game to '${arg}' ! \n (May not have worked if ratelimit has been capped)`);
 };
+exports.desc = "change the bot's playing status [Bot owner only]"; // export command description

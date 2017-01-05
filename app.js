@@ -1,9 +1,9 @@
 const Discord = require('discord.js'); // obvious bot base
+const bot = new Discord.Client(); // initialize bot instance
 const config = require('./config.json'); // import configuration
 const ignoreList = require('./ignore.json'); // load array of ignored users
-const bot = new Discord.Client(); // initialize bot instance
-var Events = require('./event_handler.js'); // Event Handler
-var Plugins = require('./plugin_handler.js'); // Plugin/Command Handler
+var Events = require('./event_handler.js'); // load event handler
+var Commands = require('./command_handler.js'); // load command handler
 
 bot.on('ready', () => { // ready message once bot is loaded
 	Events.ready(bot);
@@ -24,14 +24,14 @@ var timeout = { // timeout function for command cooldown, courtesy of u/pilar619
 			msg.reply(`calm down with the commands for a sec! Please wait ${config.commandCooldown} seconds.`);
             return true;
         } else if (config.ownerID !== userID) { // If the user is not the bot owner and is not on timeout let them use the command and add their user id to the timeout
-            timeout.set(userID);
+            timeout.set(userID); // use set function on the userID
             return false;
         }
     },
     "set": function(userID) {
-    	timeout.users.push(userID);
-    	setTimeout(function() {
-            timeout.users.splice(timeout.users.indexOf(userID), 1);
+    	timeout.users.push(userID); // push the userID into the timeout array
+    	setTimeout(function() { // set timeout for, well, the timeout
+            timeout.users.splice(timeout.users.indexOf(userID), 1); // take out the user after timeout is up
         }, (config.commandCooldown * 1000)); // Set the cooldown to the configured amount
     }
 };
@@ -61,12 +61,17 @@ bot.on('message', msg => { // listen to all messages sent
 	to every command by default, whether used by the command or not. Other necessary packages are defined in the command files.
 	Packages not needed for the base file (this one) are only defined in the commands that need them.
 	*/ 
-
-	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0].toLowerCase();  // Get the actual command in lowercase
-	if (Object.keys(Plugins.plugins).indexOf(actualCmd) > -1) { 									   // If actual command maps to something we can answer to
-		Plugins.plugins[actualCmd].main(bot, msg, timeout, permission); 							   // Run the command.
-	}
-	return; // Just in case, return empty
+	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0].toLowerCase();
+	/*	
+	Replace (cut out) bot prefix, cut out whitespaces at start and end,
+	split prefix, command and arg into array and convert to lowercase
+	*/
+	if (Object.keys(Commands.commands).indexOf(actualCmd) > -1) { 
+		// If the given command is an actual command that is available...
+		Commands.commands[actualCmd].main(bot, msg, timeout, permission);
+		// ...run the command.
+	};
+	return; // Just in case, return empty for anything else.
 });
 
 bot.login(config.token); // Log the bot in with token set in config

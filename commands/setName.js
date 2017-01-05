@@ -2,7 +2,7 @@ const config = require('../config.json'); // import configuration
 const fs = require('fs'); // for log writing
 const moment = require('moment'); // part of log writing
 // INFO: The command will execute whether or not the bot can send messages to the channel.
-exports.main = function(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) { // export command function
 	var command = "setName"; // for logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) {  // If the user is not authorized ...
@@ -25,3 +25,4 @@ exports.main = function(bot, msg, timeout, permission) {
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 	console.log(`${bot.user.username}'s username set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`) 
 };
+exports.desc = "change the bot's username [Bot owner only]"; // export command description

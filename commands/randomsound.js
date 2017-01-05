@@ -4,7 +4,7 @@ const fs = require('fs'); // for log writing
 const moment = require('moment'); // part of log writing
 const prism = require('prism-media'); // prism for smoother file playing of very short files
 
-exports.main = function(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) { // export command function
 	var command = "randomsound"; // for logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution.
 	if(!msg.member.voiceChannel) { // If the user that used the command is not in a voice channel on the server the command came from ...
@@ -47,3 +47,4 @@ exports.main = function(bot, msg, timeout, permission) {
 		});
 	});
 };
+exports.desc = "have the bot join your voice channel and play a random sound from the website"; // export command description

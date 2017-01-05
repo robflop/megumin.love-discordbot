@@ -4,7 +4,7 @@ const moment = require('moment'); // part of log writing
 /*
 INFO: The shutdown command goes into effect whether the bot can send the confirmation message or not.
 */
-exports.main = function(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) { // export command function
 	var command = "shutdown"; // for logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) { // Check for authorization
@@ -21,3 +21,4 @@ exports.main = function(bot, msg, timeout, permission) {
 		process.exit(0); // End the node process
 	}, 1500); // set timeout of 1,5 sec	
 };
+exports.desc = "shut down the bot remotely [Bot owner only]"; // export command description

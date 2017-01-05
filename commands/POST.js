@@ -6,7 +6,7 @@ const moment = require('moment'); // part of log writing
 INFO: The POST command goes into action whether the confirmation mesage can be sent or not. 
 Some messages will be PM'd if there is no send permission, some will not be sent at all if there is not.
 */
-exports.main = function(bot, msg, timeout, permission) {
+exports.main = function(bot, msg, timeout, permission) { // export command function
 	if(config.useDiscordBots) {
 		if(timeout.check(msg.author.id, msg)) { return; }; // Check for cooldown, if on cooldown notify user of it and abort command execution
 		if(msg.author.id !== config.ownerID) { // If the user is not authorized ...
@@ -46,3 +46,4 @@ exports.main = function(bot, msg, timeout, permission) {
 		);
 	};
 };
+exports.desc = "update the server count on the Discord Bots website (enable command in config) [Bot owner only]"; // export command description
