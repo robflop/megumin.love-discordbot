@@ -14,7 +14,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		// ...notify the user that they are not authorized...
 		return; // ...and abort command execution.
 	};
-	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2)
+	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
 	/* 
 	Cut off the command part of the message and set the bot's nickname on the server the command is called on. 
 	INFO: The additional 2 spaces added are the whitespaces between one, the prefix and the command, and two, between the command and the argument.
@@ -27,10 +27,10 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		return;	// ...and abort command execution.
 	};
 	// If there is an argument given,...
-	msg.guild.member(bot.user).setNickname(arg);; // ...then set the bot's username to the arg...
+	msg.guild.member(bot.user).setNickname(arg); // ...then set the bot's username to the arg...
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} set ${bot.user.username}'s nickname to '${arg}' on the '${msg.guild}' server!`); // ...and log command use, when and by whom.
 	console.log(`${bot.user.username}'s nickname set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
-	msg.reply(`successfully set my nickname to '${arg}' ! \n(May not have worked if ratelimit capped)`);
+	msg.reply(`successfully set my nickname to '${arg}' ! \n(May not have worked if the bot isn't allowed to set its own nickname)`);
 	// Notify user of successful command execution
 };
 exports.desc = "set the bot's nickname for this server [Bot owner or Kick/Ban Permission required]"; // Export command's description

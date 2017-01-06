@@ -14,7 +14,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		// ...notify the user...
 		return; // ...and abort command execution.
 	};
-	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2)
+	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
 	/* 
 	Cut off the command part of the message and set the bot's username. 
 	INFO: The additional 2 spaces added are the whitespaces between one, the prefix and the command, and two, between the command and the argument.
