@@ -5,7 +5,10 @@ var commands = {}; // Object of existing commands
 
 // Load all commands from the commandPath (below) -- command handler courtesy of RShadowhand on Github
 fs.readdirSync(normalizedPath).forEach(function(file) { // Look at all the files in the specificed folder
-	var ModuleName = file.slice(0, -3).toLowerCase();  // remove ".js" bit from the file names and convert to lowercase
-	commands[ModuleName] = require("./"+config.commandPath+"/" + file); // Require the files as commands
+	if(file.substr(-3, 3) == ".js") {
+	// If the file is a .js file...
+		var ModuleName = file.slice(0, -3).toLowerCase();  // ...remove ".js" bit from the file names, convert it to lowercase,..
+		commands[ModuleName] = require("./"+config.commandPath+"/" + file); // ...and then require the files as commands.
+	};
 });
 exports.commands = commands;  // Export available commands object
