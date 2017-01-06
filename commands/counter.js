@@ -15,13 +15,39 @@ exports.main = function(bot, msg, timeout, permission) { // Export command's fun
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) { 
 		// GET the counter number
-		if(error || response.statusCode !== 200) { 
-			// Check for errors or response codes other than 200 (OK)
-			console.log(`An unusual response code was emitted when GETting the counter: ${response.statusCode} -- Refer to request logs`);
-			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); 
-			// Log any unusual request responses
-			return; // Abort command execution
+		if(response == undefined) {
+		// If 1) the response is undefined...
+			console.log(`No response was emitted when GETting the counter -- Refer to request logs`);
+			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
+			// ...log it and the error...
+			if(!permission.hasPermission('SEND_MESSAGES')) { 
+				// ... a) and if the bot can't send to the channel...
+				msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
+				// ...PM the user...
+				return; // ...and abort command execution.
+			};
+			// ... b) and if the bot can send to the channel...
+			msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
+			// ...notify the user...
+			return; // ...and abort command execution.
 		};
+		if(error || response.statusCode !== 200) { 
+		// If 2) There is an error or response code other than 200 (OK)...
+			console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
+			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); 
+			// ...log the unusual request responses/errors...
+			if(!permission.hasPermission('SEND_MESSAGES')) { 
+				// ... a) and if the bot can't send to the channel...
+				msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
+				// ...PM the user...
+				return; // ...and abort command execution.
+			};
+			// ... b) and if the bot can send to the channel...
+			msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
+			// ...notify the user...
+			return; // ...and abort command execution.
+		};
+		// If there is no error, proceed with the command.
     	msg.channel.sendMessage(`Current count is: ${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}`); 
 		// Format counter to x.xxx.xxx 
 	});
