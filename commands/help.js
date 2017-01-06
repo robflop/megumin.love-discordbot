@@ -1,6 +1,6 @@
 var commands = require('../command_handler.js'); // Import list of commands
 
-exports.main = function(bot, msg, timeout, permission) { // Export command's function
+exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command's function
 	var command = "help"; // For logging purposes
 	var commandsExpl = []; 
 	// Array which will have all commands and their corresponding explainations

@@ -2,7 +2,7 @@ const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 const config = require('../config.json'); // Import configuration
 
-exports.main = function(bot, msg, timeout, permission) { // Export command's function
+exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command's function
 	var command = "clearGame"; // For logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
@@ -16,7 +16,7 @@ exports.main = function(bot, msg, timeout, permission) { // Export command's fun
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); 
 	// Log command use, when and by whom
 	console.log(`${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
-	if(!permission.hasPermission('SEND_MESSAGES')) {  
+	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 	// If the bot can't send to the channel...
 		msg.author.sendMessage("Game status cleared! \n(May not have worked if ratelimit has been capped)"); 
 		// ...PM the user...

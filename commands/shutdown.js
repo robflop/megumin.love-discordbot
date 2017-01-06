@@ -4,7 +4,7 @@ const moment = require('moment'); // Part of log writing
 /*
 INFO: The shutdown command goes into effect whether the bot can send the confirmation message or not.
 */
-exports.main = function(bot, msg, timeout, permission) { // Export command function
+exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command function
 	var command = "shutdown"; // For logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution

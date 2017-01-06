@@ -2,7 +2,7 @@ const config = require('../config.json'); // Import configuration
 const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 
-exports.main = function(bot, msg, timeout, permission) { // Export command function
+exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command function
 	var command = "showLog"; // For logging purposes
 	var possibleLogs = [ // Whitelist of logs allowed to display
 		config.shutdownLog,

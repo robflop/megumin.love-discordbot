@@ -56,8 +56,9 @@ Use it with ``<prefix> <command>``. It will also be listed in the 'help' command
 | clearGame   	| Clear the bot's playing status [Bot owner only]                                                 	|
 | stats       	| Display various other bot stats [Bot owner only]                                                	|
 | setAvatar   	| Change the bot's avatar [Bot owner only]                                                        	|
-| setName     	| Change the bot's username [Bot owner only]                                                      	|
-| ignore      	| Make the bot ignore a user, use a 2nd time to revert [Bot owner only]                           	|
+| setUsername   | Change the bot's username [Bot owner only]                                                      	|
+| setNickname   | Change the bot's server nickname [Bot owner or Kick/Ban Permission required]                      |
+| ignore      	| Make the bot ignore a user, use a 2nd time to revert [Bot owner or Kick/Ban Permission required]  |
 | POST        	| Update the server count on the Discord Bots website (enable command in config) [Bot owner only] 	|
 | showLog     	| Easily display one of the configured log files [Bot owner only]                                 	|
 | shutdown    	| Shut down the bot remotely [Bot owner only]                                                     	|

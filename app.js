@@ -72,11 +72,12 @@ bot.on('message', msg => { // Listen to all messages sent
 		}; 
 	} 
 	// If no ignore list (file) was found and the guild id is null, proceed without checking for ignored users
-	const permission = msg.channel.permissionsFor(bot.user); // For permission checking on the bot's side later on in the commands
+	const botPerm = msg.channel.permissionsFor(bot.user); // For permission checking on the bot's side later on in the commands
+	const userPerm = msg.channel.permissionsFor(msg.member); // For permission checking on the user's side later on in the commands
 	/*
 	INFO: 
-	Because the commands are all loaded from external files, "bot", "msg", "timeout" and "permission" are passed
-	to every command by default, whether used by the command or not. Other necessary packages are defined in the command files.
+	Because the commands are all loaded from external files, "bot", "msg", "timeout", "botPerm" and "userPerm" are passed...
+	...to every command by default, whether used by the command or not. Other necessary packages are defined in the command files.
 	Packages not needed for the base file (this one) are only defined in the commands that need them.
 	*/ 
 	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0].toLowerCase();
@@ -86,7 +87,7 @@ bot.on('message', msg => { // Listen to all messages sent
 	*/
 	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) { 
 		// If the given command is an actual command that is available...
-		Commands.commands[actualCmd].main(bot, msg, timeout, permission);
+		Commands.commands[actualCmd].main(bot, msg, timeout, botPerm, userPerm);
 		// ...run the command.
 	};
 	return; // Just in case, return empty for anything else.

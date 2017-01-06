@@ -3,9 +3,9 @@ const request = require('request'); // For website interaction
 const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 
-exports.main = function(bot, msg, timeout, permission) { // Export command's function
+exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command's function
 	var command = "counter"; // For logging purposes
-	if(!permission.hasPermission('SEND_MESSAGES')) {  
+	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 		// If the bot can't send to the channel...
 		msg.author.sendMessage("I can't send messages to that channel!"); 
 		// ...notify the user...
@@ -20,7 +20,7 @@ exports.main = function(bot, msg, timeout, permission) { // Export command's fun
 			console.log(`No response was emitted when GETting the counter -- Refer to request logs`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
 			// ...log it and the error...
-			if(!permission.hasPermission('SEND_MESSAGES')) { 
+			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 				// ... a) and if the bot can't send to the channel...
 				msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
 				// ...PM the user...
@@ -36,7 +36,7 @@ exports.main = function(bot, msg, timeout, permission) { // Export command's fun
 			console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); 
 			// ...log the unusual request responses/errors...
-			if(!permission.hasPermission('SEND_MESSAGES')) { 
+			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 				// ... a) and if the bot can't send to the channel...
 				msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
 				// ...PM the user...

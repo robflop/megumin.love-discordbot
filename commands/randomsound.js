@@ -4,13 +4,13 @@ const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 const prism = require('prism-media'); // Prism for smoother file playing of very short files
 
-exports.main = function(bot, msg, timeout, permission) { // Export command function
+exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command function
 	var command = "randomsound"; // For logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution.
 	if(!msg.member.voiceChannel) { 
 		// If the user that used the command is not in a voice channel on the server the command came from...
-		if(!permission.hasPermission('SEND_MESSAGES')) {  
+		if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 			// ... 1) and the bot can't send to the channel...
 			msg.author.sendMessage("Join a voice channel first!"); 
 			// ...PM the author of the msg...
@@ -29,7 +29,7 @@ exports.main = function(bot, msg, timeout, permission) { // Export command funct
 	}
 	if(msg.guild.voiceConnection !== null) { 
 		// If the bot is already in a voice channel of the server the command came from...
-		if(!permission.hasPermission('SEND_MESSAGES')) {  
+		if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 			// ... 1) and the bot can't send to the channel...
 			msg.author.sendMessage('please wait for the current sound to finish!'); 
 			// ...PM the user...
@@ -48,7 +48,7 @@ exports.main = function(bot, msg, timeout, permission) { // Export command funct
 			console.log(`No response was emitted when incrementing the counter -- Refer to request logs`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
 			// ...log it and the error...
-			if(!permission.hasPermission('SEND_MESSAGES')) { 
+			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 				// ... a) and if the bot can't send to the channel...
 				msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
 				// ...PM the user...
@@ -64,7 +64,7 @@ exports.main = function(bot, msg, timeout, permission) { // Export command funct
 			console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); 
 			// ...log the unusual request responses/errors...
-			if(!permission.hasPermission('SEND_MESSAGES')) { 
+			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 				// ... a) and if the bot can't send to the channel...
 				msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
 				// ...PM the user...

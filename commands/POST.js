@@ -6,7 +6,7 @@ const moment = require('moment'); // Part of log writing
 INFO: The POST command goes into action whether the confirmation mesage can be sent or not. 
 Some messages will be PM'd if there is no send permission, some will not be sent at all if there is not.
 */
-exports.main = function(bot, msg, timeout, permission) { // Export command function
+exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command function
 	if(config.useDiscordBots) {
 		if(timeout.check(msg.author.id, msg)) { return; }; 
 		// Check for cooldown, if on cooldown notify user of it and abort command execution
@@ -37,7 +37,7 @@ exports.main = function(bot, msg, timeout, permission) { // Export command funct
 					console.log(`No response was emitted when POSTing to the website -- Refer to request logs`);
 					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
 					// ...log it and the error...
-					if(!permission.hasPermission('SEND_MESSAGES')) { 
+					if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 						// ... a) and if the bot can't send to the channel...
 						msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
 						// ...PM the user...
@@ -53,7 +53,7 @@ exports.main = function(bot, msg, timeout, permission) { // Export command funct
 					console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); 
 					// ...log the unusual request responses/errors...
-					if(!permission.hasPermission('SEND_MESSAGES')) { 
+					if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 						// ... a) and if the bot can't send to the channel...
 						msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
 						// ...PM the user...
