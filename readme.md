@@ -33,7 +33,7 @@ the only thing you have to do is make your command file, write the code for it(*
 That's all, now your command is available under the name you gave the js file. 
 Use it with ``<prefix> <command>``. It will also be listed in the 'help' command.
 
-###### (**) Your code must export the contents in a function which passes ``bot, msg, timeout, permission`` under ``exports.main``, aswell as a command description under ``exports.desc``, see existing commands for examples.*
+###### (**) Your code must export the contents in a function which passes ``bot, msg, timeout, botPerm, userPerm`` under ``exports.main``, aswell as a command description under ``exports.desc``, see existing commands for examples.*
 
 #### Information
 - The default version of the bot loads commands from ``commands/``, uses the ``sounds/`` directory to look for sounds, and saves logs in ``logs/``.
