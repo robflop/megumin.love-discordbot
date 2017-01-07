@@ -60,11 +60,18 @@ setInterval(function () {
 bot.on('message', msg => { // Listen to all messages sent
 	if(msg.author.bot) { return; }; // Ignore any bot messages
 	if(!msg.content.startsWith(config.commandPrefix)) { return; }; // Don't listen to messages not starting with bot prefix
+	if(msg.channel.type == "dm") {
+	// Iff the message is from a private channel...
+		msg.channel.sendMessage("Commands via DM not supported, sorry.");
+		// ...notify the user...
+		return;
+		// ...and abort command execution.
+	};
 	if(msg.content == config.commandPrefix) { return; }; // Ignore empty commands (messages containing just the prefix)
-	if(msg.guild.id !== null && fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`)) { 
+	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`)) { 
 	/* 
-	Check if an ignore file for the server the command is used on exists, and if a guild ID exists 
-	(no ignore file exists if the ignore command has not been used yet, no guild ID exists if the message is a PM)
+	Check if an ignore file for the server the command is used on exists, and if the channel is a DM channel
+	(no ignore file exists if the ignore command has not been used yet)
 	*/
 		if(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(`${msg.author.id}`) > -1) { 
 		// Search the ignore list of the server the message came from for the userID of the command caller...

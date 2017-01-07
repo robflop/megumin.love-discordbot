@@ -48,7 +48,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			return; // ...and abort command execution.
 		};
 		// If there is no error, proceed with the command.
-    	msg.channel.sendMessage(`Current count is: ${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}`); 
+    	msg.channel.sendMessage(`Current https://megumin.love count is: **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}**`); 
 		// Format counter to x.xxx.xxx 
 	});
 };
