@@ -48,8 +48,21 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			return; // ...and abort command execution.
 		};
 		// If there is no error, proceed with the command.
-    	msg.channel.sendMessage(`Current https://megumin.love count is: **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}**`); 
-		// Format counter to x.xxx.xxx 
+		if(body % 1000000 == 0) {
+		// If the current counter is on a full 1-million mark...
+			msg.channel.sendMessage(`Current https://megumin.love count is: 🎊🎉 **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}** 🎉🎊`); 
+			// ...format counter to x.xxx.xxx and add festive party poppers plus confetti balls.
+			return;
+		}
+		else if(body % 100000 == 0) {
+		// If the current counter is on a full 10-thousand mark..
+			msg.channel.sendMessage(`Current https://megumin.love count is: 🎉 **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}** 🎉`);
+			// ...format counter to x.xxx.xxx and add festive party poppers.
+			return;
+		};
+		// If the current counter is neither on a full 1-million, nor on a full 100-thousand mark...
+		msg.channel.sendMessage(`Current https://megumin.love count is: **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}**`); 
+		// ...format counter to x.xxx.xxx and send it as-is.
 	});
 };
 exports.desc = "display the website's current counter"; // Export command's description
