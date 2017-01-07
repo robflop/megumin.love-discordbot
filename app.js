@@ -89,13 +89,57 @@ bot.on('message', msg => { // Listen to all messages sent
 	*/ 
 	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0].toLowerCase();
 	/*	
-	Replace (cut out) bot prefix, cut out whitespaces at start and end,
-	split prefix, command and arg into array and convert to lowercase
+	Replace (cut out) bot prefix, cut out whitespaces at start and end, split prefix, command
+	and arg into array, convert to lowercase and select the command part ([0] of the array)
 	*/
 	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) { 
-		// If the given command is an actual command that is available...
+	// If the given command is an actual command that is available...
 		Commands.commands[actualCmd].main(bot, msg, timeout, botPerm, userPerm);
 		// ...run the command.
+	};
+	if(actualCmd == "reload") {
+	// Reload command
+		if(timeout.check(msg.author.id, msg)) { return; }; 
+		// Check for cooldown, if on cooldown notify user of it and abort command execution.
+		if(msg.author.id !== config.ownerID) { 
+			// If the user is not authorized...
+			msg.reply("you are not authorized to use this command!");
+			// ...notify the user...
+			return; // ...and abort command execution.
+		};
+		var cmd = msg.content.substr(config.commandPrefix.length + actualCmd.length + 2);
+		/* 
+		Cut out the name of the command to be reloaded
+		INFO: The additional 2 spaces added are the whitespaces between one, the prefix and the command, and two, between the command and the argument.
+		Example: "robbot, reload about" -> cut out the length of the prefix and " reload ". 
+		*/
+		if(cmd == "") {
+		// If no command to reload is given...
+			msg.reply('specify a command to reload!');
+			// ...notify the user to specify a command...
+			return; // ...and abort command execution.
+		};
+		// Otherwise...
+		try {
+		// ...try reloading the command.
+			delete require.cache[require.resolve(`./commands/${cmd}.js`)];
+			delete require.cache[require.resolve('./commands/help.js')];
+			delete require.cache[require.resolve('./command_handler.js')];
+			/*
+			Delete the command's cache, the 'help' cache and the command handler's cache...
+			('help' cache deleted to update the command's info if command added/removed/changed)
+			*/
+			Commands = require('./command_handler.js');
+			// ...then re-require the command handler which then reloads the command.
+    	}
+		catch(error) {
+		// If there is an error while reloading...
+			msg.reply(`error while reloading command: \`\`\`${error}\`\`\``)
+			// ...notify the user...
+			return; // ...and abort command execution.
+		};
+		// If there is no error, notify the user of success.
+		msg.reply(`command '${cmd}' successfully reloaded!`);
 	};
 	return; // Just in case, return empty for anything else.
 });

@@ -3,8 +3,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		// If the bot can't send to the channel...
 		msg.author.sendMessage("I can't send messages to that channel!");
 		// ...PM the user...
-		return;
-		// ...and abort command execution.
+		return; // ...and abort command execution.
 	}
 	var command = "submit"; // For logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; 
