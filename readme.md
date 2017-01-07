@@ -3,7 +3,7 @@ A Discord bot to go along with my website, [megumin.love](https://megumin.love)!
 
 Written using discord.js, using opusscript, request, moment and prism-media packages (plus some standard node ones).
 
-Add the bot to your server: [Invite me](https://discordapp.com/oauth2/authorize?client_id=257126756069277696&scope=bot&permissions=3230720)
+Add the bot to your server: [Invite me](https://discordapp.com/oauth2/authorize?client_id=257126756069277696&scope=bot&permissions=70274048)
 
 ## Self-hosting usage
 (It is assumed you already have a Discord OAuth application and bot account)
