@@ -52,6 +52,7 @@ Use it with ``<prefix> <command>``. It will also be listed in the 'help' command
 | counter     	| Display the current counter of megumin.love                                                     	|
 | submit      	| Get info on how to submit new sounds for the bot/website                                        	|
 | randomsound 	| Have the bot join your voice channel and play a random sound from the megumin.love website       	|
+| playsound     | Have the bot join your voice channel and play a chosen sound from the megumin.love website        |
 | setGame     	| Change the bot's playing status [Bot owner only]                                                	|
 | clearGame   	| Clear the bot's playing status [Bot owner only]                                                 	|
 | stats       	| Display various other bot stats [Bot owner only]                                                	|
