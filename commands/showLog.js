@@ -6,7 +6,6 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	var command = "showLog"; // For logging purposes
 	var possibleLogs = [ // Whitelist of logs allowed to display
 		config.shutdownLog,
-		config.soundLog,
 		config.requestLog,
 		config.serverLog,
 		config.profileLog,
@@ -33,7 +32,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	}
 	else {
 		// If argument is invalid filename...
-		msg.author.sendMessage("Not a configured log file.");
+		msg.author.sendMessage(`Not a configured log file. Valid logs are: ${possibleLogs.join(", ")}`);
 		// ...notify the user...
 		return; 
 		// ...and abort command execution.

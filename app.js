@@ -107,13 +107,13 @@ bot.on('message', msg => { // Listen to all messages sent
 			// ...notify the user...
 			return; // ...and abort command execution.
 		};
-		var cmd = msg.content.substr(config.commandPrefix.length + actualCmd.length + 2);
+		var arg = msg.content.substr(config.commandPrefix.length + actualCmd.length + 2);
 		/* 
 		Cut out the name of the command to be reloaded
 		INFO: The additional 2 spaces added are the whitespaces between one, the prefix and the command, and two, between the command and the argument.
 		Example: "robbot, reload about" -> cut out the length of the prefix and " reload ". 
 		*/
-		if(cmd == "") {
+		if(arg == "") {
 		// If no command to reload is given...
 			msg.reply('specify a command to reload!');
 			// ...notify the user to specify a command...
@@ -122,7 +122,9 @@ bot.on('message', msg => { // Listen to all messages sent
 		// Otherwise...
 		try {
 		// ...try reloading the command.
-			delete require.cache[require.resolve(`./commands/${cmd}.js`)];
+			var cmdFile = Commands.commands[arg.toLowerCase()].filename;
+			// Define the file to reload, based on the commands object
+			delete require.cache[require.resolve(`./commands/${cmdFile}`)];
 			delete require.cache[require.resolve('./commands/help.js')];
 			delete require.cache[require.resolve('./command_handler.js')];
 			/*
@@ -134,12 +136,12 @@ bot.on('message', msg => { // Listen to all messages sent
     	}
 		catch(error) {
 		// If there is an error while reloading...
-			msg.reply(`error while reloading command: \`\`\`${error}\`\`\``)
+			msg.reply(`error while reloading the '${arg}' command: \`\`\`${error}\`\`\`\n(Command may not exist, check for typos)`)
 			// ...notify the user...
 			return; // ...and abort command execution.
 		};
 		// If there is no error, notify the user of success.
-		msg.reply(`command '${cmd}' successfully reloaded!`);
+		msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
 	};
 	return; // Just in case, return empty for anything else.
 });

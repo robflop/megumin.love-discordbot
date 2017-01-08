@@ -11,6 +11,7 @@ fs.readdirSync(normalizedPath).forEach(function(file) {
 		var ModuleName = file.slice(0, -3).toLowerCase();  
 		// ...remove ".js" bit from the file names, convert it to lowercase,..
 		commands[ModuleName] = require("./"+config.commandPath+"/" + file); 
+		commands[ModuleName].filename = file;
 		// ...and then require the files as commands.
 	};
 });
