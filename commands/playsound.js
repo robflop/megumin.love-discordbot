@@ -5,7 +5,7 @@ const moment = require('moment'); // Part of log writing
 const prism = require('prism-media'); // Prism for smoother file playing of very short files
 
 exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command function
-	var command = "randomsound"; // For logging purposes
+	var command = "playsound"; // For logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution.
 	if(!msg.member.voiceChannel) { 
@@ -76,14 +76,20 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			return; // ...and abort command execution.
 		};
 		// If there is no error, proceed with the command.
-	}); 
+	});
+	var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "plosion", "sion", "n", "itai", "name", "pull", "yamero"]; 
+	// Set available files,...
+	var sound = msg.content.substr(config.commandPrefix.length + command.length);
+	// ...then set sound var to chosen sound file.
+	if(sounds.indexOf(sound) == -1) {
+	// If chosen sound file is not available...
+		msg.reply(`sound unavailable! Available sounds are: ${sounds.join(", ")}`);
+		// ...notify the user...
+		return; // ...and abort command execution.
+	}
 	msg.member.voiceChannel.join().then(connection => {
 		// Check if message author is in a voice channel, if true join it,...
-		var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "plosion", "sion", "n", "itai", "name", "pull", "yamero"];
-		// then set available files,...
-		var sound = sounds[Math.floor(Math.random()*sounds.length)]; 
-		// ...randomize which sound gets played...
-		const player = connection.playFile(config.soundPath + sound); 
+		const player = connection.playFile(`${config.soundPath + sound}.mp3`); 
 		// ...and play the file.
 		player.on('end', () => {
 			msg.member.voiceChannel.leave(); 
@@ -91,4 +97,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		});
 	});
 };
-exports.desc = "have the bot join your voice channel and play a random sound from the website"; // Export command description
+exports.desc = "have the bot join your voice channel and play a chosen sound from the website"; // Export command description
