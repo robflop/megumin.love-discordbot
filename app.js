@@ -14,10 +14,6 @@ bot.on('error', () => { // Listen to errors
 	Events.error(bot);
 }); 
 
-bot.on('reconnecting', () => { // Listen to reconnects
-	Events.reconnect(bot);
-});
-
 bot.on('guildCreate', guild => { // Listen to joins
 	Events.join(bot, guild);
 });
