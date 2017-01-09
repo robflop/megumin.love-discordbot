@@ -6,8 +6,16 @@ var Events = require('./event_handler.js'); // Load event handler
 var ignoreLists = require('./ignore_handler.js'); // Load ignore handler
 var Commands = require('./command_handler.js'); // Load command handler
 
-bot.on('ready', () => { // Ready message once bot is loaded
+bot.once('ready', () => { // Ready message once bot is loaded
 	Events.ready(bot);
+});
+
+bot.on('error', () => { // Listen to errors
+	Events.error(bot);
+}); 
+
+bot.on('reconnecting', () => { // Listen to reconnects
+	Events.reconnect(bot);
 });
 
 bot.on('guildCreate', guild => { // Listen to joins
