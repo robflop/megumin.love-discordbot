@@ -76,14 +76,14 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			return; // ...and abort command execution.
 		};
 		// If there is no error, proceed with the command.
-	}); 
+	});
 	msg.member.voiceChannel.join().then(connection => {
 		// Check if message author is in a voice channel, if true join it,...
 		var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "oi"]; 
 		// then set available files,...
 		var sound = sounds[Math.floor(Math.random()*sounds.length)]; 
 		// ...randomize which sound gets played...
-		const player = connection.playFile(config.soundPath + sound); 
+		const player = connection.playFile(`${config.soundPath + sound}.mp3`);
 		// ...and play the file.
 		player.on('end', () => {
 			msg.member.voiceChannel.leave(); 
