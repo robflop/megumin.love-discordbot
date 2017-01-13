@@ -72,4 +72,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		);
 	};
 };
-exports.desc = "update the server count on the Discord Bots website (enable command in config) [Bot owner only]"; // export command description
+exports.desc = "update the server count on the Discord Bots website (enable command in config) [Bot owner only]"; // Export command description

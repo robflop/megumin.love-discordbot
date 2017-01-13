@@ -5,6 +5,7 @@ const fs = require('fs'); // For ignore list checking
 var Events = require('./event_handler.js'); // Load event handler
 var ignoreLists = require('./ignore_handler.js'); // Load ignore handler
 var Commands = require('./command_handler.js'); // Load command handler
+var serverConfig = require('./serverconfig_handler.js'); // Load serverConfig handler
 
 bot.once('ready', () => { // Ready message once bot is loaded
 	Events.ready(bot);
@@ -74,7 +75,7 @@ bot.on('message', msg => { // Listen to all messages sent
 	if(msg.content == config.commandPrefix) { return; }; // Ignore empty commands (messages containing just the prefix)
 	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`)) { 
 	/* 
-	Check if an ignore file for the server the command is used on exists, and if the channel is a DM channel
+	Check if an ignore file for the server the command is used on exists
 	(no ignore file exists if the ignore command has not been used yet)
 	*/
 		if(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(`${msg.author.id}`) > -1) { 
@@ -96,6 +97,19 @@ bot.on('message', msg => { // Listen to all messages sent
 	Replace (cut out) bot prefix, cut out whitespaces at start and end, split prefix, command
 	and arg into array, convert to lowercase and select the command part ([0] of the array)
 	*/
+	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`)) { 
+	/* 
+	Check if a command config for the server the command is used on exists
+	(no command config exists if the toggle command has not been used yet)
+	*/ 
+		var commandSetting = serverConfig.serverConfig[`serverconf_${msg.guild.id}`][actualCmd];
+		/* 
+		Define commandSetting as the setting that gives info on whether a 
+		command is enabled or disabled on the server the command came from
+		*/
+		if(commandSetting == "disabled") { return; } 
+		// If the command is disabled on the server, abort command execution.
+	};
 	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) { 
 	// If the given command is an actual command that is available...
 		Commands.commands[actualCmd].main(bot, msg, timeout, botPerm, userPerm);

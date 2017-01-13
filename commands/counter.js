@@ -65,4 +65,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		// ...format counter to x.xxx.xxx and send it as-is.
 	});
 };
-exports.desc = "display the website's current counter"; // Export command's description
+exports.desc = "display the website's current counter"; // Export command description

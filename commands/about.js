@@ -10,4 +10,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	msg.channel.sendMessage(`robbot made by robflop#2174. Made to complement the website <https://megumin.love> also by robflop#2174.\nCheck out the Github repo at <https://github.com/robflop/megumin.love-discordbot>.\nInvite link for the bot: <https://robflop.pw/robbot>.`);
 };
-exports.desc = "get general info about the bot"; // Export command's description
+exports.desc = "get general info about the bot"; // Export command description

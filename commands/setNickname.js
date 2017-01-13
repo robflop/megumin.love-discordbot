@@ -33,4 +33,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	msg.reply(`successfully set my nickname to '${arg}' ! \n(May not have worked if the bot isn't allowed to set its own nickname)`);
 	// Notify user of successful command execution
 };
-exports.desc = "set the bot's nickname for this server [Bot owner or Kick/Ban Permission required]"; // Export command's description
+exports.desc = "set the bot's nickname for this server [Bot owner or Kick/Ban Permission required]"; // Export command description

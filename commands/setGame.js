@@ -30,4 +30,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	msg.reply(`successfully set my game to '${arg}' ! \n (May not have worked if ratelimit has been capped)`);
 	// ...notify the user of the successful command execution.
 };
-exports.desc = "change the bot's playing status [Bot owner only]"; // export command description
+exports.desc = "change the bot's playing status [Bot owner only]"; // Export command description

@@ -25,4 +25,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	msg.reply("game status cleared! \n(May not have worked if ratelimit has been capped)");
 	// Notify the user of the succesful command execution
 };
-exports.desc = "clears the bot's playing status [Bot owner only]"; // Export command's description
+exports.desc = "clears the bot's playing status [Bot owner only]"; // Export command description
