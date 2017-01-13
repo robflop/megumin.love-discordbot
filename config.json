@@ -5,6 +5,7 @@
 	"soundPath": "sounds/",
 	"ignorePath": "ignores/",
 	"logPath": "logs/",
+	"serverConfPath": "serverconf/",
 	"shutdownLog": "shutdown.log",
 	"requestLog": "request.log",
 	"serverLog": "server.log",
