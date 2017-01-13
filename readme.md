@@ -36,11 +36,11 @@ Use it with ``<prefix> <command>``. It will also be listed in the 'help' command
 ###### (**) Your code must export the contents in a function which passes ``bot, msg, timeout, botPerm, userPerm`` under ``exports.main``, aswell as a command description under ``exports.desc``, see existing commands for examples.*
 
 #### Information
-- The default version of the bot loads commands from ``commands/``, uses the ``sounds/`` directory to look for sounds, and saves logs in ``logs/``.
+- The default version of the bot loads commands from ``commands/``, uses the ``sounds/`` directory to look for sounds, saves logs in ``logs/``, loads lists of server-wide ignored users from ``ignores/`` and checks for server-wide disabled commands in ``serverconf/``.
 - Default names for the log filenames are the respective config names. (serverLog = server.log, shutdownLog = shutdown.log etc).
 - By default, a command cooldown of 3 seconds is applied and the default prefix is set to "robbot,".
 - Commands, while case insensitive, require there to be one space to be between the prefix and the command. (See example below).
-- DiscordBots integration is disabled by default. Activate the command in the config and set your API token to use it.
+- DiscordBots integration is disabled by default. Activate the command in the config and set your API token to use it. (Not able to activate using the ``toggle`` command)
 
 -> Command example: Use "robbot, help" instead of "robbot,help" in a scenario in which the prefix is "robbot,".
 
@@ -62,4 +62,6 @@ Use it with ``<prefix> <command>``. It will also be listed in the 'help' command
 | ignore      	| Make the bot ignore a user, use a 2nd time to revert [Bot owner or Kick/Ban Permission required]  |
 | POST        	| Update the server count on the Discord Bots website (enable command in config) [Bot owner only] 	|
 | showLog     	| Easily display one of the configured log files [Bot owner only]                                 	|
+| toggle        | Toggle a command server-wide (on/off) [Bot owner or Kick/Ban Permission required]                 |
+| kys           | Joke command based on joke by a friend. Sets the bot's status to appear offline for 2,5min.       |
 | shutdown    	| Shut down the bot remotely [Bot owner only]                                                     	|

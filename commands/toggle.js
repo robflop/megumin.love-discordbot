@@ -2,7 +2,9 @@ const config = require('../config.json'); // Import configuration
 const fs = require('fs'); // For file writing
 const serverConfig = require('../serverconfig_handler.js'); // Load object of ignored users
 var Commands = require('../command_handler.js'); // Load command handler (to get list of commands)
-
+/*
+INFO: The toggle command goes into effect whether the bot can send the confirmation message or not.
+*/
 exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command function
 	var command = "toggle"; // For logging purposes
 	if(timeout.check(msg.author.id, msg)) { return; }; 
@@ -18,7 +20,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	if(arg == "toggle" || arg == "help" || Object.keys(Commands.commands).indexOf(arg) == -1) { return; } 
 	// Disallow toggling of the toggle/help command and any non-existing commands
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`)) {
-	// If the server config (file) for the server the command is called on exists...
+	// If the disabled commands list (file) for the server the command is called on exists...
 		var index = serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(arg);
 		// Define index as the position of the command to be disabled/enabled
 		if(index == -1) { 

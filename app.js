@@ -99,8 +99,8 @@ bot.on('message', msg => { // Listen to all messages sent
 	*/
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`)) { 
 	/* 
-	Check if a command config for the server the command is used on exists
-	(no command config exists if the toggle command has not been used yet)
+	Check if a disable list for commands for the server the command is used on exists
+	(no disable list exists if the toggle command has not been used yet)
 	*/ 
 		if(serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(actualCmd) > -1) { 
 		// Search the disabled commands list of the server the message came from for the command called...
