@@ -80,7 +80,7 @@ bot.on('message', msg => { // Listen to all messages sent
 	*/
 		if(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(`${msg.author.id}`) > -1) { 
 		// Search the ignore list of the server the message came from for the userID of the command caller...
-		return; // ... if it is found, ignore the user (duh). (Else proceed as usual.)
+			return; // ... if it is found, ignore the user (duh). (Else proceed as usual.)
 		}; 
 	} 
 	// If no ignore list (file) was found and the guild id is null, proceed without checking for ignored users
@@ -102,13 +102,10 @@ bot.on('message', msg => { // Listen to all messages sent
 	Check if a command config for the server the command is used on exists
 	(no command config exists if the toggle command has not been used yet)
 	*/ 
-		var commandSetting = serverConfig.serverConfig[`serverconf_${msg.guild.id}`][actualCmd];
-		/* 
-		Define commandSetting as the setting that gives info on whether a 
-		command is enabled or disabled on the server the command came from
-		*/
-		if(commandSetting == "disabled") { return; } 
-		// If the command is disabled on the server, abort command execution.
+		if(serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(actualCmd) > -1) { 
+		// Search the disabled commands list of the server the message came from for the command called...
+			return; // ... if it is found, don't execute the command (duh). (Else proceed as usual.)
+		};
 	};
 	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) { 
 	// If the given command is an actual command that is available...

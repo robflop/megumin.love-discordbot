@@ -10,7 +10,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	if(timeout.check(msg.author.id, msg)) { return; }; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) {
-		// If the user is the bot owner and does not have kick or ban permissions...
+		// If the user is not the bot owner and does not have kick or ban permissions...
 		msg.reply("you are not authorized to use this command!"); 
 		// ...notify the user that they are not authorized...
 		return; // ...and abort command execution.
@@ -69,4 +69,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		}
 	}
 };
-exports.desc = "make the bot ignore a user, use a 2nd time to revert [Bot owner or Kick/Ban Permission required]"; // Export command description
+exports.desc = "make the bot ignore a user server-wide, use a 2nd time to revert [Bot owner or Kick/Ban Permission required]"; // Export command description
