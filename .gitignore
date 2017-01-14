@@ -6,6 +6,13 @@ npm-debug.log*
 # ignore files
 ignores
 
+# ignore serverconfigs
+serverconf
+
+
+# ignore vscode files
+.vscode
+
 # Runtime data
 pids
 *.pid
