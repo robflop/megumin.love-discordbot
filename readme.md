@@ -44,6 +44,10 @@ Use it with ``<prefix> <command>``. It will also be listed in the 'help' command
 
 -> Command example: Use "robbot, help" instead of "robbot,help" in a scenario in which the prefix is "robbot,".
 
+#### License
+
+Licensed under the [MIT License](https://github.com/robflop/robbot/blob/master/LICENSE.md).
+
 ## Out-of-the-box Commands:
 | Command     	| Effect                                                                                    	    |
 |-------------	|-------------------------------------------------------------------------------------------------	|

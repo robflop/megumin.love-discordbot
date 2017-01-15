@@ -14,4 +14,4 @@ fs.readdirSync(normalizedPath).forEach(function(file) {
 		// ...and then require the files as server config.
 	};
 });
-exports.serverConfig = serverConfig;  // Export available serverConf object
+exports.serverConfig = serverConfig;  // Export available serverConfig object

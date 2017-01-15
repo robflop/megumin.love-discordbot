@@ -1,6 +1,6 @@
 {
   "name": "robbot",
-  "version": "1.5.0",
+  "version": "1.8.0",
   "description": "Discord bot to along with the website megumin.love, built with discord.js",
   "main": "app.js",
   "dependencies": {
@@ -20,13 +20,13 @@
     "megumin.love",
     "discord.js",
     "robbot",
-	"bot",
+	  "bot",
     "robflop",
-	"discord",
-	"node.js"
+	  "discord",
+  	"node.js"
   ],
   "author": "robflop",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/robflop/robbot/issues"
   },
