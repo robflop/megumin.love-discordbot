@@ -92,7 +92,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		const player = connection.playFile(`${config.soundPath + sound}.mp3`); 
 		// ...and play the file.
 		player.on('end', () => {
-			msg.member.voiceChannel.leave(); 
+			connection.disconnect();
 			// Leave voice channel once file finishes playing
 		});
 	});
