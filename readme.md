@@ -15,7 +15,7 @@ Add the bot to your server: [Invite me](https://discordapp.com/oauth2/authorize?
 - Adjust other config.json settings to your liking
 - Run ``npm install`` to install all dependencies
 - Install ffmpeg - if on Windows, add it to your PATH aswell
-- Start the bot using ``node app.js``!
+- Start the bot using ``node robbot.js``!
 
 Optional: If you've got it running on a linux server, consider installing node-opus for better voice performance than opusscript.
 
