@@ -31,3 +31,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	// ...notify the user of the successful command execution.
 };
 exports.desc = "change the bot's playing status [Bot owner only]"; // Export command description
+exports.syntax = "<game to set bot status to>" // Export command syntax

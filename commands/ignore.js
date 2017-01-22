@@ -73,3 +73,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	}
 };
 exports.desc = "make the bot ignore a user server-wide, use a 2nd time to revert [Bot owner or Kick/Ban Permission required]"; // Export command description
+exports.syntax = "<mention a user to ignore>" // Export command syntax

@@ -34,3 +34,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	// Notify user of successful command execution
 };
 exports.desc = "change the bot's username [Bot owner only]"; // Export command description
+exports.syntax = "<username to set the bot to>" // Export command syntax

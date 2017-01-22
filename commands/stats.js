@@ -23,3 +23,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	// Log command use, when and by whom
 };
 exports.desc = "display various other bot stats [Bot owner only]"; // Export command description
+exports.syntax = "" // Export command syntax

@@ -16,3 +16,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) {// Export command
 };
 
 exports.desc = "kms"; // Export command description
+exports.syntax = "" // Export command syntax

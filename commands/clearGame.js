@@ -26,3 +26,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	// Notify the user of the succesful command execution
 };
 exports.desc = "clears the bot's playing status [Bot owner only]"; // Export command description
+exports.syntax = "" // Export command syntax

@@ -1,6 +1,6 @@
 const config = require('../config.json'); // Import configuration
 const fs = require('fs'); // For file writing
-const serverConfig = require('../serverconfig_handler.js'); // Load object of ignored users
+const serverConfig = require('../serverconfig_handler.js'); // Load object of toggled command lists
 var Commands = require('../command_handler.js'); // Load command handler (to get list of commands)
 /*
 INFO: The toggle command goes into effect whether the bot can send the confirmation message or not.
@@ -68,3 +68,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 };
 
 exports.desc = "toggle a command server-wide (on/off) [Bot owner or Kick/Ban Permission required]"; // Export command description
+exports.syntax = "<command to toggle>" // Export command syntax

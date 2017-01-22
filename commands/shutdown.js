@@ -26,3 +26,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	}, 1500); // Set timeout to 1,5 sec after the command is triggered.
 };
 exports.desc = "shut down the bot remotely [Bot owner only]"; // Export command description
+exports.syntax = "" // Export command syntax

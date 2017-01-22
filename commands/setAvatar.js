@@ -46,3 +46,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	// ...notify the user of the successful command execution.
 };
 exports.desc = "change the bot's avatar [Bot owner only]"; // Export command description
+exports.syntax = "<url to a picture>" // Export command syntax

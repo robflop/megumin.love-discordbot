@@ -66,3 +66,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	});
 };
 exports.desc = "display the website's current counter"; // Export command description
+exports.syntax = "" // Export command syntax

@@ -54,3 +54,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	});
 };
 exports.desc = "easily display one of the configured log files [Bot owner only]"; // Export command description
+exports.syntax = "<logfile to display>" // Export command syntax

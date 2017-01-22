@@ -1,3 +1,4 @@
+const config = require('../config.json'); // Import configuration
 var Commands = require('../command_handler.js'); // Import list of commands
 var serverConfig = require('../serverconfig_handler.js'); // Load list of disabled commands
 
@@ -14,6 +15,14 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		serverConfig.serverConfig[`serverconf_${msg.guild.id}`] = []; 
 		// ...define the list of disabled commands as empty array (to avoid crashes).
 	}
+	var arg = msg.content.substr(config.commandPrefix.length+command.length+2);
+    // Get possible argument from message
+    if(arg) {
+    // If there is an argument...
+        if(cmdList.indexOf(arg) !== -1) {msg.author.sendMessage(`**__Syntax for '${arg}' is:__** \`\`\`${config.commandPrefix + " " + arg + " " + Commands.commands[arg].syntax}\`\`\``);};
+        // ...and the argument is in the command list, send the syntax help for it and set auto-delete to 10s.
+        return; // Abort command execution
+    };
 	for(var i = 0; i < cmdList.length; i++) { 
 	// Loop through each command (key)
 		commandsExpl.push(`'${cmdList[i]}' -- ${Commands.commands[cmdList[i]].desc}`);
@@ -23,3 +32,4 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	// Join commandsExpl array with newline seperator and send it all as one message
 };
 exports.desc = "displays this message"; // Export command description
+exports.syntax = "<command to get help on, optional>" // Export command syntax
