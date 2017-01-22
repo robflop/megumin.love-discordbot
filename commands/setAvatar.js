@@ -33,16 +33,21 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		// ...notify the user of the error...
 		return; // ...and abort command execution.
 	};
+	if(arg.substr(-4, 4) !== ".png" && arg.substr(-4, 4) !== ".jpg" && arg.substr(-4, 4) !== ".gif" && arg.substr(-5, 5) !== ".jpeg" && arg.substr(-5, 5) !== ".webp") {
+	// If the argument file is not a png, jpg/jpeg, gif or webp, reject it
+		msg.reply("invalid file format! Only png, jpg/jpeg, gif and webp are allowed.");
+		return;
+	};
 	bot.user.setAvatar(arg); // Set the bot's avatar to the arg...
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][AVATAR] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // ... and log command use, when and by whom.
 	console.log(`${bot.user.username}'s avatar set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  // If the bot can't send to the channel...
-		msg.author.sendMessage(`Successfully set my game to '${arg}' ! \n(May not have worked if ratelimit has been capped)`); 
+		msg.author.sendMessage(`Successfully set my avatar to '${arg}' ! \n(May not have worked if ratelimit has been capped)`); 
 		// ...PM the user...
 		return; // ...and abort command execution.
 	};
 	// If the bot can send to the channel...
-	msg.reply(`successfully set my game to '${arg}' ! \n (May not have worked if ratelimit has been capped)`);
+	msg.reply(`successfully set my avatar to '${arg}' ! \n (May not have worked if ratelimit has been capped)`);
 	// ...notify the user of the successful command execution.
 };
 exports.desc = "change the bot's avatar [Bot owner only]"; // Export command description
