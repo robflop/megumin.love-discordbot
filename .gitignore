@@ -9,6 +9,8 @@ ignores
 # ignore serverconfigs
 serverconf
 
+# ignore some files
+config.json
 
 # ignore vscode files
 .vscode
