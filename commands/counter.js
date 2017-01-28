@@ -2,6 +2,7 @@ const config = require('../config.json'); // Import configuration
 const request = require('request'); // For website interaction
 const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
+var history = require('../counter_history.json') // For adding/removing from counter history
 
 exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command's function
 	var command = "counter"; // For logging purposes
@@ -13,6 +14,75 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	}
 	if(timeout.check(msg.author.id, msg)) { return; }; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
+	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "history") {
+	// If "history" argument is called..
+		fs.readFile("counter_history.json", "utf-8", (error, data) => {
+			if(error) {
+				// If an error occurs,...
+				msg.channel.sendMessage(`An error has occured: \`\`\`${error}\`\`\``); // ...then notify author of the error...
+				return; // ...and abort command execution.
+			};
+			// If there is no error...
+			msg.channel.sendMessage(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${JSON.parse(data).join("\n")}\`\`\``);
+			// ...output the parsed counter history to the user.
+		});
+		return; // Abort command execution to prevent further code execution
+	};
+	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "append") {
+		if(msg.author.id !== config.ownerID) {
+			msg.channel.sendMessage("You are not authorized to modify the counter history.");
+			return;
+		};
+		var newCounter = "";
+		// Define placeholder for newest history entry
+		request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) {
+		// Get the current counter number from the website 
+			if(response == undefined) {
+			// If the response is undefined...
+					msg.channel.sendMessage("Response undefined when getting the counter, command execution aborted.");
+					return; // ...abort command execution.
+				};
+				if(error || response.statusCode !== 200) {
+					msg.channel.sendMessage(`An error has occured/the response code was not "200 OK": \`\`\`${error}\`\`\`\nCommand execution aborted.`);
+					return; // ...abort command execution.
+			};
+			newCounter = `${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} ${moment().format('HH:mm')} ${moment().format('DD/MM/YY')}`;
+			// Define the new history entry
+			history.push(newCounter);
+			// Push the new entry into the history
+			fs.writeFile("counter_history.json", JSON.stringify(history), "utf-8", (error, data) => {
+				if(error) {
+					// If an error occurs,...
+					msg.channel.sendMessage(`An error has occured: \`\`\`${error}\`\`\``); // ...then notify author of the error...
+					return; // ...and abort command execution.
+				};
+				// If there is no error...
+				msg.channel.sendMessage(`New entry successfully added: \`\`${newCounter}\`\``);
+				// ...output the parsed counter history to the user.
+			});
+		});
+		return; // Abort command execution to prevent further code execution		
+	};
+	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "revert" ) {
+		if(msg.author.id !== config.ownerID) {
+			msg.channel.sendMessage("You are not authorized to modify the counter history.");
+			return;
+		};
+		history.pop(); // Remove last history entry
+		fs.writeFile("counter_history.json", JSON.stringify(history), "utf-8", (error, data) => {
+		// Write the new JSON-ified history array to the file
+			if(error) {
+				// If an error occurs,...
+				msg.channel.sendMessage(`An error has occured: \`\`\`${error}\`\`\``); 
+				// ...then notify author of the error...
+				return; // ...and abort command execution.
+			};
+			// If there is no error...
+			msg.channel.sendMessage("Last history entry successfully removed.");
+			// ...output the success message to the user.
+		});
+		return; // Abort command execution to prevent further code execution
+	};
 	request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) { 
 		// GET the counter number
 		if(response == undefined) {

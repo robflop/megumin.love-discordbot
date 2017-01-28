@@ -29,7 +29,7 @@ var timeout = {
     "check": function(userID, msg) {
         if(timeout.users.indexOf(userID) > -1) { 
 			// If the user is on timeout don't let them use the command
-			msg.reply(`calm down with the commands for a sec! Please wait ${config.commandCooldown} seconds.`);
+			msg.reply(`calm down with the commands! Please wait ${config.commandCooldown} seconds.`);
             return true;
         } else if(config.ownerID !== userID) { 
 			// If the user is not the bot owner and is not on timeout, let them use the command and add their user id to the timeout
