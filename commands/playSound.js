@@ -77,13 +77,13 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		};
 		// If there is no error, proceed with the command.
 	});
-    var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking"]; 
+    var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "realname", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking"]; 
 	// Set available files,...
 	var sound = msg.content.substr(config.commandPrefix.length + command.length + 2).toLowerCase();
 	// ...then set sound var to chosen sound file.
 	if(sounds.indexOf(sound) == -1) {
 	// If chosen sound file is not available...
-		msg.author.sendMessage(`Sound unavailable! Available sounds are: \`\`\`${sounds.join("\n")}\`\`\``);
+		msg.author.sendMessage(`Sound unavailable! Available sounds are: \`\`\`${sounds.join("\n")}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 		// ...notify the user...
 		return; // ...and abort command execution.
 	}

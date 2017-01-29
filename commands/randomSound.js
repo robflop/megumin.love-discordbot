@@ -50,7 +50,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			// ...log it and the error...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 				// ... a) and if the bot can't send to the channel...
-				msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
+				msg.author.sendMessage(`Error contacting the website, response code undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
 				// ...PM the user...
 				return; // ...and abort command execution.
 			};
@@ -59,7 +59,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			// ...notify the user...
 			return; // ...and abort command execution.
 		};
-		if(error || response.statusCode !== 200) { 
+		if(error || response.statusCode !== 200) {
 		// If 2) There is an error or response code other than 200 (OK)...
 			console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`); 
@@ -79,7 +79,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 	});
 	msg.member.voiceChannel.join().then(connection => {
 		// Check if message author is in a voice channel, if true join it,...
-		var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking"]; 
+		var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "realname", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking"]; 
 		// then set available files,...
 		var sound = sounds[Math.floor(Math.random()*sounds.length)]; 
 		// ...randomize which sound gets played...

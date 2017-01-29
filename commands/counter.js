@@ -23,7 +23,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 				return; // ...and abort command execution.
 			};
 			// If there is no error...
-			msg.channel.sendMessage(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${JSON.parse(data).join("\n")}\`\`\``);
+			msg.channel.sendMessage(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${JSON.parse(data).join("\n")}\`\`\``,  {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 			// ...output the parsed counter history to the user.
 		});
 		return; // Abort command execution to prevent further code execution
@@ -43,7 +43,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 					return; // ...abort command execution.
 				};
 				if(error || response.statusCode !== 200) {
-					msg.channel.sendMessage(`An error has occured/the response code was not "200 OK": \`\`\`${error}\`\`\`\nCommand execution aborted.`);
+					msg.channel.sendMessage(`An error has occured or the response code was not "200 OK": \`\`\`${error}\`\`\`\nCommand execution aborted.`);
 					return; // ...abort command execution.
 			};
 			newCounter = `${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} ${moment().format('HH:mm')} ${moment().format('DD/MM/YY')}`;
@@ -53,7 +53,8 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			fs.writeFile("counter_history.json", JSON.stringify(history), "utf-8", (error, data) => {
 				if(error) {
 					// If an error occurs,...
-					msg.channel.sendMessage(`An error has occured: \`\`\`${error}\`\`\``); // ...then notify author of the error...
+					msg.channel.sendMessage(`An error has occured: \`\`\`${error}\`\`\``); 
+					// ...then notify author of the error...
 					return; // ...and abort command execution.
 				};
 				// If there is no error...
@@ -92,7 +93,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			// ...log it and the error...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 				// ... a) and if the bot can't send to the channel...
-				msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
+				msg.author.sendMessage(`Error contacting the website, response code is undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
 				// ...PM the user...
 				return; // ...and abort command execution.
 			};
@@ -125,7 +126,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			return; // Abort command execution to prevent multiple messages from being sent
 		}
 		else if(body % 100000 == 0) {
-		// If the current counter is on a full 10-thousand mark..
+		// If the current counter is on a full 100-thousand mark..
 			msg.channel.sendMessage(`Current https://megumin.love count is: 🎉 **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}** 🎉`);
 			// ...format counter to x.xxx.xxx and add festive party poppers.
 			return; // Abort command execution to prevent multiple messages from being sent
