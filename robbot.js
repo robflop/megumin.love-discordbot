@@ -158,6 +158,10 @@ bot.on('message', msg => { // Listen to all messages sent
 		// If there is no error, notify the user of success.
 		msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
 	};
+	process.on("unhandledRejection", err => {
+  		console.error("Uncaught Promise Error: \n" + err.stack);
+	});
+	// Log unhandled errors
 	return; // Just in case, return empty for anything else.
 });
 
