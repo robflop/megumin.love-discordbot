@@ -89,7 +89,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 			connection.disconnect();
 			// Leave voice channel once file finishes playing
 		});
-	});
+	}).catch(console.error);
 };
 exports.desc = "have the bot join your voice channel and play a random sound from the website"; // Export command description
 exports.syntax = "" // Export command syntax
