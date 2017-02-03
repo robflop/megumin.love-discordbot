@@ -159,9 +159,8 @@ bot.on('message', msg => { // Listen to all messages sent
 		msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
 	};
 	process.on("unhandledRejection", err => {
-  		console.error("Uncaught Promise Error: \n" + err.stack);
+  		return;
 	});
-	// Log unhandled errors
 	return; // Just in case, return empty for anything else.
 });
 

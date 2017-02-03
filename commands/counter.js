@@ -84,7 +84,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		});
 		return; // Abort command execution to prevent further code execution
 	};
-	request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) { 
+	request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) {
 		// GET the counter number
 		if(response == undefined) {
 		// If 1) the response is undefined...
