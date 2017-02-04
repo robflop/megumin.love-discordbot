@@ -23,29 +23,27 @@ bot.on('guildDelete', guild => { // Listen to leaves
 	Events.leave(bot, guild);
 });
 
-var timeout = { 
-	// Timeout function for command cooldown, courtesy of u/pilar6195 on reddit
-	"users": [],
-    "check": function(userID, msg) {
-        if(timeout.users.indexOf(userID) > -1) { 
-			// If the user is on timeout don't let them use the command
-			msg.reply(`calm down with the commands! Please wait ${config.commandCooldown} seconds.`);
+let cooldown = {
+// Cooldown function courtesy of u/pilar6195 on reddit
+    "users": new Set(),
+    "onCooldown": function(userID, msg) {
+        if (cooldown.users.has(userID)) {
+		// If the user is on cooldown don't let them use the command
+			msg.reply(`calm down with the commands! Please wait ${config.commandCooldown} seconds.`).then(msg => msg.delete(3000));
             return true;
-        } else if(config.ownerID !== userID) { 
-			// If the user is not the bot owner and is not on timeout, let them use the command and add their user id to the timeout
-            timeout.set(userID); // use set function on the userID
+        } else {
+		// If the user is not on cooldown, let them use the command and add their user id to the cooldown
+            //if(config.ownerID == userID) { return };
+			// If the userID is that of the owner, abort
+			cooldown.users.add(userID);
+			// Add userID into the set
+            setTimeout(function() {
+			// Set timeout to delete them from the list 
+                cooldown.users.delete(userID);
+			}, (config.commandCooldown * 1000));
+			// Set to configured amount
             return false;
-        }
-    },
-    "set": function(userID) {
-    	timeout.users.push(userID); 
-		// Push the userID into the timeout array
-    	setTimeout(function() { 
-			// Set timeout for, well, the timeout
-            timeout.users.splice(timeout.users.indexOf(userID), 1); 
-			// Take out the user after timeout is up
-        }, (config.commandCooldown * 1000)); 
-		// Set the cooldown to the configured amount
+        };
     }
 };
 
@@ -88,7 +86,7 @@ bot.on('message', msg => { // Listen to all messages sent
 	const userPerm = msg.channel.permissionsFor(msg.member); // For permission checking on the user's side later on in the commands
 	/*
 	INFO: 
-	Because the commands are all loaded from external files, "bot", "msg", "timeout", "botPerm" and "userPerm" are passed...
+	Because the commands are all loaded from external files, "bot", "msg", "cooldown", "botPerm" and "userPerm" are passed...
 	...to every command by default, whether used by the command or not. Other necessary packages are defined in the command files.
 	Packages not needed for the base file (this one) are only defined in the commands that need them.
 	*/ 
@@ -107,14 +105,14 @@ bot.on('message', msg => { // Listen to all messages sent
 			return; // ... if it is found, don't execute the command (duh). (Else proceed as usual.)
 		};
 	};
-	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) { 
+	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) {
 	// If the given command is an actual command that is available...
-		Commands.commands[actualCmd].main(bot, msg, timeout, botPerm, userPerm);
+		Commands.commands[actualCmd].main(bot, msg, cooldown, botPerm, userPerm);
 		// ...run the command.
 	};
 	if(actualCmd == "reload") {
 	// Reload command
-		if(timeout.check(msg.author.id, msg)) { return; }; 
+		if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
 		// Check for cooldown, if on cooldown notify user of it and abort command execution.
 		if(msg.author.id !== config.ownerID) { 
 			// If the user is not authorized...

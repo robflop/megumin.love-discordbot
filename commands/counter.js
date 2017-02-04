@@ -4,7 +4,7 @@ const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 var history = require('../counter_history.json') // For adding/removing from counter history
 
-exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
 	var command = "counter"; // For logging purposes
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 		// If the bot can't send to the channel...
@@ -12,7 +12,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		// ...notify the user...
 		return;	// ...and abort command execution.
 	}
-	if(timeout.check(msg.author.id, msg)) { return; }; 
+	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "history") {
 	// If "history" argument is called..

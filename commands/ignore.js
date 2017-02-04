@@ -5,9 +5,9 @@ const ignoreLists = require('../ignore_handler.js'); // Load object of ignored u
 /*
 INFO: The ignore command goes into effect whether the bot can send the confirmation message or not.
 */
-exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
 	var command = "ignore"; // For logging purposes
-	if(timeout.check(msg.author.id, msg)) { return; }; 
+	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) {
 		// If the user is not the bot owner and does not have kick or ban permissions...

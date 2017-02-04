@@ -2,11 +2,11 @@ const config = require('../config.json'); // Import configuration
 var Commands = require('../command_handler.js'); // Import list of commands
 var serverConfig = require('../serverconfig_handler.js'); // Load list of disabled commands
 
-exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
 	var command = "help"; // For logging purposes
 	var commandsExpl = []; 
 	// Array which will have all commands and their corresponding explainations
-	if(timeout.check(msg.author.id, msg)) { return; }; 
+	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	var cmdList = Object.keys(Commands.commands); 
 	// Get all command names (keys) from commands object

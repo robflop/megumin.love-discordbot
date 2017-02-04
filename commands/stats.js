@@ -2,7 +2,7 @@ const config = require('../config.json'); // Import configuration
 const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 
-exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 		// If the bot can't send to the channel...
 		msg.author.sendMessage("I can't send messages to that channel!"); 
@@ -10,7 +10,7 @@ exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export comman
 		return;	// ...and abort command execution.
 	};
 	var command = "stats"; // For logging purposes
-	if(timeout.check(msg.author.id, msg)) { return; }; 
+	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) { 
 		// If the user is not authorized ...

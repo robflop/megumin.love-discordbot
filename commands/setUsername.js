@@ -4,9 +4,9 @@ const moment = require('moment'); // Part of log writing
 
 // INFO: The command will execute whether or not the bot can send messages to the channel.
 
-exports.main = function(bot, msg, timeout, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
 	var command = "setUsername"; // For logging purposes
-	if(timeout.check(msg.author.id, msg)) { return; }; 
+	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) {  
 		// If the user is not authorized...
