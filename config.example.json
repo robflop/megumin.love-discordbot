@@ -14,5 +14,6 @@
 	"commandCooldown": 3,
 	"commandPrefix": "robbot,",
 	"useDiscordBots": false,
-	"discordBotsAPI": "API_TOKEN"
+	"discordBotsAPI": "API_TOKEN",
+    "eval": false
 }
