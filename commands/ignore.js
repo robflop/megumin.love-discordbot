@@ -11,7 +11,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) {
 		// If the user is not the bot owner and does not have kick or ban permissions...
-		msg.reply("you are not authorized to use this command!"); 
+		msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
 		// ...notify the user that they are not authorized...
 		return; // ...and abort command execution.
 	};

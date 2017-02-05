@@ -33,7 +33,7 @@ let cooldown = {
             return true;
         } else {
 		// If the user is not on cooldown, let them use the command and add their user id to the cooldown
-            //if(config.ownerID == userID) { return };
+            if(config.ownerID == userID) { return };
 			// If the userID is that of the owner, abort
 			cooldown.users.add(userID);
 			// Add userID into the set
@@ -116,7 +116,7 @@ bot.on('message', msg => { // Listen to all messages sent
 		// Check for cooldown, if on cooldown notify user of it and abort command execution.
 		if(msg.author.id !== config.ownerID) { 
 			// If the user is not authorized...
-			msg.reply("you are not authorized to use this command!");
+			msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 			// ...notify the user...
 			return; // ...and abort command execution.
 		};
@@ -156,6 +156,7 @@ bot.on('message', msg => { // Listen to all messages sent
 		// If there is no error, notify the user of success.
 		msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
 	};
+	process.setMaxListeners(11);
 	process.on("unhandledRejection", err => {
   		return;
 	});
