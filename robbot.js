@@ -156,7 +156,6 @@ bot.on('message', msg => { // Listen to all messages sent
 		// If there is no error, notify the user of success.
 		msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
 	};
-	process.setMaxListeners(11);
 	process.on("unhandledRejection", err => {
   		return;
 	});
