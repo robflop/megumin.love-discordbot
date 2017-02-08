@@ -77,19 +77,32 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		};
 		// If there is no error, proceed with the command.
 	});
-	msg.member.voiceChannel.join().then(connection => {
+	var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "realname", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking", "lalala"]; 
+	// Set available files
+	var sound = sounds[Math.floor(Math.random()*sounds.length)];
+	// Randomize which sound gets played
+	const voiceChannel = msg.member.voiceChannel;
+	voiceChannel.join().then(connection => {
 		// Check if message author is in a voice channel, if true join it,...
-		var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "realname", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking", "lalala"]; 
-		// then set available files,...
-		var sound = sounds[Math.floor(Math.random()*sounds.length)]; 
-		// ...randomize which sound gets played...
-		const player = connection.playFile(`${config.soundPath + sound}.mp3`);
+		const player = connection.playFile(`${config.soundPath + sound}.mp3`); 
 		// ...and play the file.
-		player.on('end', () => {
-			connection.disconnect();
-			// Leave voice channel once file finishes playing
+		connection.on('error', () => {
+			msg.reply('an error related to the voiceChannel connection itself occurred, sorry!');
+			// Message user if an error occurrs related to the connection itself
+			voiceChannel.leave();
+			// Leave the voiceChannel
+			return; // Abort command execution
 		});
-	}).catch(() => {return});
+		player.on('end', () => {
+			voiceChannel.leave();
+			// Leave voiceChannel once file finishes playing (or an error is emitted)
+		});
+		player.on('error', () => {
+			msg.reply('an error occurred playing the sound file, sorry!');
+			// Message user if an error occurs playing the file
+			// Since 'error' emits an 'end' event, this will result in the voiceconnection being terminated
+		});
+	}).catch(error => {console.log(error); msg.reply('an error occurred while connecting to the voiceChannel, sorry!'); return voiceChannel.leave();});
 };
-exports.desc = "have the bot join your voice channel and play a random sound from the website"; // Export command description
+exports.desc = "have the bot join your voice channel and play a random sound from the megumin.love website"; // Export command description
 exports.syntax = "" // Export command syntax

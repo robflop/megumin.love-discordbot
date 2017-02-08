@@ -86,16 +86,29 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		msg.author.sendMessage(`Sound unavailable! Available sounds are: \`\`\`${sounds.join("\n")}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 		// ...notify the user...
 		return; // ...and abort command execution.
-	}
-	msg.member.voiceChannel.join().then(connection => {
+	};
+	const voiceChannel = msg.member.voiceChannel;
+	voiceChannel.join().then(connection => {
 		// Check if message author is in a voice channel, if true join it,...
 		const player = connection.playFile(`${config.soundPath + sound}.mp3`); 
 		// ...and play the file.
-		player.on('end', () => {
-			connection.disconnect();
-			// Leave voice channel once file finishes playing
+		connection.on('error', () => {
+			msg.reply('an error related to the voiceChannel connection itself occurred, sorry!');
+			// Message user if an error occurrs related to the connection itself
+			voiceChannel.leave();
+			// Leave the voiceChannel
+			return; // Abort command execution
 		});
-	}).catch(() => {return});
+		player.on('end', () => {
+			voiceChannel.leave();
+			// Leave voiceChannel once file finishes playing (or an error is emitted)
+		});
+		player.on('error', () => {
+			msg.reply('an error occurred playing the sound file, sorry!');
+			// Message user if an error occurs playing the file
+			// Since 'error' emits an 'end' event, this will result in the voiceconnection being terminated
+		});
+	}).catch(error => {console.log(error); msg.reply('an error occurred while connecting to the voiceChannel, sorry!'); return voiceChannel.leave();});
 };
-exports.desc = "have the bot join your voice channel and play a chosen sound from the website"; // Export command description
+exports.desc = "have the bot join your voice channel and play a chosen sound from the megumin.love website"; // Export command description
 exports.syntax = "<soundname>" // Export command syntax
