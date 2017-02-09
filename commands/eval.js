@@ -51,5 +51,5 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
     };
 };
 
-exports.desc = "Evaluate user javascript input -- USE WITH CAUTION."; // Export command description
+exports.desc = "Evaluate user javascript input -- USE WITH CAUTION. [Bot owner only]"; // Export command description
 exports.syntax = "<input to evaluate enclosed by quotes>"; // Export command syntax 
