@@ -87,7 +87,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		const player = connection.playFile(`${config.soundPath + sound}.mp3`); 
 		// ...and play the file.
 		connection.on('error', () => {
-			msg.reply('an error related to the voiceChannel connection itself occurred, sorry!');
+			msg.reply('an error related to the voiceChannel connection itself occurred, sorry! (Try again, maybe?)');
 			// Message user if an error occurrs related to the connection itself
 			voiceChannel.leave();
 			// Leave the voiceChannel
@@ -98,11 +98,11 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 			// Leave voiceChannel once file finishes playing (or an error is emitted)
 		});
 		player.on('error', () => {
-			msg.reply('an error occurred playing the sound file, sorry!');
+			msg.reply('an error occurred playing the sound file, sorry! (Try again, maybe?)');
 			// Message user if an error occurs playing the file
 			// Since 'error' emits an 'end' event, this will result in the voiceconnection being terminated
 		});
-	}).catch(error => {console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][VOICE] ${error}`); msg.reply('an error occurred while connecting to the voiceChannel, sorry!'); return voiceChannel.leave();});
+	}).catch(error => {console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][VOICE] ${error}`); msg.reply('an error occurred while connecting to the voiceChannel, sorry! (Try again, maybe?)'); return voiceChannel.leave();});
 };
 exports.desc = "have the bot join your voice channel and play a random sound from the megumin.love website"; // Export command description
 exports.syntax = "" // Export command syntax
