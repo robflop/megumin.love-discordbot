@@ -49,7 +49,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// If there is no error...
 		msg.author.sendMessage(`\`\`\`${data}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 		// ...output the chosen log to the user...
-		console.log(`${msg.author.username}#${msg.author.discriminator} on the '${msg.guild}' server displayed a log file!`);
+		console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} on the '${msg.guild}' server displayed a log file!`);
 		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server!`); // ...and log command use, when and by whom.
 	});
 };

@@ -15,7 +15,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	bot.user.setGame();	// Set game to nothing, clearing it
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); 
 	// Log command use, when and by whom
-	console.log(`${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+	console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 	// If the bot can't send to the channel...
 		msg.author.sendMessage("Game status cleared! \n(May not have worked if ratelimit has been capped)"); 

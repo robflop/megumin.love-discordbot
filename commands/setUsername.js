@@ -29,7 +29,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	// If there is an argument given,...
 	bot.user.setUsername(arg); // ...then set the bot's username to the arg...
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // ...and log command use, when and by whom.
-	console.log(`${bot.user.username}'s username set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+	console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${bot.user.username}'s username set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	msg.reply(`successfully set my username to '${arg}' ! \n(May not have worked if ratelimit capped)`);
 	// Notify user of successful command execution
 };

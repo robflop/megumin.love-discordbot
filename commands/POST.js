@@ -34,7 +34,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 			function (error, response, body) {
 				if(response == undefined) {
 					// If 1) the response is undefined...
-					console.log(`No response was emitted when POSTing to the website -- Refer to request logs`);
+					console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] No response was emitted when POSTing to the website -- Refer to request logs`);
 					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
 					// ...log it and the error...
 					if(!botPerm.hasPermission('SEND_MESSAGES')) { 
@@ -50,7 +50,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 				};
 				if(error || response.statusCode !== 200) { 
 				// If 2) There is an error or response code other than 200 (OK)...
-					console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
+					console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); 
 					// ...log the unusual request responses/errors...
 					if(!botPerm.hasPermission('SEND_MESSAGES')) { 

@@ -45,7 +45,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// ...then increment the counter on megumin.love...
 		if(response == undefined) {
 		// If 1) the response is undefined...
-			console.log(`No response was emitted when incrementing the counter -- Refer to request logs`);
+			console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] No response was emitted when incrementing the counter -- Refer to request logs`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
 			// ...log it and the error...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
@@ -61,7 +61,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		};
 		if(error || response.statusCode !== 200) {
 		// If 2) There is an error or response code other than 200 (OK)...
-			console.log(`An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
+			console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`); 
 			// ...log the unusual request responses/errors...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
@@ -102,7 +102,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 			// Message user if an error occurs playing the file
 			// Since 'error' emits an 'end' event, this will result in the voiceconnection being terminated
 		});
-	}).catch(error => {console.log(error); msg.reply('an error occurred while connecting to the voiceChannel, sorry!'); return voiceChannel.leave();});
+	}).catch(error => {console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][VOICE] ${error}`); msg.reply('an error occurred while connecting to the voiceChannel, sorry!'); return voiceChannel.leave();});
 };
 exports.desc = "have the bot join your voice channel and play a random sound from the megumin.love website"; // Export command description
 exports.syntax = "" // Export command syntax
