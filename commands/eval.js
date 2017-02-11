@@ -35,13 +35,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
             output = output.replace(regex, "<token>");
             // ...and finally replace all occurences of the user token with "<token>".
         };
-        if(output.length + input.length > 1950) {
-        // If the output + input is longer than 1950 characters...
-            msg.channel.sendMessage("Output too long! Try another script.").then(msg => msg.delete(3000));
-            // ...notify user, then set auto-delete to 3s.
-            return; // Abort command execution
-        };
-        msg.channel.sendMessage(`INPUT:\`\`\`js\n${input}\n\`\`\`\n\nOUTPUT: \`\`\`js\n${output}\n\`\`\``);
+        msg.channel.sendMessage(`INPUT:\`\`\`js\n${input}\n\`\`\`\n\nOUTPUT: \`\`\`js\n${output}\n\`\`\``, {split: {prepend: "\`\`\`js\n", append: "\`\`\`\n"}});
         // Send the message with the eval output
     }
     catch(error) {
