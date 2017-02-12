@@ -20,10 +20,10 @@
     "megumin.love",
     "discord.js",
     "robbot",
-	  "bot",
+    "bot",
     "robflop",
-	  "discord",
-  	"node.js"
+    "discord",
+    "node.js"
   ],
   "author": "robflop",
   "license": "MIT",

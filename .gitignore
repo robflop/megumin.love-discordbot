@@ -3,7 +3,7 @@ logs
 *.log
 npm-debug.log*
 
-# ignore files
+# ignore ignore lists
 ignores
 
 # ignore serverconfigs
