@@ -8,19 +8,20 @@ Some messages will be PM'd if there is no send permission, some will not be sent
 */
 exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
 	if(config.useDiscordBots) {
-		if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
+	// Check if DiscordBots usage is enabled in the config
+		var command = "POST"; // For logging purposes
+		if (cooldown.onCooldown(msg.author.id, msg)) return; 
 		// Check for cooldown, if on cooldown notify user of it and abort command execution
 		if(msg.author.id !== config.ownerID) { 
-			// If the user is not authorized...
+		// If the user is not authorized...
 			msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
 			// ...notify the user...
 			return; // ...and abort command execution.
 		};
-		var command = "POST"; // For logging purposes
 		request.post( // Send POST request
 			{
 				headers: { 
-					// Set discordbots API header and json content type
+				// Set discordbots API header and json content type
 					'Authorization': `${config.discordBotsAPI}`, 
 					// Send Discord Bots API Token in the auth header
 					'Content-type': 'application/json; charset=utf-8' 
@@ -33,12 +34,12 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 			}, 
 			function (error, response, body) {
 				if(response == undefined) {
-					// If 1) the response is undefined...
+				// If 1) the response is undefined...
 					console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] No response was emitted when POSTing to the website -- Refer to request logs`);
 					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
 					// ...log it and the error...
 					if(!botPerm.hasPermission('SEND_MESSAGES')) { 
-						// ... a) and if the bot can't send to the channel...
+					// ... a) and if the bot can't send to the channel...
 						msg.author.sendMessage(`Error contacting the website, response code is undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
 						// ...PM the user...
 						return; // ...and abort command execution.
@@ -54,7 +55,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); 
 					// ...log the unusual request responses/errors...
 					if(!botPerm.hasPermission('SEND_MESSAGES')) { 
-						// ... a) and if the bot can't send to the channel...
+					// ... a) and if the bot can't send to the channel...
 						msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
 						// ...PM the user...
 						return; // ...and abort command execution.
@@ -67,7 +68,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 				// If there is no error, proceed with the command.
 				fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST] POST request successfully sent! (${response.statusCode})`); 
 				// Log what was done and when
-				msg.reply('POST request sent successfully!'); // Notify the user of the successful code execution
+				msg.reply('POST request sent successfully!'); 
+				// Notify the user of the successful code execution
 			}
 		);
 	};

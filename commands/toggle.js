@@ -7,7 +7,7 @@ INFO: The toggle command goes into effect whether the bot can send the confirmat
 */
 exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
 	var command = "toggle"; // For logging purposes
-	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
+	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) {
 		// If the user is not the bot owner and does not have kick or ban permissions...

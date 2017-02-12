@@ -112,7 +112,7 @@ bot.on('message', msg => { // Listen to all messages sent
 	};
 	if(actualCmd == "reload") {
 	// Reload command
-		if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
+		if (cooldown.onCooldown(msg.author.id, msg)) return; 
 		// Check for cooldown, if on cooldown notify user of it and abort command execution.
 		if(msg.author.id !== config.ownerID) { 
 			// If the user is not authorized...

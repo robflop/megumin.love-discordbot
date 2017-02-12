@@ -6,10 +6,10 @@ const moment = require('moment'); // Part of log writing
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
 	var command = "setUsername"; // For logging purposes
-	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
+	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) {  
-		// If the user is not authorized...
+	// If the user is not authorized...
 		msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
 		// ...notify the user...
 		return; // ...and abort command execution.
@@ -27,7 +27,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		return;	// ...and abort command execution.
 	};
 	// If there is an argument given,...
-	bot.user.setUsername(arg); // ...then set the bot's username to the arg...
+	bot.user.setUsername(arg); 
+	// ...then set the bot's username to the argument...
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // ...and log command use, when and by whom.
 	console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${bot.user.username}'s username set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	msg.reply(`successfully set my username to '${arg}' ! \n(May not have worked if ratelimit capped)`);

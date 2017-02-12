@@ -5,8 +5,8 @@ var serverConfig = require('../serverconfig_handler.js'); // Load list of disabl
 exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
 	var command = "help"; // For logging purposes
 	var commandsExpl = []; 
-	// Array which will have all commands and their corresponding explainations
-	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
+	// Define commandsExpl array which will have all commands and their corresponding explainations
+	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	var cmdList = Object.keys(Commands.commands); 
 	// Get all command names (keys) from commands object
@@ -14,7 +14,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	// If there are no disabled commands for the server...
 		serverConfig.serverConfig[`serverconf_${msg.guild.id}`] = []; 
 		// ...define the list of disabled commands as empty array (to avoid crashes).
-	}
+	};
 	var arg = msg.content.substr(config.commandPrefix.length+command.length+2);
     // Get possible argument from message
     if(arg) {

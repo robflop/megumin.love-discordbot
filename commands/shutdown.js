@@ -6,7 +6,7 @@ INFO: The shutdown command goes into effect whether the bot can send the confirm
 */
 exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
 	var command = "shutdown"; // For logging purposes
-	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
+	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) {
 		// If the user is not authorized...
@@ -18,12 +18,10 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	fs.appendFileSync(`${config.logPath}${config.shutdownLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][POWER] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // Log command use, when and by whom
 	console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][POWER] ${bot.user.username} shutting down! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	setTimeout(function(){ 
-		// Define timeout for bot shutdown, in which...
-		bot.destroy(); 
-		//  ...the bot session is destroyed before killing the node process...
-		process.exit(0); 
-		// ...and the node process is ended.
-	}, 1500); // Set timeout to 1,5 sec after the command is triggered.
+		bot.destroy().then(()=>{console.log("robbot signed out!"); process.exit(0)}); 
+		// Sign out robbot and then end the node process
+	}, 2000); 
+	// Set timeout for shutting down the bot to 2sec after the command is triggered...
 };
 exports.desc = "shut down the bot remotely [Bot owner only]"; // Export command description
 exports.syntax = "" // Export command syntax

@@ -4,7 +4,7 @@ const config = require('../config.json'); // Import configuration
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
 	var command = "clearGame"; // For logging purposes
-	if (cooldown.onCooldown(msg.author.id, msg) == true) return; 
+	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) { 
 		// If the user is not authorized...
