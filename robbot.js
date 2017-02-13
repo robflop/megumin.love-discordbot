@@ -43,7 +43,7 @@ let cooldown = {
 			}, (config.commandCooldown * 1000));
 			// Set to configured amount
             return false;
-        };
+        }
     }
 };
 
