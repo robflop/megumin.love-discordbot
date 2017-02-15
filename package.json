@@ -1,12 +1,12 @@
 {
   "name": "robbot",
-  "version": "1.8.0",
+  "version": "1.10.0",
   "description": "Discord bot to along with the website megumin.love, built with discord.js",
   "main": "robbot.js",
   "dependencies": {
     "discord.js": "github:hydrabolt/discord.js#indev-prism",
     "moment": "^2.17.1",
-    "opusscript": "0.0.1",
+    "opusscript": "0.0.2",
     "prism-media": "github:hydrabolt/prism-media",
     "request": "^2.79.0"
   },
