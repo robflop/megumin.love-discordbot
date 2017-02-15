@@ -41,5 +41,5 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	};
 };
 
-exports.desc = "Blacklist a server, making the bot automatically leave it upon joining"; // Export command description
+exports.desc = "Blacklist a server, making the bot automatically leave it upon joining [BOT OWNER ONLY]"; // Export command description
 exports.syntax = "<guildID to blacklist>"; // Export command syntax
