@@ -53,7 +53,7 @@ Licensed under the [MIT License](https://github.com/robflop/robbot/blob/master/L
 |-------------	|-------------------------------------------------------------------------------------------------	|
 | help        	| Make the bot PM the user a list of commands                                                     	|
 | about       	| Get general info about the bot                                                                  	|
-| counter     	| Display the current counter of megumin.love                                                     	|
+| counter     	| Display the current counter of megumin.love (Arguments ``history``, ``append``, ``revert``)      	|
 | submit      	| Get info on how to submit new sounds for the bot/website                                        	|
 | randomsound 	| Have the bot join your voice channel and play a random sound from the megumin.love website       	|
 | playsound     | Have the bot join your voice channel and play a chosen sound from the megumin.love website        |
@@ -69,3 +69,5 @@ Licensed under the [MIT License](https://github.com/robflop/robbot/blob/master/L
 | toggle        | Toggle a command server-wide (on/off) [Bot owner or Kick/Ban Permission required]                 |
 | kys           | Joke command based on joke by a friend. Sets the bot's status to appear offline for 2,5min.       |
 | shutdown    	| Shut down the bot remotely [Bot owner only]                                                     	|
+| eval          | Have robbot evaluate javascript input and output the result [Bot owner only]                      |
+| blacklist     | Blacklist a discord server so robbot will leave it upon invitation to the server [Bot owner only] |
