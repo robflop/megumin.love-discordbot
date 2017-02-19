@@ -13,10 +13,25 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// ...notify the user that they are not authorized...
 		return; // ...and abort command execution.
 	};
-    var guildID = msg.content.substr(config.commandPrefix.length + command.length + 2);
-    // Define the guildID argument out of the message content
+    var guildID = msg.content.substring(config.commandPrefix.length + command.length + 2);
+	// Define the guildID argument out of the message content
+	var toFind; 
+    // Define the toFind placeholder
     var index = blacklist.indexOf(guildID);
     // Define the index of the to-be-blacklisted's guildID within the blacklist
+	if(guildID.startsWith("find")) {
+	// If the guildID argument starts with "find", use the index to notify the user if an ID is on the blacklist
+		toFind = msg.content.substring(config.commandPrefix.length + command.length + 2 + "find".length + 1);
+		// Assign the toFind argument out of the msg content (Each "+<number>"" addition is whitespaces)
+		index = blacklist.indexOf(toFind);
+		// Redefine the index to search the blacklist for the to-be-located guildID
+		if(index == -1) {msg.reply(`Guild ID '${toFind}' was not found on the blacklist!`); return;};
+		// If a guildID is not on the blacklist, tell the user and abort command execution
+		msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);
+		// If a guildID is on the blacklist, tell the user the position
+		return;
+		// Abort command execution to prevent below code execution
+	};
 	if(index == -1) {
     // If the guildID is not on the blacklist...
 			blacklist.push(guildID);
