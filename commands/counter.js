@@ -148,4 +148,4 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	});
 };
 exports.desc = "display the website's current counter"; // Export command description
-exports.syntax = "" // Export command syntax
+exports.syntax = "<history/append/revert, all optional>" // Export command syntax

@@ -21,8 +21,9 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
     // Define the index of the to-be-blacklisted's guildID within the blacklist
 	if(guildID.startsWith("find")) {
 	// If the guildID argument starts with "find", use the index to notify the user if an ID is on the blacklist
-		toFind = msg.content.substring(config.commandPrefix.length + command.length + 2 + "find".length + 1);
-		// Assign the toFind argument out of the msg content (Each "+<number>"" addition is whitespaces)
+		guildID = "find";
+		toFind = msg.content.substring(msg.content.indexOf(guildID)+guildID.length+1);
+		// Assign the toFind argument out of the msg content
 		index = blacklist.indexOf(toFind);
 		// Redefine the index to search the blacklist for the to-be-located guildID
 		if(index == -1) {msg.reply(`Guild ID '${toFind}' was not found on the blacklist!`); return;};
@@ -57,4 +58,4 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 };
 
 exports.desc = "Blacklist a server, making the bot automatically leave it upon joining [Bot owner only]"; // Export command description
-exports.syntax = "<guildID to blacklist>"; // Export command syntax
+exports.syntax = "<guildID to blacklist or 'find' argument> <guildID to search for if using 'find' arg>"; // Export command syntax
