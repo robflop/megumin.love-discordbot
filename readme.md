@@ -52,14 +52,14 @@ Licensed under the [MIT License](https://github.com/robflop/robbot/blob/master/L
 | Command     	| Effect                                                                                    	    |
 |-------------	|-------------------------------------------------------------------------------------------------	|
 | help        	| Make the bot PM the user a list of commands                                                     	|
-| about       	| Get general info about the bot                                                                  	|
+| about       	| Get information about the bot coder etc                                                         	|
 | counter     	| Display the current counter of megumin.love (Arguments ``history``, ``append``, ``revert``)      	|
 | submit      	| Get info on how to submit new sounds for the bot/website                                        	|
 | randomsound 	| Have the bot join your voice channel and play a random sound from the megumin.love website       	|
 | playsound     | Have the bot join your voice channel and play a chosen sound from the megumin.love website        |
 | setGame     	| Change the bot's playing status [Bot owner only]                                                	|
 | clearGame   	| Clear the bot's playing status [Bot owner only]                                                 	|
-| stats       	| Display various other bot stats [Bot owner only]                                                	|
+| info          | Display various info about the bot                                                 	            |
 | setAvatar   	| Change the bot's avatar [Bot owner only]                                                        	|
 | setUsername   | Change the bot's username [Bot owner only]                                                      	|
 | setNickname   | Change the bot's server nickname [Bot owner or Kick/Ban Permission required]                      |
