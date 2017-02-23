@@ -64,7 +64,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
         };
 		if(typeof user == 'string') { msg.reply("user not found!").then(msg => msg.delete(2000)); return; }
 		// If no user was matched (input is still a string), abort command execution
-		embed.setAuthor(`Overview for '${user.displayName}'`, user.user.avatarURL)
+		embed.setAuthor(`Overview for '${user.displayName}#${user.user.discriminator}'`, user.user.avatarURL)
 		 .addField("Username", user.user.username, true)
 		 .addField("Nickname", user.nickname, true)
 		 .addField("UserID", user.user.id, true)
