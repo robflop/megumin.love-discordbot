@@ -2,8 +2,10 @@ const config = require('../config.json'); // Import configuration
 const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command function
 	var command = "showLog"; // For logging purposes
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	// Define timestamp
 	var possibleLogs = [ // Whitelist of logs allowed to display
 		config.shutdownLog,
 		config.requestLog,
@@ -41,14 +43,14 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// If an error occurs...
 			msg.author.sendMessage(`An error has occured: \`\`\`${error}\`\`\``); 
 			// ...notify the user of the error...
-			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server, but an error occurred!`); // ...log the command use plus the error...
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server, but an error occurred!`); // ...log the command use plus the error...
 			return; // ...and abort command execution.
 		};
 		// If there is no error...
 		msg.author.sendMessage(`\`\`\`${data}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 		// ...output the chosen log to the user...
-		console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} on the '${msg.guild}' server displayed a log file!`);
-		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server!`); // ...and log command use, when and by whom.
+		console.log(`[${timestamp}]${chalk.cyan("[SHOWLOG]")} ${msg.author.username}#${msg.author.discriminator} on the '${msg.guild}' server displayed a log file!`);
+		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server!`); // ...and log command use, when and by whom.
 	});
 };
 exports.desc = "easily display one of the configured log files [Bot owner only]"; // Export command description

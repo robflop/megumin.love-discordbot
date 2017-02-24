@@ -4,7 +4,7 @@ const moment = require('moment'); // Part of log writing
 
 // INFO: The command will execute whether or not the bot can send messages to the channel.
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command function
 	var command = "setUsername"; // For logging purposes
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
@@ -14,6 +14,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// ...notify the user...
 		return; // ...and abort command execution.
 	};
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	// Define timestamp
 	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
 	/* 
 	Cut off the command part of the message and set the bot's username. 
@@ -29,8 +31,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	// If there is an argument given,...
 	bot.user.setUsername(arg); 
 	// ...then set the bot's username to the argument...
-	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // ...and log command use, when and by whom.
-	console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERNAME] ${bot.user.username}'s username set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][USERNAME] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // ...and log command use, when and by whom.
+	console.log(`[${timestamp}]${chalk.magenta("[USERNAME]")} ${bot.user.username}'s username set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	msg.reply(`successfully set my username to '${arg}' ! \n(May not have worked if ratelimit capped)`);
 	// Notify user of successful command execution
 };

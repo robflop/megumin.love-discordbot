@@ -4,7 +4,7 @@ const moment = require('moment'); // Part of log writing
 
 // INFO: The command will execute whether or not the bot can send messages to the channel. Erorr messages will be sent via PM if it can't.
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command function
 	var command = "setAvatar"; // For logging purposes
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution.
@@ -14,6 +14,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// ...notify the user...
 		return; // ...and abort command execution.
 	};
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	// Define timestamp
 	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
 	/* 
 	Cut off the command part of the message and set the bot's avatar. 
@@ -41,8 +43,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	};
 	bot.user.setAvatar(arg);
 	// Set the bot's avatar to the supplied file...
-	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][AVATAR] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // ... and log command use, when and by whom.
-	console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][AVATAR] ${bot.user.username}'s avatar set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][AVATAR] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // ... and log command use, when and by whom.
+	console.log(`[${timestamp}]${chalk.magenta("[AVATAR]")} ${bot.user.username}'s avatar set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 	// If the bot can't send to the channel...
 		msg.author.sendMessage(`Successfully set my avatar to '${arg}' ! \n(May not have worked if ratelimit has been capped)`); 

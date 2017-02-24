@@ -2,7 +2,7 @@ const config = require('../config.json'); // Import configuration
 var Commands = require('../command_handler.js'); // Import list of commands
 var serverConfig = require('../serverconfig_handler.js'); // Load list of disabled commands
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
 	var command = "help"; // For logging purposes
 	var commandsExpl = []; 
 	// Define commandsExpl array which will have all commands and their corresponding explainations

@@ -2,25 +2,26 @@ const Discord = require('discord.js'); // Obvious bot base
 const bot = new Discord.Client(); // Initialize bot instance
 const config = require('./config.json'); // Import configuration
 const fs = require('fs'); // For ignore list checking
+const chalk = require('chalk'); // Colorful console logs, yay
 var Events = require('./event_handler.js'); // Load event handler
 var ignoreLists = require('./ignore_handler.js'); // Load ignore handler
 var Commands = require('./command_handler.js'); // Load command handler
 var serverConfig = require('./serverconfig_handler.js'); // Load serverConfig handler
 
 bot.once('ready', () => { // Ready message once bot is loaded
-	Events.ready(bot);
+	Events.ready(bot, chalk);
 });
 
 bot.on('error', () => { // Listen to errors
-	Events.error(bot);
+	Events.error(bot, chalk);
 }); 
 
 bot.on('guildCreate', guild => { // Listen to joins
-	Events.join(bot, guild);
+	Events.join(bot, guild, chalk);
 });
 
 bot.on('guildDelete', guild => { // Listen to leaves
-	Events.leave(bot, guild);
+	Events.leave(bot, guild, chalk);
 });
 
 let cooldown = {
@@ -107,7 +108,7 @@ bot.on('message', msg => { // Listen to all messages sent
 	};
 	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) {
 	// If the given command is an actual command that is available...
-		Commands.commands[actualCmd].main(bot, msg, cooldown, botPerm, userPerm);
+		Commands.commands[actualCmd].main(bot, msg, cooldown, botPerm, userPerm, chalk);
 		// ...run the command.
 	};
 	if(actualCmd == "reload") {

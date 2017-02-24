@@ -2,7 +2,7 @@ const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 const config = require('../config.json'); // Import configuration
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
 	var command = "clearGame"; // For logging purposes
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
@@ -12,10 +12,12 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// ...notify the user...
 		return; // ...and abort command execution.
 	};
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	// Define timestamp
 	bot.user.setGame();	// Set game to nothing, clearing it
-	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); 
+	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][STATUS] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); 
 	// Log command use, when and by whom
-	console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][STATUS] ${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+	console.log(`[${timestamp}]${chalk.magenta("[STATUS]")} ${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 	// If the bot can't send to the channel...
 		msg.author.sendMessage("Game status cleared! \n(May not have worked if ratelimit has been capped)"); 

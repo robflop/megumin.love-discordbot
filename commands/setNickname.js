@@ -4,7 +4,7 @@ const moment = require('moment'); // Part of log writing
 
 // INFO: The command will execute whether or not the bot can send messages to the channel.
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
 	var command = "setNickname"; // For logging purposes
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
@@ -14,6 +14,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// ...notify the user that they are not authorized...
 		return; // ...and abort command execution.
 	};
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	// Define timestamp
 	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
 	/* 
 	Cut off the command part of the message and set the bot's nickname on the server the command is called on. 
@@ -29,9 +31,9 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	// If there is an argument given,...
 	msg.guild.member(bot.user).setNickname(arg); 
 	// ...then set the bot's nickname to the argument...
-	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][NICKNAME] ${msg.author.username}#${msg.author.discriminator} set ${bot.user.username}'s nickname to '${arg}' on the '${msg.guild}' server!`); 
+	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][NICKNAME] ${msg.author.username}#${msg.author.discriminator} set ${bot.user.username}'s nickname to '${arg}' on the '${msg.guild}' server!`); 
 	// ...and log command use, when and by whom.
-	console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][NICKNAME] ${bot.user.username}'s nickname set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+	console.log(`[${timestamp}]${chalk.magenta("[NICKNAME]")} ${bot.user.username}'s nickname set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	msg.reply(`successfully set my nickname to '${arg}' ! \n(May not have worked if the bot isn't allowed to set its own nickname)`);
 	// Notify user of successful command execution
 };

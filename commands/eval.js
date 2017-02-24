@@ -1,6 +1,6 @@
 const config = require('../config.json'); // Import configuration
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
     var command = "eval";
     if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution

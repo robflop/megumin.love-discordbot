@@ -4,6 +4,7 @@
   "description": "Discord bot to along with the website megumin.love, built with discord.js",
   "main": "robbot.js",
   "dependencies": {
+    "chalk": "^1.1.3",
     "discord.js": "github:hydrabolt/discord.js",
     "moment": "^2.17.1",
     "opusscript": "0.0.2",

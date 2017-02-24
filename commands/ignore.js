@@ -5,7 +5,7 @@ const ignoreLists = require('../ignore_handler.js'); // Load object of ignored u
 /*
 INFO: The ignore command goes into effect whether the bot can send the confirmation message or not.
 */
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
 	var command = "ignore"; // For logging purposes
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
@@ -15,6 +15,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// ...notify the user that they are not authorized...
 		return; // ...and abort command execution.
 	};
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	// Define timestamp
 	var UserID = msg.content.substr(config.commandPrefix.length + command.length + 2); 
 	// Select the mention part of the message (<@(!)..>) for ignoreList purposes
 	var match = UserID.match(/<@!?(\d+)>/); 
@@ -38,7 +40,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 				// ...push the stripped UserID into the server's ignore list... 
 				fs.writeFileSync(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`])); 
 				// ...save the object to the server's file...
-				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
 				// ...log command use, when and by whom...
 				msg.reply(`i am now ignoring ${UserID} !`); 
 				// ...and notify user of the successful addition.
@@ -49,7 +51,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 				// ...take them out of the server's list...
 				fs.writeFileSync(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`])); 
 				// ...save the object to the server's file...
-				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully removed a user from the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully removed a user from the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
 				// ...log command use, when and by whom...
 				msg.reply(`i am no longer ignoring ${UserID} !`); 
 				// ...and notify user of the successful removal.
@@ -65,7 +67,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 			// ...push the stripped UserID into the now-defined ignore list of the server...
 			fs.writeFileSync(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`])); 
 			// ...save the list to the server's file...
-			fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`); 
+			fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`); 
 			// ...log command use, when and by whom...
 			msg.reply(`i am now ignoring ${UserID} !`); 
 			// ...and notify user of the successful addition.

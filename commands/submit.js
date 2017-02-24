@@ -1,4 +1,4 @@
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command function
 	var command = "submit"; // For logging purposes
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {
 	// If the bot can't send to the channel...

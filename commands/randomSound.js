@@ -3,10 +3,12 @@ const request = require('request'); // For website interaction
 const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command function
 	var command = "randomSound"; // For logging purposes
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution.
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	// Define timestamp
 	if(!msg.member.voiceChannel) { 
 	// If the user that used the command is not in a voice channel on the server the command came from...
 		if(!botPerm.hasPermission('SEND_MESSAGES')) {  
@@ -44,8 +46,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	// ...then increment the counter on megumin.love...
 		if(response == undefined) {
 		// ...and if 1) the response is undefined...
-			console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] No response was emitted when incrementing the counter -- Refer to request logs`);
-			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
+			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when incrementing the counter -- Refer to request logs`);
+			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
 			// ...log it and the error...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 			// ... a) and if the bot can't send to the channel...
@@ -60,8 +62,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		};
 		if(error || response.statusCode !== 200) {
 		// ...and if 2) There is an error or response code other than 200 (OK)...
-			console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
-			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`); 
+			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
+			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`); 
 			// ...log the unusual request responses/errors...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 			// ... a) and if the bot can't send to the channel...

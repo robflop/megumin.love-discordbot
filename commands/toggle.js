@@ -5,7 +5,7 @@ var Commands = require('../command_handler.js'); // Load command handler (to get
 /*
 INFO: The toggle command goes into effect whether the bot can send the confirmation message or not.
 */
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command function
 	var command = "toggle"; // For logging purposes
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution

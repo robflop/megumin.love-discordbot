@@ -3,7 +3,7 @@ const Discord = require('discord.js'); // For using embeds
 const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command function
 	var command = "info"; // For logging purposes
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 	// If the bot can't send to the channel...

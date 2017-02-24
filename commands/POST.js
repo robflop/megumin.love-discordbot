@@ -6,7 +6,7 @@ const moment = require('moment'); // Part of log writing
 INFO: The POST command goes into action whether the confirmation mesage can be sent or not. 
 Some messages will be PM'd if there is no send permission, some will not be sent at all if there is not.
 */
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command function
 	if(config.useDiscordBots) {
 	// Check if DiscordBots usage is enabled in the config
 		var command = "POST"; // For logging purposes
@@ -18,6 +18,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 			// ...notify the user...
 			return; // ...and abort command execution.
 		};
+		var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+		// Define timestamp
 		request.post( // Send POST request
 			{
 				headers: { 
@@ -35,8 +37,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 			function (error, response, body) {
 				if(response == undefined) {
 				// If 1) the response is undefined...
-					console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] No response was emitted when POSTing to the website -- Refer to request logs`);
-					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
+					console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when POSTing to the website -- Refer to request logs`);
+					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
 					// ...log it and the error...
 					if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 					// ... a) and if the bot can't send to the channel...
@@ -51,8 +53,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 				};
 				if(error || response.statusCode !== 200) { 
 				// If 2) There is an error or response code other than 200 (OK)...
-					console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
-					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); 
+					console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
+					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`); 
 					// ...log the unusual request responses/errors...
 					if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 					// ... a) and if the bot can't send to the channel...
@@ -66,7 +68,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 					return; // ...and abort command execution.
 				};
 				// If there is no error, proceed with the command.
-				fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST] POST request successfully sent! (${response.statusCode})`); 
+				fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST] POST request successfully sent! (${response.statusCode})`); 
 				// Log what was done and when
 				msg.reply('POST request sent successfully!'); 
 				// Notify the user of the successful code execution

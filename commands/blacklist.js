@@ -3,7 +3,7 @@ const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 const blacklist = require('../serverconf/blacklist.json'); // Load object of ignored users
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
     var command = "blacklist"; // For logging purposes
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
@@ -19,6 +19,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
     // Define the toFind placeholder
     var index = blacklist.indexOf(guildID);
     // Define the index of the to-be-blacklisted's guildID within the blacklist
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss'); 
+	// Define timestamp
 	if(guildID.startsWith("find")) {
 	// If the guildID argument starts with "find", use the index to notify the user if an ID is on the blacklist
 		guildID = "find";
@@ -39,7 +41,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 			// ...push the guildID into the blacklist...
 			fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist)); 
 			// ...save the array to the file...
-			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully added a server to the blacklist.`);
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully added a server to the blacklist.`);
 			// ...log command use, when and by whom...
 			msg.reply(`ID '${guildID}' is now blacklisted!`); 
 			// ...and notify user of the successful addition.
@@ -50,7 +52,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// ...take it out of the blacklist...
 		fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
 		// ...save the array to the file...
-		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully removed a server from the blacklist.`);
+		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully removed a server from the blacklist.`);
 		// ...log command use, when and by whom...
 		msg.reply(`ID '${guildID}' is no longer blacklisted!`);
 		// ...and notify user of the successful removal.

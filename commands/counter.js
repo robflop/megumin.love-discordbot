@@ -4,7 +4,7 @@ const fs = require('fs'); // For log writing
 const moment = require('moment'); // Part of log writing
 const history = require('../counter_history.json') // Load counter history array
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export command's function
+exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
 	var command = "counter"; // For logging purposes
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 		// If the bot can't send to the channel...
@@ -14,6 +14,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 	}
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	// Define timestamp
 	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "history") {
 	// If the "history" argument is called...
 		fs.readFile("counter_history.json", "utf-8", (error, data) => {
@@ -99,8 +101,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		// ...GET the counter number.
 		if(response == undefined) {
 		// If 1) the response is undefined...
-			console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] No response was emitted when GETting the counter -- Refer to request logs`);
-			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
+			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when GETting the counter -- Refer to request logs`);
+			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`); 
 			// ...log it and the error...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 				// ... a) and if the bot can't send to the channel...
@@ -115,8 +117,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm) { // Export comma
 		};
 		if(error || response.statusCode !== 200) { 
 		// If 2) There is an error or response code other than 200 (OK)...
-			console.log(`[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
-			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${moment().format('DD/MM/YYYY HH:mm:ss')}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`); 
+			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
+			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`); 
 			// ...log the unusual request responses/errors...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 				// ... a) and if the bot can't send to the channel...
