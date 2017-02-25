@@ -11,9 +11,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) {
 		// If the user is not the bot owner and does not have kick or ban permissions...
-		msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
-		// ...notify the user that they are not authorized...
-		return; // ...and abort command execution.
+		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
+		// ...notify the user that they are not authorized and abort command execution.
 	};
 	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2).toLowerCase();
 	// Cut out the argument of the command
@@ -29,9 +28,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 			// ...put it on the list...
 			fs.writeFileSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`, JSON.stringify(serverConfig.serverConfig[`serverconf_${msg.guild.id}`]));
 			// ...save to the file...
-			msg.reply(`command '${arg}' has been disabled!`);
-			// ...and notify the user.
-			return; // Abort command execution to prevent running below code
+			return msg.reply(`command '${arg}' has been disabled!`);
+			// ...and notify the user and abort command execution to prevent running below code
 		};
 		// 2) If the command is already on the list of disabled commands...
 		serverConfig.serverConfig[`serverconf_${msg.guild.id}`].splice(index, 1); 
@@ -53,9 +51,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 			// ...put it on the list...
 			fs.writeFileSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`, JSON.stringify(serverConfig.serverConfig[`serverconf_${msg.guild.id}`]));
 			// ...save to the file...
-			msg.reply(`command '${arg}' has been disabled!`);
-			// ...and notify the user.
-			return; // Abort command execution to prevent running below code
+			return msg.reply(`command '${arg}' has been disabled!`);
+			// ...and notify the user and abort command execution to prevent running below code.
 		};
 		// 2) If the command is already on the list of disabled commands...
 		serverConfig.serverConfig[`serverconf_${msg.guild.id}`].splice(index, 1); 

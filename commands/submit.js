@@ -2,9 +2,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	var command = "submit"; // For logging purposes
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {
 	// If the bot can't send to the channel...
-		msg.author.sendMessage("I can't send messages to that channel!");
-		// ...PM the user...
-		return; // ...and abort command execution.
+		return msg.author.sendMessage("I can't send messages to that channel!");
+		// ...PM the user and abort command execution.
 	}
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution

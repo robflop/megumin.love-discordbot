@@ -13,33 +13,28 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	// If the user that used the command is not in a voice channel on the server the command came from...
 		if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 		// ... 1) and the bot can't send to the channel...
-			msg.author.sendMessage("Join a voice channel first!"); 
-			// ...PM the author of the msg...
-			return; // ...and abort command execution.
+			return msg.author.sendMessage("Join a voice channel first!"); 
+			// ...PM the author of the msg and abort command execution.
 		}  
 		// ... 2) and the bot can send to the channel...
-		msg.reply("join a voice channel first!"); 
-		// ...notify the user to join a channel...
-		return; // ...and abort command execution.
+		return msg.reply("join a voice channel first!"); 
+		// ...notify the user to join a channel and abort command execution.
 	}
 	if(!msg.member.voiceChannel.joinable) { 
 	// If the bot can't connect to the voicechannel...  
-		msg.author.sendMessage("I can't connect to that voice channel!"); 
-		// ...PM the author of the msg...
-		return; // ...and abort command execution.
+		return msg.author.sendMessage("I can't connect to that voice channel!"); 
+		// ...PM the author of the msg and abort command execution.
 	}
 	if(msg.guild.voiceConnection !== null) { 
 	// If the bot is already in a voice channel of the server the command came from...
 		if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 		// ... 1) and the bot can't send to the channel...
-			msg.author.sendMessage('Please wait for the current sound to finish!'); 
-			// ...PM the user...
-			return; // ...and abort command execution.
+			return msg.author.sendMessage('Please wait for the current sound to finish!'); 
+			// ...PM the user and abort command execution.
 		}
 		// ... 2) and the bot can send to the channel...
-		msg.reply('please wait for the current sound to finish!'); 
-		// ...notify the user...
-		return; // ...and abort command execution.
+		return msg.reply('please wait for the current sound to finish!'); 
+		// ...notify the user and abort command execution.
 	}
 	// If a voice connection does not exist on the server the command is being used on,...
 	request.get('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body) { 
@@ -51,14 +46,12 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 			// ...log it and the error...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 			// ... a) and if the bot can't send to the channel...
-				msg.author.sendMessage(`Error contacting the website, response code is undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
-				// ...PM the user...
-				return; // ...and abort command execution.
+				return msg.author.sendMessage(`Error contacting the website, response code is undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
+				// ...PM the user and abort command execution.
 			};
 			// ... b) and if the bot can send to the channel...
-			msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
-			// ...notify the user...
-			return; // ...and abort command execution.
+			return msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
+			// ...notify the user and abort command execution.
 		};
 		if(error || response.statusCode !== 200) {
 		// ...and if 2) There is an error or response code other than 200 (OK)...
@@ -67,14 +60,12 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 			// ...log the unusual request responses/errors...
 			if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 			// ... a) and if the bot can't send to the channel...
-				msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
-				// ...PM the user...
-				return; // ...and abort command execution.
+				return msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
+				// ...PM the user and abort command execution.
 			};
 			// ... b) and if the bot can send to the channel...
-			msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
-			// ...notify the user...
-			return; // ...and abort command execution.
+			return msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
+			// ...notify the user and abort command execution.
 		};
 		// If there is no error, proceed with the command.
 	});
@@ -91,9 +82,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 		connection.on('error', () => {
 			msg.reply('an error related to the voiceChannel connection itself occurred, sorry! (Try again, maybe?)');
 			// Message user if an error occurrs related to the connection itself
-			voiceChannel.leave();
-			// Leave the voiceChannel
-			return; // Abort command execution
+			return voiceChannel.leave();
+			// Leave the voiceChannel and abort command execution
 		});
 		player.on('end', () => {
 			voiceChannel.leave();

@@ -8,9 +8,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) { 
 		// If the user is not authorized...
-		msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
-		// ...notify the user...
-		return; // ...and abort command execution.
+		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
+		// ...notify the user and abort command execution.
 	};
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	// Define timestamp
@@ -20,9 +19,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	console.log(`[${timestamp}]${chalk.magenta("[STATUS]")} ${bot.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 	// If the bot can't send to the channel...
-		msg.author.sendMessage("Game status cleared! \n(May not have worked if ratelimit has been capped)"); 
-		// ...PM the user...
-		return; // ...and abort command execution.
+		return msg.author.sendMessage("Game status cleared! \n(May not have worked if ratelimit has been capped)"); 
+		// ...PM the user and abort command execution.
 	};
 	msg.reply("game status cleared! \n(May not have worked if ratelimit has been capped)");
 	// Notify the user of the succesful command execution

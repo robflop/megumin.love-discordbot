@@ -11,9 +11,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) {
 	// If the user is not the bot owner and does not have kick or ban permissions...
-		msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
-		// ...notify the user that they are not authorized...
-		return; // ...and abort command execution.
+		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
+		// ...notify the user that they are not authorized and abort command execution.
 	};
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	// Define timestamp
@@ -22,9 +21,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	var match = UserID.match(/<@!?(\d+)>/); 
 	// Search for mention syntax, regex courtesy of /u/geo1088 on reddit.
 	if(!match) { // If noone is mentioned...
-		msg.reply('mention a user to put on the list!');
-		// ...notify the user...
-		return; // ...and abort command execution.
+		return msg.reply('mention a user to put on the list!');
+		// ...notify the user and abort command execution.
 	};
 	var strippedID = match[1]; 
 	// Define strippedID as the raw UserID (no mention syntax)

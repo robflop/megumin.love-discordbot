@@ -9,9 +9,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) {
 	// If the user is not the bot owner and does not have kick or ban permissions...
-		msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
-		// ...notify the user that they are not authorized...
-		return; // ...and abort command execution.
+		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
+		// ...notify the user that they are not authorized and abort command execution.
 	};
     var guildID = msg.content.substring(config.commandPrefix.length + command.length + 2);
 	// Define the guildID argument out of the message content
@@ -30,10 +29,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 		// Redefine the index to search the blacklist for the to-be-located guildID
 		if(index == -1) {msg.reply(`Guild ID '${toFind}' was not found on the blacklist!`); return;};
 		// If a guildID is not on the blacklist, tell the user and abort command execution
-		msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);
-		// If a guildID is on the blacklist, tell the user the position
-		return;
-		// Abort command execution to prevent below code execution
+		return msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);
+		// If a guildID is on the blacklist, tell the user the position and abort command execution to prevent below code execution
 	};
 	if(index == -1) {
     // If the guildID is not on the blacklist...

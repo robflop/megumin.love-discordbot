@@ -7,9 +7,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	var command = "info"; // For logging purposes
 	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
 	// If the bot can't send to the channel...
-		msg.author.sendMessage("I can't send messages to that channel!"); 
-		// ...PM the user...
-		return;	// ...and abort command execution.
+		return msg.author.sendMessage("I can't send messages to that channel!"); 
+		// ...PM the user and abort command execution.
 	};
 	if (cooldown.onCooldown(msg.author.id, msg)) return; 
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
@@ -22,13 +21,11 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	// If the argument "list" is called...
 		if(msg.author.id !== config.ownerID) {
 		// ...and if the user is not authorized...
-		msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));  
-		// ...notify the user...
-		return; // ...and abort command execution.
+		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));  
+		// ...notify the user and abort command execution.
 		};
-		msg.channel.sendMessage(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});
+		return msg.channel.sendMessage(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});
 		// Send a list of the bot's current servers and the amount of their members
-		return; // Abort command execution to prevent lower code execution
 	}
 	else if(arg.startsWith("this")) {
 	// If the argument "this" is called...
@@ -41,9 +38,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 			 .addField("Server ID", msg.guild.id, true)
 			 .addField("Region", msg.guild.region, true)
 		// Set the embed properties
-	    msg.channel.sendEmbed(embed);
-		// Send the embed
-		return; // Abort command execution to prevent lower code execution
+	    return msg.channel.sendEmbed(embed);
+		// Send the embed and abort command execution to prevent lower code execution
 	}
 	else if(arg.startsWith("user")) {
 	// If the argument "user" is called...
@@ -72,9 +68,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 		 .addField("Creation date", moment(user.user.createdAt).format("DD/MM/YY"), true)
 		 .addField("Roles", user.roles.array().join(", "), true);
 		// Set the embed properties
-		msg.channel.sendEmbed(embed);
-		// Send the embed
-		return; // Abort command execution to prevent lower code execution
+		return msg.channel.sendEmbed(embed);
+		// Send the embed and abort command execution to prevent lower code execution
 	};
 	embed.setAuthor("robbot Status Overview", bot.user.avatarURL)
 		 .addField("Total Servers", bot.guilds.size, true)

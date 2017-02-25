@@ -64,12 +64,10 @@ setInterval(function () {
 bot.on('message', msg => { // Listen to all messages sent
 	if(msg.author.bot) { return; }; // Ignore any bot messages
 	if(!msg.content.startsWith(config.commandPrefix)) { return; }; // Don't listen to messages not starting with bot prefix
-	if(msg.channel.type == "dm") {
+	if(msg.channel.type !== "text") {
 	// If the message is from a private channel...
-		msg.channel.sendMessage("Commands via DM not supported, sorry.");
-		// ...notify the user...
-		return;
-		// ...and abort command execution.
+		return msg.channel.sendMessage("Commands via (Group) DM not supported, sorry.");
+		// ...notify the user and abort command execution.
 	};
 	if(msg.content == config.commandPrefix) { return; }; // Ignore empty commands (messages containing just the prefix)
 	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`)) { 
@@ -77,7 +75,7 @@ bot.on('message', msg => { // Listen to all messages sent
 	Check if an ignore file for the server the command is used on exists
 	(no ignore file exists if the ignore command has not been used yet)
 	*/
-		if(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(`${msg.author.id}`) > -1) { 
+		if(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(`${msg.author.id}`) > -1) {
 		// Search the ignore list of the server the message came from for the userID of the command caller...
 			return; // ... if it is found, ignore the user (duh). (Else proceed as usual.)
 		}; 
@@ -101,7 +99,7 @@ bot.on('message', msg => { // Listen to all messages sent
 	Check if a disable list for commands for the server the command is used on exists
 	(no disable list exists if the toggle command has not been used yet)
 	*/ 
-		if(serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(actualCmd) > -1) { 
+		if(serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(actualCmd) > -1) {
 		// Search the disabled commands list of the server the message came from for the command called...
 			return; // ... if it is found, don't execute the command (duh). (Else proceed as usual.)
 		};
@@ -117,9 +115,8 @@ bot.on('message', msg => { // Listen to all messages sent
 		// Check for cooldown, if on cooldown notify user of it and abort command execution.
 		if(msg.author.id !== config.ownerID) { 
 			// If the user is not authorized...
-			msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-			// ...notify the user...
-			return; // ...and abort command execution.
+			return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+			// ...notify the user and abort command execution.
 		};
 		var arg = msg.content.substr(config.commandPrefix.length + actualCmd.length + 2);
 		/* 
@@ -129,9 +126,8 @@ bot.on('message', msg => { // Listen to all messages sent
 		*/
 		if(arg == "") {
 		// If no command to reload is given...
-			msg.reply('specify a command to reload!');
-			// ...notify the user to specify a command...
-			return; // ...and abort command execution.
+			return msg.reply('specify a command to reload!');
+			// ...notify the user to specify a command and abort command execution.
 		};
 		// Otherwise...
 		try {
@@ -150,9 +146,8 @@ bot.on('message', msg => { // Listen to all messages sent
     	}
 		catch(error) {
 		// If there is an error while reloading...
-			msg.reply(`error while reloading the '${arg}' command: \`\`\`${error}\`\`\`\n(Command may not exist, check for typos)`)
-			// ...notify the user...
-			return; // ...and abort command execution.
+			return msg.reply(`error while reloading the '${arg}' command: \`\`\`${error}\`\`\`\n(Command may not exist, check for typos)`);
+			// ...notify the user and abort command execution.
 		};
 		// If there is no error, notify the user of success.
 		msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);

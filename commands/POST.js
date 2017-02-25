@@ -14,9 +14,8 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 		// Check for cooldown, if on cooldown notify user of it and abort command execution
 		if(msg.author.id !== config.ownerID) { 
 		// If the user is not authorized...
-			msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
-			// ...notify the user...
-			return; // ...and abort command execution.
+			return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
+			// ...notify the user and abort command execution.
 		};
 		var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 		// Define timestamp
@@ -42,14 +41,12 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 					// ...log it and the error...
 					if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 					// ... a) and if the bot can't send to the channel...
-						msg.author.sendMessage(`Error contacting the website, response code is undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
-						// ...PM the user...
-						return; // ...and abort command execution.
+						return msg.author.sendMessage(`Error contacting the website, response code is undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
+						// ...PM the user and abort command execution.
 					};
 					// ... b) and if the bot can send to the channel...
-					msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
-					// ...notify the user...
-					return; // ...and abort command execution.
+					return msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
+					// ...notify the user and abort command execution.
 				};
 				if(error || response.statusCode !== 200) { 
 				// If 2) There is an error or response code other than 200 (OK)...
@@ -58,14 +55,12 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 					// ...log the unusual request responses/errors...
 					if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 					// ... a) and if the bot can't send to the channel...
-						msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
-						// ...PM the user...
-						return; // ...and abort command execution.
+						return msg.author.sendMessage(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
+						// ...PM the user and abort command execution.
 					};
 					// ... b) and if the bot can send to the channel...
-					msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
-					// ...notify the user...
-					return; // ...and abort command execution.
+					return msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
+					// ...notify the user and abort command execution.
 				};
 				// If there is no error, proceed with the command.
 				fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST] POST request successfully sent! (${response.statusCode})`); 

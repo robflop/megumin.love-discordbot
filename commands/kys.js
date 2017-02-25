@@ -1,9 +1,8 @@
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
 	if(!botPerm.hasPermission('SEND_MESSAGES')) { 
 	// If the bot can't send to the channel...
-		msg.author.sendMessage("I can't send messages to that channel!"); 
-		// ...PM the user...
-		return; // ...and abort command execution.
+		return msg.author.sendMessage("I can't send messages to that channel!"); 
+		// ...PM the user and abort command execution.
 	};
 	var command = "kys"; // For logging purposes
 	if (cooldown.onCooldown(msg.author.id) == true) return;
