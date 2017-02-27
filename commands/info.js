@@ -45,19 +45,11 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	// If the argument "user" is called...
 		var arg = "user";
 		var user = msg.content.substring(msg.content.indexOf(arg)+arg.length+1);
-		// Define selected user
+		// Define selected user (name or name snippet)
 		if(user == "") {msg.reply("Specify a user to get info on!").then(msg => msg.delete(2000)); return;}
 		// If no user was selected, notify user, set auto-delete to 2s and abort command execution
-		var users = msg.guild.members.array();
-		// Get all users of the server to match the requested user
-		for(var i=0; i<users.length; i++) {
-        // Loop through server users
-            if(users[i].displayName.startsWith(user) || users[i].user.username.startsWith(user)) {
-            // If the displayName or username of current user in iteration matches the username of the user to get info on...
-                user = msg.guild.members.get(users[i].id);
-                // ...redefine the user argument as the user object of the current user in iteration.
-            };
-        };
+		user = msg.guild.members.filter(m => m.user.username.startsWith(user) || m.displayName.startsWith(user)).first();
+		// Reassign selected user (GuildMember object) by filtering the guild's members collection
 		if(typeof user == 'string') { msg.reply("user not found!").then(msg => msg.delete(2000)); return; }
 		// If no user was matched (input is still a string), abort command execution
 		embed.setAuthor(`Overview for '${user.displayName}#${user.user.discriminator}'`, user.user.avatarURL)

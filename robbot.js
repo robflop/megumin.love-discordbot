@@ -71,21 +71,21 @@ bot.on('message', msg => { // Listen to all messages sent
 	};
 	if(msg.content == config.commandPrefix) { return; }; // Ignore empty commands (messages containing just the prefix)
 	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`)) { 
-	/* 
+	/*
 	Check if an ignore file for the server the command is used on exists
 	(no ignore file exists if the ignore command has not been used yet)
 	*/
 		if(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(`${msg.author.id}`) > -1) {
 		// Search the ignore list of the server the message came from for the userID of the command caller...
 			return; // ... if it is found, ignore the user (duh). (Else proceed as usual.)
-		}; 
-	} 
+		};
+	};
 	// If no ignore list (file) was found and the guild id is null, proceed without checking for ignored users
 	const botPerm = msg.channel.permissionsFor(bot.user); // For permission checking on the bot's side later on in the commands
 	const userPerm = msg.channel.permissionsFor(msg.member); // For permission checking on the user's side later on in the commands
 	/*
 	INFO: 
-	Because the commands are all loaded from external files, "bot", "msg", "cooldown", "botPerm" and "userPerm" are passed...
+	Because the commands are all loaded from external files, "bot", "msg", "cooldown", "botPerm", "userPerm", and "chalk" are passed...
 	...to every command by default, whether used by the command or not. Other necessary packages are defined in the command files.
 	Packages not needed for the base file (this one) are only defined in the commands that need them.
 	*/ 
