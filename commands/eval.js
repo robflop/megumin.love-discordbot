@@ -36,7 +36,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 
       	// If the evaled object does not have an output, that means the message has not been edited yet
     	// So we push to the logs array which gets prepended in the then() or catch()
-        if (!evaled.output) return logs.push(...cleaned);
+        if (!evaled.output) return void logs.push(...cleaned);
 
       	// If it is after we evaled, i.e. setTimeout(), then we do this
       	// The evaled.output has the thing that will be printed to it appended to it, so it persists throughout prints
