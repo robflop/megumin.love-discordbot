@@ -12,9 +12,17 @@ bot.once('ready', () => { // Ready message once bot is loaded
 	Events.ready(bot, chalk);
 });
 
-bot.on('error', () => { // Listen to errors
-	Events.error(bot, chalk);
-}); 
+bot.on('error', error => { // Listen to errors
+	Events.error(bot, error, chalk);
+});
+
+bot.on('disconnect', error => { // Listen to disconnects
+	Events.disconnect(bot, error, chalk);
+});
+
+bot.on('reconnecting', () => { // Listen to reconnects
+	Events.reconnecting(bot, chalk);
+});
 
 bot.on('guildCreate', guild => { // Listen to joins
 	Events.join(bot, guild, chalk);
