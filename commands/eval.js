@@ -30,7 +30,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
   	// This is put here instead of outside the command execution because we need a reference to the message and other things
     const print = (...a) => { // ...a means all arguments
         const cleaned = a.map(o => {
-            if (typeof o !== 'string') o = util.inspect(o); // Turn to string
+            if (typeof o !== 'string') o = util.inspect(o, {depth: 0}); // Turn to string
             return o.replace(tokenRegex, '[TOKEN]'); // Replace tokens
         });
 
@@ -48,7 +48,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
     };
 
     var result; // Define result placeholder
-    console.log(msg.content.substring(config.commandPrefix.length + command.length + 2, msg.content.indexOf('"')).trim())
+
     if(msg.content.substring(config.commandPrefix.length + command.length + 2, msg.content.indexOf('"')).trim() == "async") {
         result = new Promise(resolve => resolve(eval(`(async () => { ${input} })()`)));
         // This version is wrapped in an async function
@@ -60,16 +60,15 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
         result = new Promise(resolve => resolve(eval(input)));
         // Non-async promise, no need to return everything manually
     }
+    
     const cb = '```'; // Shortcut for codeblock syntax
   
   	return result.then(output => {
-        if (typeof output !== 'string') output = util.inspect(output); // Inspect to turn to string if not one
+        if (typeof output !== 'string') output = util.inspect(output, {depth: 0}); // Inspect to turn to string if not one
         output = `${logs.join('\n')}\n${logs.length && output === 'undefined' ? '' : output}`; // Prepend the logs to the output with a check for undefined to make things prettier
         output = output.replace(tokenRegex, '[TOKEN]'); // Replace tokens
 
-        if (output.length + input.length > 1900) output = 'Output too long.'; // Make sure output fits
-
-        return msg.channel.sendMessage(`📥\u2000**Input**${cb}js\n${input}\n${cb}\n📤\u2000**Output**${cb}js\n${output}\n${cb}`).then(message => { // Edit message
+        return msg.channel.sendMessage(`📥\u2000**Input**${cb}js\n${input}\n${cb}\n📤\u2000**Output**${cb}js\n${output}\n${cb}`, {split: {prepend: "\`\`\`js\n", append: "\`\`\`\n"}}).then(message => { // Edit message
             evaled.errored = false; // Did not error
             evaled.output = output; // Save output for later
             evaled.message = message; // Save msg to edit later
