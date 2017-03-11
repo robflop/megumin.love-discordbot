@@ -13,20 +13,20 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 		config.profileLog,
 		config.ignoreLog
 	];
-	if (cooldown.onCooldown(msg.author.id, msg)) return; 
+	if (cooldown.onCooldown(msg.author.id, msg)) return;
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
-	if(msg.author.id !== config.ownerID) { 
+	if(msg.author.id !== config.ownerID) {
 	// If the user is not authorized...
-		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
+		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 		// ...notify the user and abort command execution.
 	};
-	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2); 
+	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
 	// Cut out the argument of the command
-	var file = ""; 
+	var file = "";
 	// Placeholder for file to read
-	if (possibleLogs.indexOf(arg) > -1) { 
+	if (possibleLogs.indexOf(arg) > -1) {
 	// If argument is a valid filename,...
-		file = possibleLogs[possibleLogs.indexOf(arg)]; 
+		file = possibleLogs[possibleLogs.indexOf(arg)];
 		// ...then set file to the given filename.
 	}
 	else {
@@ -34,13 +34,13 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 		return msg.author.sendMessage(`Not a configured log file. Valid logs are: ${possibleLogs.join(", ")}`);
 		// ...notify the user and abort command execution.
 	}
-	fs.readFile(`${config.logPath + file}`, "utf-8", (error, data) => { 
+	fs.readFile(`${config.logPath + file}`, "utf-8", (error, data) => {
 	// Read the given argument file from the default log path
 		if(error) {
 		// If an error occurs...
-			msg.author.sendMessage(`An error has occured: \`\`\`${error}\`\`\``); 
+			msg.author.sendMessage(`An error has occured: \`\`\`${error}\`\`\``);
 			// ...notify the user of the error...
-			return fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server, but an error occurred!`); 
+			return fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server, but an error occurred!`);
 			// ...log the command use plus the error and abort command execution.
 		};
 		// If there is no error...

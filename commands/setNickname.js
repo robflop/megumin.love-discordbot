@@ -6,20 +6,20 @@ const moment = require('moment'); // Part of log writing
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
 	var command = "setNickname"; // For logging purposes
-	if (cooldown.onCooldown(msg.author.id, msg)) return; 
+	if (cooldown.onCooldown(msg.author.id, msg)) return;
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) {
 	// If the user is not the bot owner and does not have kick or ban permissions...
-		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
+		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 		// ...notify the user that they are not authorized and abort command execution.
 	};
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	// Define timestamp
 	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
-	/* 
-	Cut off the command part of the message and set the bot's nickname on the server the command is called on. 
+	/*
+	Cut off the command part of the message and set the bot's nickname on the server the command is called on.
 	INFO: The additional 2 spaces added are the whitespaces between one, the prefix and the command, and two, between the command and the argument.
-	Example: "robbot, setNickname test" -> cut out the length of the prefix and " setNickname ". 
+	Example: "robbot, setNickname test" -> cut out the length of the prefix and " setNickname ".
 	*/
 	if(msg.content.length == config.commandPrefix.length + command.length + 1) {
 	// If there is no argument (only prefix and command)...
@@ -27,9 +27,9 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 		// ...notify the user and abort command execution.
 	};
 	// If there is an argument given,...
-	msg.guild.member(bot.user).setNickname(arg); 
+	msg.guild.member(bot.user).setNickname(arg);
 	// ...then set the bot's nickname to the argument...
-	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][NICKNAME] ${msg.author.username}#${msg.author.discriminator} set ${bot.user.username}'s nickname to '${arg}' on the '${msg.guild}' server!`); 
+	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][NICKNAME] ${msg.author.username}#${msg.author.discriminator} set ${bot.user.username}'s nickname to '${arg}' on the '${msg.guild}' server!`);
 	// ...and log command use, when and by whom.
 	console.log(`[${timestamp}]${chalk.magenta("[NICKNAME]")} ${bot.user.username}'s nickname set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	msg.reply(`successfully set my nickname to '${arg}' ! \n(May not have worked if the bot isn't allowed to set its own nickname)`);

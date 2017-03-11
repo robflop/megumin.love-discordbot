@@ -5,12 +5,12 @@ const moment = require('moment'); // Part of log writing
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command function
 	var command = "info"; // For logging purposes
-	if(!botPerm.hasPermission('SEND_MESSAGES')) {  
+	if(!botPerm.hasPermission('SEND_MESSAGES')) {
 	// If the bot can't send to the channel...
-		return msg.author.sendMessage("I can't send messages to that channel!"); 
+		return msg.author.sendMessage("I can't send messages to that channel!");
 		// ...PM the user and abort command execution.
 	};
-	if (cooldown.onCooldown(msg.author.id, msg)) return; 
+	if (cooldown.onCooldown(msg.author.id, msg)) return;
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	var embed = new Discord.RichEmbed();
 	// Define embed as new RichEmbed placeholder
@@ -21,7 +21,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	// If the argument "list" is called...
 		if(msg.author.id !== config.ownerID) {
 		// ...and if the user is not authorized...
-		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));  
+		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 		// ...notify the user and abort command execution.
 		};
 		return msg.channel.sendMessage(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});

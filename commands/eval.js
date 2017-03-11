@@ -3,7 +3,7 @@ const util = require('util'); // For turning objects etc to strings
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
     var command = "eval";
-    if (cooldown.onCooldown(msg.author.id, msg)) return; 
+    if (cooldown.onCooldown(msg.author.id, msg)) return;
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
     if(msg.author.id !== config.ownerID) {
 		// If the user is not authorized...
@@ -16,17 +16,17 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
     // Define eval input out of the message content
     if(input == '' || input == '"' || input == '""') {msg.channel.sendMessage("No input given.").then(msg => msg.delete(2000)); return;};
     // If input is empty or none was given, notify user and set auto-delete to 2s.
-    
+
     /*
     Credit for all of the below goes to 1Computer1 on GitHub
     ily ❤ - from comp
     */
-  
+
 	const evaled = {}; // Stores outputs
     const logs = []; // Stores logs
 
     const tokenRegex = new RegExp(bot.token.replace(/\./g, '\\.').split('').join('.?'), 'g'); // Regex for tokens
-  
+
   	// This is put here instead of outside the command execution because we need a reference to the message and other things
     const print = (...a) => { // ...a means all arguments
         const cleaned = a.map(o => {
@@ -60,9 +60,9 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
         result = new Promise(resolve => resolve(eval(input)));
         // Non-async promise, no need to return everything manually
     }
-    
+
     const cb = '```'; // Shortcut for codeblock syntax
-  
+
   	return result.then(output => {
         if (typeof output !== 'string') output = util.inspect(output, {depth: 0}); // Inspect to turn to string if not one
         output = `${logs.join('\n')}\n${logs.length && output === 'undefined' ? '' : output}`; // Prepend the logs to the output with a check for undefined to make things prettier

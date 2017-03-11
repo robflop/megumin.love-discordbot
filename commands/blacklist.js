@@ -5,20 +5,20 @@ const blacklist = require('../serverconf/blacklist.json'); // Load object of ign
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Export command's function
     var command = "blacklist"; // For logging purposes
-	if (cooldown.onCooldown(msg.author.id, msg)) return; 
+	if (cooldown.onCooldown(msg.author.id, msg)) return;
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	if(msg.author.id !== config.ownerID) {
 	// If the user is not the bot owner and does not have kick or ban permissions...
-		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000)); 
+		return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 		// ...notify the user that they are not authorized and abort command execution.
 	};
     var guildID = msg.content.substring(config.commandPrefix.length + command.length + 2);
 	// Define the guildID argument out of the message content
-	var toFind; 
+	var toFind;
     // Define the toFind placeholder
     var index = blacklist.indexOf(guildID);
     // Define the index of the to-be-blacklisted's guildID within the blacklist
-	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss'); 
+	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	// Define timestamp
 	if(guildID.startsWith("find")) {
 	// If the guildID argument starts with "find", use the index to notify the user if an ID is on the blacklist
@@ -36,11 +36,11 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
     // If the guildID is not on the blacklist...
 			blacklist.push(guildID);
 			// ...push the guildID into the blacklist...
-			fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist)); 
+			fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
 			// ...save the array to the file...
 			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully added a server to the blacklist.`);
 			// ...log command use, when and by whom...
-			msg.reply(`ID '${guildID}' is now blacklisted!`); 
+			msg.reply(`ID '${guildID}' is now blacklisted!`);
 			// ...and notify user of the successful addition.
 	}
 	else {

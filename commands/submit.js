@@ -5,7 +5,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 		return msg.author.sendMessage("I can't send messages to that channel!");
 		// ...PM the user and abort command execution.
 	}
-	if (cooldown.onCooldown(msg.author.id, msg)) return; 
+	if (cooldown.onCooldown(msg.author.id, msg)) return;
 	// Check for cooldown, if on cooldown notify user of it and abort command execution
 	msg.reply("Want to submit a sound for the website/bot? No problem, send me an email at `me@robflop.pw` including your cropped mp3/aac/ogg sound file or contact me on discord at robflop#2174! All sounds need to fit the website's theme.");
 };
