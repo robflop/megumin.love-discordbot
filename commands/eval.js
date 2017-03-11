@@ -68,7 +68,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
         output = `${logs.join('\n')}\n${logs.length && output === 'undefined' ? '' : output}`; // Prepend the logs to the output with a check for undefined to make things prettier
         output = output.replace(tokenRegex, '[TOKEN]'); // Replace tokens
 
-        return msg.channel.sendMessage(`📥\u2000**Input**${cb}js\n${input}\n${cb}\n📤\u2000**Output**${cb}js\n${output}\n${cb}`, {split: {prepend: "\`\`\`js\n", append: "\`\`\`\n"}}).then(message => { // Edit message
+        return msg.channel.sendMessage(`📥\u2000**Input**${cb}js\n${input}\n${cb}\n📤\u2000**Output**${cb}js\n${output}\n${cb}`).then(message => { // Edit message
             evaled.errored = false; // Did not error
             evaled.output = output; // Save output for later
             evaled.message = message; // Save msg to edit later
