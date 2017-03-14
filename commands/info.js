@@ -31,6 +31,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 	// If the argument "this" is called...
 		var arg = "this";
 		embed.setAuthor(`Overview for '${msg.guild.name}'`, msg.guild.iconURL)
+			 .setColor((Math.random() * 10e4).toFixed(5))
 			 .addField("Users", msg.guild.memberCount, true)
 			 .addField("Channels", msg.guild.channels.size, true)
 			 .addField("Owner", msg.guild.owner.displayName, true)
@@ -53,17 +54,19 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) { // Expor
 		if(typeof user == 'string') { msg.reply("user not found!").then(msg => msg.delete(2000)); return; }
 		// If no user was matched (input is still a string), abort command execution
 		embed.setAuthor(`Overview for '${user.displayName}#${user.user.discriminator}'`, user.user.avatarURL)
-		 .addField("Username", user.user.username, true)
-		 .addField("Nickname", user.nickname, true)
-		 .addField("UserID", user.user.id, true)
-		 .addField("Join date", moment(user.joinedAt).format("DD/MM/YY"), true)
-		 .addField("Creation date", moment(user.user.createdAt).format("DD/MM/YY"), true)
-		 .addField("Roles", user.roles.array().join(", "), true);
+			 .setColor((Math.random() * 10e4).toFixed(5))
+		 	 .addField("Username", user.user.username, true)
+		 	 .addField("Nickname", user.nickname, true)
+		 	 .addField("UserID", user.user.id, true)
+		 	 .addField("Join date", moment(user.joinedAt).format("DD/MM/YY"), true)
+		 	 .addField("Creation date", moment(user.user.createdAt).format("DD/MM/YY"), true)
+		 	 .addField("Roles", user.roles.array().join(", "), true);
 		// Set the embed properties
 		return msg.channel.sendEmbed(embed);
 		// Send the embed and abort command execution to prevent lower code execution
 	};
 	embed.setAuthor("robbot Status Overview", bot.user.avatarURL)
+		 .setColor((Math.random() * 10e4).toFixed(5))
 		 .addField("Total Servers", bot.guilds.size, true)
 		 .addField("Total Users", bot.users.size, true)
 		 .addField("Total TextChannels", bot.channels.filter((channel)=>{return channel.type == "text"}).size, true)
