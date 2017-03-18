@@ -14,7 +14,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 		var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 		request.post(
 			{ headers: { 'Authorization': `${config.discordBotsAPI}`, 'Content-type': 'application/json; charset=utf-8' },
-				url: `https://bots.discord.pw/api/bots/${bot.user.id}/stats`, 
+				url: `https://bots.discord.pw/api/bots/${bot.user.id}/stats`,
 				body: `{"server_count": ${bot.guilds.size}}`
 			},
 			function (error, response, body) {
