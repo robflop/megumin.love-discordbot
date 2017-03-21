@@ -1,7 +1,7 @@
 const config = require('../config.json');
 const fs = require('fs');
-const serverConfig = require('../serverconfig_handler.js');
-var Commands = require('../command_handler.js');
+const serverConfig = require('../serverconfigHandler.js');
+var Commands = require('../commandHandler.js');
 /*
 INFO: The toggle command goes into effect whether the bot can send the confirmation message or not.
 */

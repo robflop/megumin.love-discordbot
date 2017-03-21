@@ -2,7 +2,7 @@ const config = require('../config.json');
 const request = require('request');
 const fs = require('fs');
 const moment = require('moment');
-const history = require('../counter_history.json');
+const history = require('../counterHistory.json');
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "counter";
@@ -11,7 +11,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "history") {
 	// history arg
-		return fs.readFile("counter_history.json", "utf-8", (error, data) => {
+		return fs.readFile("counterHistory.json", "utf-8", (error, data) => {
 			if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
 			else msg.channel.send(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${JSON.parse(data).join("\n")}\`\`\``,  {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 		});
@@ -27,7 +27,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 			newCounter = `${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} ${moment().format('HH:mm')} ${moment().format('DD/MM/YY')}`;
 			// format counter to x.xxx.xxx
 			history.push(newCounter);
-			fs.writeFile("counter_history.json", JSON.stringify(history), "utf-8", (error, data) => {
+			fs.writeFile("counterHistory.json", JSON.stringify(history), "utf-8", (error, data) => {
 				if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
 				else msg.channel.send(`New entry successfully added: \`\`${newCounter}\`\``);
 			});
@@ -37,7 +37,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	// revert arg
 		if(msg.author.id !== config.ownerID) return msg.channel.send("You are not authorized to modify the counter history!");
 		history.pop();
-		return fs.writeFile("counter_history.json", JSON.stringify(history), "utf-8", (error, data) => {
+		return fs.writeFile("counterHistory.json", JSON.stringify(history), "utf-8", (error, data) => {
 			if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
 			else msg.channel.send("Latest history entry successfully removed.");
 		});

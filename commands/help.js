@@ -1,6 +1,6 @@
 const config = require('../config.json');
-var Commands = require('../command_handler.js');
-var serverConfig = require('../serverconfig_handler.js');
+var Commands = require('../commandHandler.js');
+var serverConfig = require('../serverconfigHandler.js');
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "help";

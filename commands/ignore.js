@@ -1,7 +1,7 @@
 const config = require('../config.json');
 const fs = require('fs');
 const moment = require('moment');
-const ignoreLists = require('../ignore_handler.js');
+const ignoreLists = require('../ignoreHandler.js');
 /*
 INFO: The ignore command goes into effect whether the bot can send the confirmation message or not.
 */

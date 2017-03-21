@@ -3,10 +3,10 @@ const bot = new Discord.Client();
 const config = require('./config.json');
 const fs = require('fs');
 const chalk = require('chalk');
-var Events = require('./event_handler.js');
-var ignoreLists = require('./ignore_handler.js');
-var Commands = require('./command_handler.js');
-var serverConfig = require('./serverconfig_handler.js');
+var Events = require('./eventHandler.js');
+var ignoreLists = require('./ignoreHandler.js');
+var Commands = require('./commandHandler.js');
+var serverConfig = require('./serverconfigHandler.js');
 
 bot.once('ready', () => {
 	Events.ready(bot, chalk);
@@ -82,8 +82,8 @@ bot.on('message', msg => {
 			var cmdFile = Commands.commands[arg.toLowerCase()].filename;
 			delete require.cache[require.resolve(`./commands/${cmdFile}`)];
 			delete require.cache[require.resolve('./commands/help.js')];
-			delete require.cache[require.resolve('./command_handler.js')];
-			Commands = require('./command_handler.js');
+			delete require.cache[require.resolve('./commandHandler.js')];
+			Commands = require('./commandHandler.js');
 			// also reload help cmd to update output
 		}
 		catch(error) { return msg.reply(`error while reloading the '${arg}' command: \`\`\`${error}\`\`\`\n(Command may not exist, check for typos)`); };
