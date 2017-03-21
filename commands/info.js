@@ -3,22 +3,20 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const moment = require('moment');
 
-exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
 	var command = "info";
 	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var embed = new Discord.RichEmbed();
-	var arg = msg.content.substring(config.commandPrefix.length + command.length + 2);
-	if(arg.startsWith("server")) {
-	// server arg
-		var arg = "server";
+	var arg = msgArray[1];
+	if(arg == "server") {
+	// server arg"
 		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 		return msg.channel.send(`__**${client.user.username} is currently on the following servers:**__ \n\n${client.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});
 		// Send a list of the bot's current servers and the amount of their members
 	}
-	else if(arg.startsWith("this")) {
+	else if(arg == "this") {
 	// this arg
-		var arg = "this";
 		embed.setAuthor(`Overview for '${msg.guild.name}'`, msg.guild.iconURL)
 			.setColor((Math.random() * 10e4).toFixed(5))
 			.addField("Users", msg.guild.memberCount, true)
@@ -29,12 +27,11 @@ exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 			.addField("Region", msg.guild.region, true)
 		return msg.channel.send('', {embed: embed});
 	}
-	else if(arg.startsWith("user")) {
+	else if(arg == "user") {
 	// user arg
-		var arg = "user";
 		var user = msg.content.substring(msg.content.indexOf(arg)+arg.length+1);
 		if(user == "") return msg.reply("Specify a user to get info on!").then(msg => msg.delete(2000));
-		user = msg.guild.members.filter(m => m.user.username.startsWith(user) || m.displayName.startsWith(user)).first();
+		user = msg.guild.members.filter(m => m.user.username.toLowerCase().startsWith(user) || m.displayName.toLowerCase().startsWith(user)).first();
 		// reassign user string to filtered guildmember
 		if(typeof user == 'string') return msg.reply("user not found!").then(msg => msg.delete(2000));
 		// If no user was matched (input is still a string), abort command execution

@@ -6,7 +6,7 @@ const moment = require('moment');
 INFO: The POST command goes into action whether the confirmation mesage can be sent or not.
 Some messages will be PM'd if there is no send permission, some will not be sent at all if there is not.
 */
-exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
 	if(config.useDiscordBots) {
 		var command = "POST";
 		if(cooldown.onCooldown(msg.author.id, msg)) return;

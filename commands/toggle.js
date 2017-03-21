@@ -5,11 +5,11 @@ var Commands = require('../commandHandler.js');
 /*
 INFO: The toggle command goes into effect whether the bot can send the confirmation message or not.
 */
-exports.main = function(clientent, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
 	var command = "toggle";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2).toLowerCase();
+	var arg = msgArray[1].toLowerCase();
 	if(arg == "toggle" || arg == "help" || Object.keys(Commands.commands).indexOf(arg) == -1) return;
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`)) {
 		var index = serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(arg);

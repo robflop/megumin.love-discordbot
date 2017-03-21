@@ -30,13 +30,13 @@ let cooldown = {
 		} else {
 			if(config.ownerID == userID) return;
 			cooldown.users.add(userID);
-			setTimeout(function() { cooldown.users.delete(userID)}, (config.commandCooldown * 1000));
+			setTimeout(() => { cooldown.users.delete(userID)}, (config.commandCooldown * 1000));
 			return false;
 		}
 	}
 };
 
-setInterval(function () {
+setInterval(() => {
 	if(client.user.presence.game.name == `try '${config.commandPrefix} help' !`) {
 		client.user.setGame("on megumin.love");
 	}
@@ -47,6 +47,15 @@ setInterval(function () {
 	// leave untouched if neither of the default ones
 }, 300000);
 
+client.leave = function leaveGuild(id) {
+	return new Promise((resolve, reject) => {
+		const guild = client.guilds.get(id);
+		if(guild) resolve(guild.leave().then(guild => `Guild '${guild.name}' (${guild.id}) left!`));
+		else reject(`Guild with ID '${id}' could not be found!`);
+	});
+};
+// shortcut for making bot leave guilds
+
 const handleMsg = (msg) => {
 	if(msg.author.bot) return;
 	if(!msg.content.startsWith(config.commandPrefix)) return;
@@ -56,10 +65,11 @@ const handleMsg = (msg) => {
 	// ignored user check
 	const botPerm = msg.channel.permissionsFor(client.user);
 	const userPerm = msg.channel.permissionsFor(msg.member);
-	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0].toLowerCase();
+	var msgArray = msg.content.replace(config.commandPrefix, '').trim().split(' ');
+	var actualCmd = msgArray[0].toLowerCase();
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`) && serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(actualCmd) > -1) return;
 	// disabled commands check
-	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) Commands.commands[actualCmd].main(client, msg, cooldown, botPerm, userPerm, chalk);
+	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) Commands.commands[actualCmd].main(client, msg, msgArray, cooldown, botPerm, userPerm, chalk);
 	// run the command
 	if(actualCmd == "reload") {
 		if(cooldown.onCooldown(msg.author.id, msg)) return;

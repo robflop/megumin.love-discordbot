@@ -2,14 +2,14 @@ const config = require('../config.json');
 var Commands = require('../commandHandler.js');
 var serverConfig = require('../serverconfigHandler.js');
 
-exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
 	var command = "help";
 	var commandsExpl = [];
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var cmdList = Object.keys(Commands.commands);
 	if(serverConfig.serverConfig[`serverconf_${msg.guild.id}`] == undefined) serverConfig.serverConfig[`serverconf_${msg.guild.id}`] = [];
 	// If no config present, define empty config to avoid crashes
-	var arg = msg.content.substr(config.commandPrefix.length+command.length+2);
+	var arg = msgArray[1];
 	// possible arg to get help on a command
 	if(arg && cmdList.indexOf(arg) !== -1) return msg.author.send(`**__Syntax for '${arg}' is:__** \`\`\`${config.commandPrefix + " " + arg + " " + Commands.commands[arg].syntax}\`\`\``);
 	for(var i = 0; i < cmdList.length; i++) commandsExpl.push(`\`\`'${cmdList[i]}' -- ${Commands.commands[cmdList[i]].desc}\`\``);

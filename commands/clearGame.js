@@ -2,7 +2,7 @@ const fs = require('fs');
 const moment = require('moment');
 const config = require('../config.json');
 
-exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
 	var command = "clearGame";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));

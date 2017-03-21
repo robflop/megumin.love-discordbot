@@ -3,18 +3,18 @@ const fs = require('fs');
 const moment = require('moment');
 const blacklist = require('../serverconf/blacklist.json');
 
-exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
 	var command = "blacklist";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-	var guildID = msg.content.substring(config.commandPrefix.length + command.length + 2);
+	var guildID = msgArray[1];
 	var toFind;
 	var index = blacklist.indexOf(guildID);
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-	if(guildID.startsWith("find")) {
+	if(guildID == "find") {
 		guildID = "find";
 		// redefine to properly use below
-		toFind = msg.content.substring(msg.content.indexOf(guildID)+guildID.length+1);
+		toFind = msgArray[2];
 		index = blacklist.indexOf(toFind);
 		if(index == -1) return msg.reply(`Guild ID '${toFind}' was not found on the blacklist!`);
 		return msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);

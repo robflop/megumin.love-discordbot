@@ -1,7 +1,7 @@
 const config = require('../config.json');
 const util = require('util');
 
-exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
 	var command = "eval";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
@@ -38,7 +38,7 @@ exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 
 	var result;
 
-	if(msg.content.substring(config.commandPrefix.length + command.length + 2, msg.content.indexOf('"')).trim() == "async") result = new Promise(resolve => resolve(eval(`(async () => { ${input} })()`)));
+	if(msgArray[1] == "async") result = new Promise(resolve => resolve(eval(`(async () => { ${input} })()`)));
 	else result = new Promise(resolve => resolve(eval(input)));
     // Async and non-async versions
 	const cb = '```';
@@ -55,7 +55,7 @@ exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 			evaled.message = message;
 		});
 	}).catch(err => {
-		console.error(err);
+		// console.error(err);
 		err = err.toString();
 		err = `${logs.join('\n')}\n${logs.length && err === 'undefined' ? '' : err}`;
 		err = err.replace(tokenRegex, '[TOKEN]');

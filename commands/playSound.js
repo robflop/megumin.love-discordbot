@@ -3,7 +3,7 @@ const request = require('request');
 const fs = require('fs');
 const moment = require('moment');
 
-exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
 	var command = "playSound";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
@@ -32,7 +32,7 @@ exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 		};
 	});
 	var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "realname", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking", "lalala"];
-	var sound = msg.content.substr(config.commandPrefix.length + command.length + 2).toLowerCase();
+	var sound = msgArray[1].toLowerCase();
 	if(sounds.indexOf(sound) == -1) return msg.author.send(`Sound unavailable! Available sounds are: \`\`\`${sounds.join("\n")}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 	const voiceChannel = msg.member.voiceChannel;
 	voiceChannel.join().then(connection => {

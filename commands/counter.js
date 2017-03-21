@@ -4,19 +4,19 @@ const fs = require('fs');
 const moment = require('moment');
 const history = require('../counterHistory.json');
 
-exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
 	var command = "counter";
 	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "history") {
+	if(msgArray[1] == "history") {
 	// history arg
 		return fs.readFile("counterHistory.json", "utf-8", (error, data) => {
 			if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
 			msg.channel.send(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${JSON.parse(data).join("\n")}\`\`\``,  {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 		});
 	};
-	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "append") {
+	if(msgArray[1] == "append") {
 	// append arg
 		if(msg.author.id !== config.ownerID) return msg.channel.send("You are not authorized to modify the counter history!");
 		var newCounter = "";
@@ -33,7 +33,7 @@ exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 			});
 		});
 	};
-	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "revert" ) {
+	if(msgArray[1] == "revert" ) {
 	// revert arg
 		if(msg.author.id !== config.ownerID) return msg.channel.send("You are not authorized to modify the counter history!");
 		history.pop();
