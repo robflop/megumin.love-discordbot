@@ -22,13 +22,13 @@ exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 					console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when POSTing to the website -- Refer to request logs`);
 					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`);
 					if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send(`Error contacting the website, response code is undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
-					else return msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
+					return msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
 				};
 				if(error || response.statusCode !== 200) {
 					console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`);
 					if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
-					else return msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
+					return msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
 				};
 				fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST] POST request successfully sent! (${response.statusCode})`);
 				msg.reply('POST request sent successfully!');

@@ -11,7 +11,7 @@ exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][STATUS] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`);
 	console.log(`[${timestamp}]${chalk.magenta("[STATUS]")} ${client.user.username}'s game status reset! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
 	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Game status cleared! \n(May not have worked if ratelimit has been capped)");
-	else msg.reply("game status cleared! \n(May not have worked if ratelimit has been capped)");
+	msg.reply("game status cleared! \n(May not have worked if ratelimit has been capped)");
 };
 
 exports.desc = "clears the bot's playing status [Bot owner only]";

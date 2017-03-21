@@ -17,7 +17,7 @@ exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 		toFind = msg.content.substring(msg.content.indexOf(guildID)+guildID.length+1);
 		index = blacklist.indexOf(toFind);
 		if(index == -1) return msg.reply(`Guild ID '${toFind}' was not found on the blacklist!`);
-		else return msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);
+		return msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);
 	};
 	if(index == -1) {
 		blacklist.push(guildID);
