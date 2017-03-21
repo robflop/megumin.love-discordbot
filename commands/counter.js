@@ -6,60 +6,60 @@ const history = require('../counter_history.json');
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "counter";
-	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.sendMessage("I can't send messages to that channel!");
+	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "history") {
 	// history arg
 		return fs.readFile("counter_history.json", "utf-8", (error, data) => {
-			if(error) return msg.channel.sendMessage(`An error has occured: \`\`\`${error}\`\`\``);
-			else msg.channel.sendMessage(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${JSON.parse(data).join("\n")}\`\`\``,  {split: {prepend: "\`\`\`", append: "\`\`\`"}});
+			if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
+			else msg.channel.send(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${JSON.parse(data).join("\n")}\`\`\``,  {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 		});
 	};
 	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "append") {
 	// append arg
-		if(msg.author.id !== config.ownerID) return msg.channel.sendMessage("You are not authorized to modify the counter history!");
+		if(msg.author.id !== config.ownerID) return msg.channel.send("You are not authorized to modify the counter history!");
 		var newCounter = "";
 		// define placeholder
 		return request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) {
-			if(response == undefined) return msg.channel.sendMessage("Response undefined when getting the counter, command execution aborted.");
-			if(error || response.statusCode !== 200) return msg.channel.sendMessage(`An error has occured or the response code was not "200 OK": \`\`\`${error}\`\`\`\nCommand execution aborted.`);
+			if(response == undefined) return msg.channel.send("Response undefined when getting the counter, command execution aborted.");
+			if(error || response.statusCode !== 200) return msg.channel.send(`An error has occured or the response code was not "200 OK": \`\`\`${error}\`\`\`\nCommand execution aborted.`);
 			newCounter = `${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} ${moment().format('HH:mm')} ${moment().format('DD/MM/YY')}`;
 			// format counter to x.xxx.xxx
 			history.push(newCounter);
 			fs.writeFile("counter_history.json", JSON.stringify(history), "utf-8", (error, data) => {
-				if(error) return msg.channel.sendMessage(`An error has occured: \`\`\`${error}\`\`\``);
-				else msg.channel.sendMessage(`New entry successfully added: \`\`${newCounter}\`\``);
+				if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
+				else msg.channel.send(`New entry successfully added: \`\`${newCounter}\`\``);
 			});
 		});
 	};
 	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "revert" ) {
 	// revert arg
-		if(msg.author.id !== config.ownerID) return msg.channel.sendMessage("You are not authorized to modify the counter history!");
+		if(msg.author.id !== config.ownerID) return msg.channel.send("You are not authorized to modify the counter history!");
 		history.pop();
 		return fs.writeFile("counter_history.json", JSON.stringify(history), "utf-8", (error, data) => {
-			if(error) return msg.channel.sendMessage(`An error has occured: \`\`\`${error}\`\`\``);
-			else msg.channel.sendMessage("Latest history entry successfully removed.");
+			if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
+			else msg.channel.send("Latest history entry successfully removed.");
 		});
 	};
 	request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) {
 		if(response == undefined) {
 			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when GETting the counter -- Refer to request logs`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`);
-			if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.sendMessage("Error contacting the website, response code is undefined. Please refer to request logs.");
+			if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is undefined. Please refer to request logs.");
 			else return msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
 		};
 		if(error || response.statusCode !== 200) {
 			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`);
 			// ...log the unusual request responses/errors...
-			if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.sendMessage("Error contacting the website, response code is not 200 (OK) or an error occurred. request logs.");
+			if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is not 200 (OK) or an error occurred. request logs.");
 			else return msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
 		};
-		if(body % 1000000 == 0) return msg.channel.sendMessage(`Current https://megumin.love count is: 🎊🎉 **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}** 🎉🎊`);
-		else if(body % 100000 == 0) return msg.channel.sendMessage(`Current https://megumin.love count is: 🎉 **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}** 🎉`);
+		if(body % 1000000 == 0) return msg.channel.send(`Current https://megumin.love count is: 🎊🎉 **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}** 🎉🎊`);
+		else if(body % 100000 == 0) return msg.channel.send(`Current https://megumin.love count is: 🎉 **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}** 🎉`);
 		// special versions for 1mil and 100k marks
-		else msg.channel.sendMessage(`Current https://megumin.love count is: **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}**`);
+		else msg.channel.send(`Current https://megumin.love count is: **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}**`);
 	});
 };
 

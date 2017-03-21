@@ -62,7 +62,7 @@ setInterval(function () {
 bot.on('message', msg => {
 	if(msg.author.bot) return;
 	if(!msg.content.startsWith(config.commandPrefix)) return;
-	if(msg.channel.type !== "text") return msg.channel.sendMessage("Commands via (Group) DM not supported, sorry.");
+	if(msg.channel.type !== "text") return msg.channel.send("Commands via (Group) DM not supported, sorry.");
 	if(msg.content == config.commandPrefix) return;
 	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`) && ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(`${msg.author.id}`) > -1) return;
 	// ignored user check

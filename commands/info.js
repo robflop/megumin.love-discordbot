@@ -5,7 +5,7 @@ const moment = require('moment');
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "info";
-	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.sendMessage("I can't send messages to that channel!");
+	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var embed = new Discord.RichEmbed();
 	var arg = msg.content.substring(config.commandPrefix.length + command.length + 2);
@@ -13,7 +13,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	// server arg
 		var arg = "server";
 		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-		return msg.channel.sendMessage(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});
+		return msg.channel.send(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});
 		// Send a list of the bot's current servers and the amount of their members
 	}
 	else if(arg.startsWith("this")) {
@@ -27,7 +27,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 			.addField("Roles", msg.guild.roles.size, true)
 			.addField("Server ID", msg.guild.id, true)
 			.addField("Region", msg.guild.region, true)
-		return msg.channel.sendEmbed(embed);
+		return msg.channel.send('', {embed: embed});
 	}
 	else if(arg.startsWith("user")) {
 	// user arg
@@ -46,7 +46,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 			.addField("Join date", moment(user.joinedAt).format("DD/MM/YY"), true)
 			.addField("Creation date", moment(user.user.createdAt).format("DD/MM/YY"), true)
 			.addField("Roles", user.roles.array().join(", "), true);
-		return msg.channel.sendEmbed(embed);
+		return msg.channel.send('', {embed: embed});
 	};
 	embed.setAuthor("robbot Status Overview", bot.user.avatarURL)
 		.setColor((Math.random() * 10e4).toFixed(5))
@@ -56,7 +56,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 		.addField("Total VoiceChannels", bot.channels.filter((channel)=>{return channel.type == "voice"}).size, true)
 		.addField("Bot Ping", Math.round(bot.ping)+"ms", true)
 		.addField("Bot Uptime", moment.duration(bot.uptime).humanize(), true)
-	msg.channel.sendEmbed(embed);
+	msg.channel.send('', {embed: embed});
 };
 
 exports.desc = "get an Overview of robbot's Server status";

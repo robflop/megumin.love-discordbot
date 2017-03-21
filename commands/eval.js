@@ -5,9 +5,9 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "eval";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-	if(!config.eval) return msg.channel.sendMessage('Eval has been disabled in the config.').then(msg => msg.delete(2000));
+	if(!config.eval) return msg.channel.send('Eval has been disabled in the config.').then(msg => msg.delete(2000));
 	var input = msg.content.substring(msg.content.indexOf('"')+1, msg.content.lastIndexOf('"'));
-	if(input == '' || input == '"' || input == '""') return msg.channel.sendMessage("No input given.").then(msg => msg.delete(2000));
+	if(input == '' || input == '"' || input == '""') return msg.channel.send("No input given.").then(msg => msg.delete(2000));
     /*
     Credit for all of the below goes to 1Computer1 on GitHub
     ily ❤ - from comp
@@ -49,7 +49,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
         // Prepend the logs to the output with a check for undefined to make things prettier
 		output = output.replace(tokenRegex, '[TOKEN]');
 
-		return msg.channel.sendMessage(`📥\u2000**Input**${cb}js\n${input}\n${cb}\n📤\u2000**Output**${cb}js\n${output}\n${cb}`).then(message => {
+		return msg.channel.send(`📥\u2000**Input**${cb}js\n${input}\n${cb}\n📤\u2000**Output**${cb}js\n${output}\n${cb}`).then(message => {
 			evaled.errored = false;
 			evaled.output = output;
 			evaled.message = message;
@@ -60,7 +60,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 		err = `${logs.join('\n')}\n${logs.length && err === 'undefined' ? '' : err}`;
 		err = err.replace(tokenRegex, '[TOKEN]');
 
-		return msg.channel.sendMessage(`📥\u2000**Input**${cb}js\n${input}\n${cb}\n☠\u2000**Error**${cb}js\n${err}\n${cb}`).then(() => {
+		return msg.channel.send(`📥\u2000**Input**${cb}js\n${input}\n${cb}\n☠\u2000**Error**${cb}js\n${err}\n${cb}`).then(() => {
 			evaled.errored = true;
 			evaled.output = err;
 		});
