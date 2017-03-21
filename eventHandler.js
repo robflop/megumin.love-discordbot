@@ -17,7 +17,6 @@ module.exports = {
 	"disconnect": function disconnect(client, error, chalk) {
 		timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 		console.log(`[${timestamp}]${chalk.red("[CONNECTION]")} ${client.user.username} was disconnected! | ${error.code}`);
-		console.log(`client.status output: ${client.status}`);
 		if(error.code == 1000) {
 			console.log(`[${timestamp}]${chalk.green("[POWER]")} Automatically restarting...`);
 			client.destroy().then(() => client.login(config.token));
