@@ -3,7 +3,7 @@ const fs = require('fs');
 const moment = require('moment');
 const blacklist = require('../serverconf/blacklist.json');
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "blacklist";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));

@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const bot = new Discord.Client();
+const client = new Discord.Client();
 const config = require('./config.json');
 const fs = require('fs');
 const chalk = require('chalk');
@@ -8,29 +8,17 @@ var ignoreLists = require('./ignoreHandler.js');
 var Commands = require('./commandHandler.js');
 var serverConfig = require('./serverconfigHandler.js');
 
-bot.once('ready', () => {
-	Events.ready(bot, chalk);
-});
+client.once('ready', () => { Events.ready(client, chalk); });
 
-bot.on('error', error => {
-	Events.error(bot, error, chalk);
-});
+client.on('error', error => { Events.error(client, error, chalk); });
 
-bot.on('disconnect', error => {
-	Events.disconnect(bot, error, chalk);
-});
+client.on('disconnect', error => { Events.disconnect(client, error, chalk); });
 
-bot.on('reconnecting', () => {
-	Events.reconnecting(bot, chalk);
-});
+client.on('reconnecting', () => { Events.reconnecting(client, chalk); });
 
-bot.on('guildCreate', guild => {
-	Events.join(bot, guild, chalk);
-});
+client.on('guildCreate', guild => { Events.join(client, guild, chalk); });
 
-bot.on('guildDelete', guild => {
-	Events.leave(bot, guild, chalk);
-});
+client.on('guildDelete', guild => { Events.leave(client, guild, chalk); });
 
 let cooldown = {
 // Cooldown function courtesy of u/pilar6195 on reddit
@@ -49,29 +37,29 @@ let cooldown = {
 };
 
 setInterval(function () {
-	if(bot.user.presence.game.name == `try '${config.commandPrefix} help' !`) {
-		bot.user.setGame("on megumin.love");
+	if(client.user.presence.game.name == `try '${config.commandPrefix} help' !`) {
+		client.user.setGame("on megumin.love");
 	}
-	else if(bot.user.presence.game.name == "on megumin.love") {
-		bot.user.setGame(`try '${config.commandPrefix} help' !`);
+	else if(client.user.presence.game.name == "on megumin.love") {
+		client.user.setGame(`try '${config.commandPrefix} help' !`);
 	}
 	else return;
 	// leave untouched if neither of the default ones
 }, 300000);
 
-bot.on('message', msg => {
+const handleMsg = (msg) => {
 	if(msg.author.bot) return;
 	if(!msg.content.startsWith(config.commandPrefix)) return;
 	if(msg.channel.type !== "text") return msg.channel.send("Commands via (Group) DM not supported, sorry.");
 	if(msg.content == config.commandPrefix) return;
 	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`) && ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(`${msg.author.id}`) > -1) return;
 	// ignored user check
-	const botPerm = msg.channel.permissionsFor(bot.user);
+	const botPerm = msg.channel.permissionsFor(client.user);
 	const userPerm = msg.channel.permissionsFor(msg.member);
 	var actualCmd = msg.content.replace(config.commandPrefix, '').trim().split(' ')[0].toLowerCase();
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`) && serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(actualCmd) > -1) return;
 	// disabled commands check
-	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) Commands.commands[actualCmd].main(bot, msg, cooldown, botPerm, userPerm, chalk);
+	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) Commands.commands[actualCmd].main(client, msg, cooldown, botPerm, userPerm, chalk);
 	// run the command
 	if(actualCmd == "reload") {
 		if(cooldown.onCooldown(msg.author.id, msg)) return;
@@ -90,10 +78,13 @@ bot.on('message', msg => {
 		msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
 	};
 	return; // Just in case, return empty for anything else.
-});
+};
 
-process.on("unhandledRejection", err => {
-	console.error("Uncaught Promise Error: \n" + err.stack);
-});
+client.on('message', msg => { handleMsg(msg); });
 
-bot.login(config.token);
+client.on('messageUpdate', (oldMsg, newMsg) => { handleMsg(newMsg); });
+// commands are untested for usage when edited into messages
+
+process.on("unhandledRejection", err => { console.error("Uncaught Promise Error: \n" + err.stack); });
+
+client.login(config.token);

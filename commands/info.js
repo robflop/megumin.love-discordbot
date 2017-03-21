@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const moment = require('moment');
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "info";
 	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
@@ -13,7 +13,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	// server arg
 		var arg = "server";
 		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-		return msg.channel.send(`__**${bot.user.username} is currently on the following servers:**__ \n\n${bot.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});
+		return msg.channel.send(`__**${client.user.username} is currently on the following servers:**__ \n\n${client.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});
 		// Send a list of the bot's current servers and the amount of their members
 	}
 	else if(arg.startsWith("this")) {
@@ -48,14 +48,14 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 			.addField("Roles", user.roles.array().join(", "), true);
 		return msg.channel.send('', {embed: embed});
 	};
-	embed.setAuthor("robbot Status Overview", bot.user.avatarURL)
+	embed.setAuthor("robbot Status Overview", client.user.avatarURL)
 		.setColor((Math.random() * 10e4).toFixed(5))
-		.addField("Total Servers", bot.guilds.size, true)
-		.addField("Total Users", bot.users.size, true)
-		.addField("Total TextChannels", bot.channels.filter((channel)=>{return channel.type == "text"}).size, true)
-		.addField("Total VoiceChannels", bot.channels.filter((channel)=>{return channel.type == "voice"}).size, true)
-		.addField("Bot Ping", Math.round(bot.ping)+"ms", true)
-		.addField("Bot Uptime", moment.duration(bot.uptime).humanize(), true)
+		.addField("Total Servers", client.guilds.size, true)
+		.addField("Total Users", client.users.size, true)
+		.addField("Total TextChannels", client.channels.filter((channel)=>{return channel.type == "text"}).size, true)
+		.addField("Total VoiceChannels", client.channels.filter((channel)=>{return channel.type == "voice"}).size, true)
+		.addField("Bot Ping", Math.round(client.ping)+"ms", true)
+		.addField("Bot Uptime", moment.duration(client.uptime).humanize(), true)
 	msg.channel.send('', {embed: embed});
 };
 

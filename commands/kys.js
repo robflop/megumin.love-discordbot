@@ -1,11 +1,11 @@
-exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	var command = "kys";
 	if(cooldown.onCooldown(msg.author.id) == true) return;
-	if(bot.user.presence.status == "invisible") { return; };
+	if(client.user.presence.status == "invisible") { return; };
 	msg.reply('kms');
-	bot.user.setStatus("invisible");
-	setTimeout(function() { bot.user.setStatus('online'); }, 120000);
+	client.user.setStatus("invisible");
+	setTimeout(function() { client.user.setStatus('online'); }, 120000);
 };
 
 exports.desc = "kms";

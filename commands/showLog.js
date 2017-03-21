@@ -2,7 +2,7 @@ const config = require('../config.json');
 const fs = require('fs');
 const moment = require('moment');
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "showLog";
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	var possibleLogs = [

@@ -2,7 +2,7 @@ const config = require('../config.json');
 var Commands = require('../commandHandler.js');
 var serverConfig = require('../serverconfigHandler.js');
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "help";
 	var commandsExpl = [];
 	if(cooldown.onCooldown(msg.author.id, msg)) return;

@@ -1,7 +1,7 @@
 const config = require('../config.json');
 const util = require('util');
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "eval";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
@@ -15,7 +15,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	const evaled = {}; // Stores outputs
 	const logs = []; // Stores logs
 
-	const tokenRegex = new RegExp(bot.token.replace(/\./g, '\\.').split('').join('.?'), 'g'); // Regex for tokens
+	const tokenRegex = new RegExp(client.token.replace(/\./g, '\\.').split('').join('.?'), 'g'); // Regex for tokens
 
 	// This is put here instead of outside the command execution because we need a reference to the message and other things
 	const print = (...a) => { // ...a means all arguments

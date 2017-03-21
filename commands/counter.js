@@ -4,7 +4,7 @@ const fs = require('fs');
 const moment = require('moment');
 const history = require('../counterHistory.json');
 
-exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "counter";
 	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
