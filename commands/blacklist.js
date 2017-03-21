@@ -4,12 +4,12 @@ const moment = require('moment');
 const blacklist = require('../serverconf/blacklist.json');
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
-    var command = "blacklist";
-	if (cooldown.onCooldown(msg.author.id, msg)) return;
+	var command = "blacklist";
+	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-    var guildID = msg.content.substring(config.commandPrefix.length + command.length + 2);
+	var guildID = msg.content.substring(config.commandPrefix.length + command.length + 2);
 	var toFind;
-    var index = blacklist.indexOf(guildID);
+	var index = blacklist.indexOf(guildID);
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(guildID.startsWith("find")) {
 		guildID = "find";
@@ -20,10 +20,10 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 		else return msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);
 	};
 	if(index == -1) {
-			blacklist.push(guildID);
-			fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
-			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully added a server to the blacklist.`);
-			msg.reply(`ID '${guildID}' is now blacklisted!`);
+		blacklist.push(guildID);
+		fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
+		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully added a server to the blacklist.`);
+		msg.reply(`ID '${guildID}' is now blacklisted!`);
 	}
 	else {
 		blacklist.splice(index, 1);

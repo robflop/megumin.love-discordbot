@@ -5,7 +5,7 @@ const moment = require('moment');
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "randomSound";
-	if (cooldown.onCooldown(msg.author.id, msg)) return;
+	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(!msg.member.voiceChannel) {
 		if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.sendMessage("Join a voice channel first!");

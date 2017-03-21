@@ -12,9 +12,6 @@ serverconf
 # ignore some files
 config.json
 
-# ignore vscode files
-.vscode
-
 # Runtime data
 pids
 *.pid

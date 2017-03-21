@@ -6,7 +6,7 @@ const moment = require('moment');
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "setAvatar";
-	if (cooldown.onCooldown(msg.author.id, msg)) return;
+	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
@@ -23,4 +23,4 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 };
 
 exports.desc = "change the bot's avatar [Bot owner only]";
-exports.syntax = "<url to a picture (png, jpg/jpeg, webp, gif (if nitro))>";
+exports.syntax = "<url to a picture (png, jpg/jpeg, webp, gif(if nitro))>";

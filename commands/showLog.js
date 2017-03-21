@@ -12,11 +12,11 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 		config.profileLog,
 		config.ignoreLog
 	];
-	if (cooldown.onCooldown(msg.author.id, msg)) return;
+	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
 	var file = "";
-	if (possibleLogs.indexOf(arg) > -1) file = possibleLogs[possibleLogs.indexOf(arg)];
+	if(possibleLogs.indexOf(arg) > -1) file = possibleLogs[possibleLogs.indexOf(arg)];
 	else return msg.author.sendMessage(`Not a configured log file. Valid logs are: ${possibleLogs.join(", ")}`);
 	fs.readFile(`${config.logPath + file}`, "utf-8", (error, data) => {
 		if(error) msg.author.sendMessage(`An error has occured: \`\`\`${error}\`\`\``).then(msg => fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][SHOWLOG] ${msg.author.username}#${msg.author.discriminator} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server, but an error occurred!`));

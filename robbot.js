@@ -34,18 +34,18 @@ bot.on('guildDelete', guild => {
 
 let cooldown = {
 // Cooldown function courtesy of u/pilar6195 on reddit
-    "users": new Set(),
-    "onCooldown": function(userID, msg) {
-        if (cooldown.users.has(userID)) {
+	"users": new Set(),
+	"onCooldown": function(userID, msg) {
+		if(cooldown.users.has(userID)) {
 			msg.reply(`calm down with the commands! Please wait ${config.commandCooldown} seconds.`).then(msg => msg.delete(3000));
-            return true;
-        } else {
-            if(config.ownerID == userID) return;
+			return true;
+		} else {
+			if(config.ownerID == userID) return;
 			cooldown.users.add(userID);
-            setTimeout(function() { cooldown.users.delete(userID)}, (config.commandCooldown * 1000));
+			setTimeout(function() { cooldown.users.delete(userID)}, (config.commandCooldown * 1000));
 			return false;
-        }
-    }
+		}
+	}
 };
 
 setInterval(function () {
@@ -74,7 +74,7 @@ bot.on('message', msg => {
 	if(Object.keys(Commands.commands).indexOf(actualCmd) > -1) Commands.commands[actualCmd].main(bot, msg, cooldown, botPerm, userPerm, chalk);
 	// run the command
 	if(actualCmd == "reload") {
-		if (cooldown.onCooldown(msg.author.id, msg)) return;
+		if(cooldown.onCooldown(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 		var arg = msg.content.substr(config.commandPrefix.length + actualCmd.length + 2);
 		if(arg == "") return msg.reply('specify a command to reload!');
@@ -85,7 +85,7 @@ bot.on('message', msg => {
 			delete require.cache[require.resolve('./command_handler.js')];
 			Commands = require('./command_handler.js');
 			// also reload help cmd to update output
-    	}
+		}
 		catch(error) { return msg.reply(`error while reloading the '${arg}' command: \`\`\`${error}\`\`\`\n(Command may not exist, check for typos)`); };
 		msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
 	};
@@ -93,7 +93,7 @@ bot.on('message', msg => {
 });
 
 process.on("unhandledRejection", err => {
-  console.error("Uncaught Promise Error: \n" + err.stack);
+	console.error("Uncaught Promise Error: \n" + err.stack);
 });
 
 bot.login(config.token);

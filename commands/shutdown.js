@@ -6,7 +6,7 @@ INFO: The shutdown command goes into effect whether the bot can send the confirm
 */
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "shutdown";
-	if (cooldown.onCooldown(msg.author.id, msg)) return;
+	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	msg.reply(`${bot.user.username} shutting down! Bye!`);

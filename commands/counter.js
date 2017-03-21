@@ -7,7 +7,7 @@ const history = require('../counter_history.json');
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "counter";
 	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.sendMessage("I can't send messages to that channel!");
-	if (cooldown.onCooldown(msg.author.id, msg)) return;
+	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msg.content.substr(config.commandPrefix.length + command.length + 2) == "history") {
 	// history arg

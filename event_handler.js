@@ -17,6 +17,7 @@ module.exports = {
 	"disconnect": function disconnect(bot, error, chalk) {
 		timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 		console.log(`[${timestamp}]${chalk.red("[CONNECTION]")} ${bot.user.username} was disconnected! | ${error.code}`);
+		console.log(`bot.status output: ${bot.status}`);
 		if(error.code == 1000) {
 			console.log(`[${timestamp}]${chalk.green("[POWER]")} Automatically restarting...`);
 			bot.destroy().then(() => bot.login(config.token));

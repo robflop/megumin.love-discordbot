@@ -5,7 +5,7 @@ const moment = require('moment');
 
 exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 	var command = "playSound";
-	if (cooldown.onCooldown(msg.author.id, msg)) return;
+	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(!msg.member.voiceChannel) {
 		if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.sendMessage("Join a voice channel first!");
@@ -31,7 +31,7 @@ exports.main = function(bot, msg, cooldown, botPerm, userPerm, chalk) {
 			else return msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
 		};
 	});
-    var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "realname", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking", "lalala"];
+	var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "realname", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking", "lalala"];
 	var sound = msg.content.substr(config.commandPrefix.length + command.length + 2).toLowerCase();
 	if(sounds.indexOf(sound) == -1) return msg.author.sendMessage(`Sound unavailable! Available sounds are: \`\`\`${sounds.join("\n")}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 	const voiceChannel = msg.member.voiceChannel;
