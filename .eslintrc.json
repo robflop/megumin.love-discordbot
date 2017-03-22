@@ -19,6 +19,8 @@
         "no-unused-vars": "off",
 		"no-extra-semi": "off",
 		"no-redeclare": "off",
-		"no-console": "off"
+		"no-console": "off",
+		"no-undef": "off",
+		"no-trailing-spaces": "error"
     }
 }
