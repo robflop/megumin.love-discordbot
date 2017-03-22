@@ -7,6 +7,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	var command = "blacklist";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+	if(!msgArray[1]) return msg.reply("specify an ID to blacklist");
 	var guildID = msgArray[1];
 	var toFind;
 	var index = blacklist.indexOf(guildID);
@@ -14,6 +15,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	if(guildID == "find") {
 		guildID = "find";
 		// redefine to properly use below
+		if(!msgArray[2]) return msg.reply("specify a guild ID to search for!");
 		toFind = msgArray[2];
 		index = blacklist.indexOf(toFind);
 		if(index == -1) return msg.reply(`Guild ID '${toFind}' was not found on the blacklist!`);

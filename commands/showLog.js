@@ -14,7 +14,8 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	];
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-	var arg = msg.content.substr(config.commandPrefix.length + command.length + 2);
+	if(!msgArray[1]) return msg.reply("specify a log file to view!");
+	var arg = msgArray[1];
 	var file = "";
 	if(possibleLogs.indexOf(arg) > -1) file = possibleLogs[possibleLogs.indexOf(arg)];
 	else return msg.author.send(`Not a configured log file. Valid logs are: ${possibleLogs.join(", ")}`);

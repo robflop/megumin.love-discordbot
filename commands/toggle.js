@@ -9,6 +9,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	var command = "toggle";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+	if(!msgArray[1]) return msg.reply("specify a command to toggle!");
 	var arg = msgArray[1].toLowerCase();
 	if(arg == "toggle" || arg == "help" || Object.keys(Commands.commands).indexOf(arg) == -1) return;
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`)) {
