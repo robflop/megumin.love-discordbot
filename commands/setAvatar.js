@@ -9,7 +9,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-	if(!msgArray[1]) return msg.reply("specify a picture (URL) to set the bot's avatar to!");
+	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a picture (URL) to set the bot's avatar to!");
 	var arg = msgArray[1];
 	if(!arg.startsWith("http")) {
 		if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Invalid URL!");

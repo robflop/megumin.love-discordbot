@@ -7,7 +7,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	if(!config.eval) return msg.channel.send('Eval has been disabled in the config.').then(msg => msg.delete(2000));
 	var input = msg.content.substring(msg.content.indexOf('"')+1, msg.content.lastIndexOf('"'));
-	if(input == '' || input == '"' || input == '""') return msg.channel.send("No input given.");
+	if(input == '' || input == '"' || input == '""') return msg.channel.send("No input given!").then(msg => msg.delete(2000));
     /*
     Credit for all of the below goes to 1Computer1 on GitHub
     ily ❤ - from comp

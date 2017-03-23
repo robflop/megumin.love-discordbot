@@ -12,7 +12,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	msgArray.shift(); // remove command call
 	var arg = msgArray.join(" "); // join the rest
 	if(msg.content.length == config.commandPrefix.length + command.length + 1) return msg.reply("specify a nickname to set the bot to!");
-	if(arg.length<2 || arg.length>32) return msg.reply("nickname must be longer than 2 characters and shorter than 32!");
+	if(arg.length<2 || arg.length>32) return msg.reply("nickname must be at least 2 characters long but shorter than 32!");
 	msg.guild.member(client.user).setNickname(arg);
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][NICKNAME] ${msg.author.username}#${msg.author.discriminator} set ${client.user.username}'s nickname to '${arg}' on the '${msg.guild}' server!`);
 	console.log(`[${timestamp}]${chalk.magenta("[NICKNAME]")} ${client.user.username}'s nickname set to '${arg}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);

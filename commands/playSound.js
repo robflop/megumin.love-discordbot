@@ -7,7 +7,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	var command = "playSound";
 	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-	if(!msgArray[1]) return msg.reply("specify a sound to play!");
+	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a sound to play!");
 	if(!msg.member.voiceChannel) {
 		if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Join a voice channel first!");
 		return msg.reply("join a voice channel first!");
@@ -33,11 +33,11 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 		};
 	});
 	var sounds = ["eugh1", "eugh2", "eugh3", "eugh4", "explosion", "itai", "n", "realname", "name", "plosion", "pull", "sion", "yamero", "magic-item", "parents", "hyoizaburo", "star", "oi", "igiari", "hmph", "zuryah", "whatsthis", "who", "yes", "yoroshii", "tropes", "truepower", "waah", "wellthanks", "oh", "shouganai", "sigh", "splat", "itscold", "ladiesfirst", "mywin", "nani", "dontwanna", "doushimashou", "friends", "hau", "isee", "bighug", "chomusuke", "comeatme", "dododo", "are", "aughh", "chomusukefaint", "ripchomusuke", "explosion2", "losion", "sion2", "n2", "hua", "thinking", "lalala", "chunchunmaru"];
-	var sound = msgArray[1].toLowerCase();
+	var sound = msgArray[1];
 	if(!sounds.includes(sound)) return msg.author.send(`Sound unavailable! Available sounds are: \`\`\`${sounds.join("\n")}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 	const voiceChannel = msg.member.voiceChannel;
 	voiceChannel.join().then(connection => {
-		const player = connection.playFile(`${config.soundPath + sound}.mp3`);
+		const player = connection.playFile(`${config.soundPath + sound.toLowerCase()}.mp3`);
 		connection.on('error', () => msg.reply('an error related to the voiceChannel connection itself occurred, sorry! (Try again, maybe?)').then(msg => voiceChannel.leave()));
 		player.on('end', () => voiceChannel.leave());
 		player.on('error', () => msg.reply('an error occurred playing the sound file, sorry! (Try again, maybe?)'));
