@@ -11,7 +11,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a command to toggle!");
 	var arg = msgArray[1].toLowerCase();
-	if(arg == "toggle" || arg == "help" || Object.keys(Commands.commands).indexOf(arg) == -1) return;
+	if(arg == "toggle" || arg == "help" || !Object.keys(Commands.commands).includes(arg)) return;
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`)) {
 		var index = serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(arg);
 		if(index == -1) {

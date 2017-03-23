@@ -9,8 +9,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify an ID to blacklist!");
 	var guildID = msgArray[1];
-	var toFind;
-	var index = blacklist.indexOf(guildID);
+	var toFind, index;
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(guildID == "find") {
 		guildID = "find";
@@ -21,7 +20,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 		if(index == -1) return msg.reply(`Guild ID '${toFind}' was not found on the blacklist!`);
 		return msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);
 	};
-	if(index == -1) {
+	if(!blacklist.includes(guildID)) {
 		blacklist.push(guildID);
 		fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
 		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully added a server to the blacklist.`);

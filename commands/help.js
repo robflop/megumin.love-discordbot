@@ -11,7 +11,7 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	// If no config present, define empty config to avoid crashes
 	var arg = msgArray[1];
 	// possible arg to get help on a command
-	if(arg && cmdList.indexOf(arg) !== -1) return msg.author.send(`**__Syntax for '${arg}' is:__** \`\`\`${config.commandPrefix + " " + arg + " " + Commands.commands[arg].syntax}\`\`\``);
+	if(arg && cmdList.includes(arg)) return msg.author.send(`**__Syntax for '${arg}' is:__** \`\`\`${config.commandPrefix + " " + arg + " " + Commands.commands[arg].syntax}\`\`\``);
 	for(var i = 0; i < cmdList.length; i++) commandsExpl.push(`\`\`'${cmdList[i]}' -- ${Commands.commands[cmdList[i]].desc}\`\``);
 	msg.author.send(`**__Available commands are:__**\n\n${commandsExpl.join("\n")}\n\n\`\`Use '${config.commandPrefix + " " + command} <commandname>' to get syntax help on a command!\`\`\n\n**Commands disabled on the \`\`${msg.guild.name}\`\` server are: ${serverConfig.serverConfig[`serverconf_${msg.guild.id}`].join(", ")}**`);
 };

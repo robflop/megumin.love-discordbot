@@ -29,14 +29,14 @@ module.exports = {
 	},
 	"join": function join(client, guild, chalk) {
 		timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-		if(blacklist.indexOf(guild.id) !== -1) return guild.leave();
+		if(blacklist.includes(guild.id)) return guild.leave();
 		// blacklist check
 		console.log(`[${timestamp}]${chalk.yellow("[GUILDS]")} ${client.user.username} has joined a new server! ("${guild.name}")`);
 		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][GUILDS] ${client.user.username} joined the '${guild.name}' server!`);
 	},
 	"leave": function leave(client, guild, chalk) {
 		timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-		if(blacklist.indexOf(guild.id) !== -1) return;
+		if(blacklist.includes(guild.id)) return;
 		// blacklist check
 		console.log(`[${timestamp}]${chalk.yellow("[GUILDS]")} ${client.user.username} has left a server! ("${guild.name}")`);
 		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][GUILDS] ${client.user.username} left the '${guild.name}' server!`);
