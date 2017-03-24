@@ -2,10 +2,9 @@ const config = require('../config.json');
 var Commands = require('../commandHandler.js');
 var serverConfig = require('../serverconfigHandler.js');
 
-exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, checks, chalk) {
 	var command = "help";
 	var commandsExpl = [];
-	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	var cmdList = Object.keys(Commands.commands);
 	if(serverConfig.serverConfig[`serverconf_${msg.guild.id}`] == undefined) serverConfig.serverConfig[`serverconf_${msg.guild.id}`] = [];
 	// If no config present, define empty config to avoid crashes

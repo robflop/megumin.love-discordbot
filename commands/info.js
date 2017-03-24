@@ -3,15 +3,14 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const moment = require('moment');
 
-exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, checks, chalk) {
 	var command = "info";
-	if(!botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
-	if(cooldown.onCooldown(msg.author.id, msg)) return;
+	if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	var embed = new Discord.RichEmbed();
 	var arg = msgArray[1];
 	if(arg == "server") {
 	// server arg
-		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this argument!").then(msg => msg.delete(2000));
 		return msg.channel.send(`__**${client.user.username} is currently on the following servers:**__ \n\n${client.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});
 		// Send a list of the bot's current servers and the amount of their members
 	}
@@ -30,10 +29,10 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 	else if(arg == "user") {
 	// user arg
 		var user = msg.content.substring(msg.content.indexOf(arg)+arg.length+1);
-		if(user == "") return msg.reply("Specify a user to get info on!").then(msg => msg.delete(2000));
+		if(user == "") return msg.reply("Specify a user to get info on!");
 		user = msg.guild.members.filter(m => m.user.username.toLowerCase().startsWith(user) || m.displayName.toLowerCase().startsWith(user)).first();
 		// reassign user string to filtered guildmember
-		if(typeof user == 'string') return msg.reply("user not found!").then(msg => msg.delete(2000));
+		if(typeof user == 'string') return msg.reply("user not found!");
 		// If no user was matched (input is still a string), abort command execution
 		embed.setAuthor(`Overview for '${user.displayName}#${user.user.discriminator}'`, user.user.avatarURL)
 			.setColor((Math.random() * 10e4).toFixed(5))

@@ -2,7 +2,7 @@ const config = require('../config.json');
 const fs = require('fs');
 const moment = require('moment');
 
-exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, checks, chalk) {
 	var command = "showLog";
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	var possibleLogs = [
@@ -12,7 +12,6 @@ exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chal
 		config.profileLog,
 		config.ignoreLog
 	];
-	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a log file to view!");
 	var arg = msgArray[1];

@@ -4,10 +4,9 @@ const moment = require('moment');
 
 // INFO: The command will execute whether or not the bot can send messages to the channel.
 
-exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, checks, chalk) {
 	var command = "setNickname";
-	if(cooldown.onCooldown(msg.author.id, msg)) return;
-	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+	if(msg.author.id !== config.ownerID && (!checks.userPerm.hasPermission("KICK_MEMBERS") || !checks.userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	msgArray.shift(); // remove command call
 	var arg = msgArray.join(" "); // join the rest

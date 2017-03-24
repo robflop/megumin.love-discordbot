@@ -25,7 +25,7 @@ let cooldown = {
 	"users": new Set(),
 	"onCooldown": function(userID, msg) {
 		if(cooldown.users.has(userID)) {
-			msg.reply(`calm down with the commands! Please wait ${config.commandCooldown} seconds.`).then(msg => msg.delete(3000));
+			msg.reply(`calm down with the commands! Please wait ${config.commandCooldown} seconds.`);
 			return true;
 		} else {
 			if(config.ownerID == userID) return;
@@ -57,22 +57,19 @@ client.leave = function leaveGuild(id) {
 // shortcut for making bot leave guilds
 
 const handleMsg = (msg) => {
-	if(msg.author.bot) return;
-	if(!msg.content.startsWith(config.commandPrefix)) return;
+	const checks = {'cooldown': cooldown, 'botPerm': msg.channel.permissionsFor(client.user), 'userPerm': msg.channel.permissionsFor(msg.member)};
+	if(msg.author.bot || !msg.content.startsWith(config.commandPrefix) || msg.content == config.commandPrefix || checks.cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.channel.type !== "text") return msg.channel.send("Commands via (Group) DM not supported, sorry.");
-	if(msg.content == config.commandPrefix) return;
 	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`) && ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].includes(`${msg.author.id}`)) return;
 	// ignored user check
-	const botPerm = msg.channel.permissionsFor(client.user);
-	const userPerm = msg.channel.permissionsFor(msg.member);
-	var msgArray = msg.content.replace(config.commandPrefix, '').trim().split(' ');
-	var actualCmd = msgArray[0].toLowerCase();
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`) && serverConfig.serverConfig[`serverconf_${msg.guild.id}`].includes(actualCmd)) return;
 	// disabled commands check
-	if(Object.keys(Commands.commands).includes(actualCmd)) Commands.commands[actualCmd].main(client, msg, msgArray, cooldown, botPerm, userPerm, chalk);
+	var msgArray = msg.content.replace(config.commandPrefix, '').trim().split(' ');
+	var actualCmd = msgArray[0].toLowerCase();
+	if(Object.keys(Commands.commands).includes(actualCmd)) Commands.commands[actualCmd].main(client, msg, msgArray, checks, chalk);
 	// run the command
 	if(actualCmd == "reload") {
-		if(cooldown.onCooldown(msg.author.id, msg)) return;
+		if(checks.cooldown.onCooldown(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 		var arg = msgArray[1];
 		if(!arg) return msg.reply('specify a command to reload!');

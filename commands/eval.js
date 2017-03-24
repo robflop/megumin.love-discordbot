@@ -1,9 +1,8 @@
 const config = require('../config.json');
 const util = require('util');
 
-exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, checks, chalk) {
 	var command = "eval";
-	if(cooldown.onCooldown(msg.author.id, msg)) return;
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	if(!config.eval) return msg.channel.send('Eval has been disabled in the config.').then(msg => msg.delete(2000));
 	var input = msg.content.substring(msg.content.indexOf('"')+1, msg.content.lastIndexOf('"'));

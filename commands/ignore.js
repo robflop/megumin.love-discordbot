@@ -5,10 +5,9 @@ const ignoreLists = require('../ignoreHandler.js');
 /*
 INFO: The ignore command goes into effect whether the bot can send the confirmation message or not.
 */
-exports.main = function(client, msg, msgArray, cooldown, botPerm, userPerm, chalk) {
+exports.main = function(client, msg, msgArray, checks, chalk) {
 	var command = "ignore";
-	if(cooldown.onCooldown(msg.author.id, msg)) return;
-	if(msg.author.id !== config.ownerID && (!userPerm.hasPermission("KICK_MEMBERS") || !userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+	if(msg.author.id !== config.ownerID && (!checks.userPerm.hasPermission("KICK_MEMBERS") || !checks.userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msg.mentions.users.size==0) return msg.reply("mention a user to ignore!");
 	var mentioned = msg.mentions.users.first(), userID = mentioned.id, member = msg.guild.member(userID);
