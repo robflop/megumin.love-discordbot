@@ -6,7 +6,7 @@ Written using discord.js, using opusscript, request, moment and prism-media pack
 Add the bot to your server: [Invite me](https://discordapp.com/oauth2/authorize?client_id=257126756069277696&scope=bot&permissions=70274048)
 
 ## Self-hosting usage
-(It is assumed you already have a Discord OAuth application and bot account)
+(It is assumed you already have a Discord OAuth application and bot account aswell as [node.js](https://nodejs.org/en/) on version 7.6 installed)
 
 - Fill out your bot token and change the ownerID in config.json to your devmode discord ID
 
