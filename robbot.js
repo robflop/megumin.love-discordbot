@@ -57,9 +57,9 @@ client.leave = function leaveGuild(id) {
 // shortcut for making bot leave guilds
 
 const handleMsg = (msg) => {
+	if(msg.channel.type !== "text") return msg.channel.send("Commands via (Group) DM not supported, sorry.");
 	const checks = {'cooldown': cooldown, 'botPerm': msg.channel.permissionsFor(client.user), 'userPerm': msg.channel.permissionsFor(msg.member)};
 	if(msg.author.bot || !msg.content.startsWith(config.commandPrefix) || msg.content == config.commandPrefix || checks.cooldown.onCooldown(msg.author.id, msg)) return;
-	if(msg.channel.type !== "text") return msg.channel.send("Commands via (Group) DM not supported, sorry.");
 	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`) && ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].includes(`${msg.author.id}`)) return;
 	// ignored user check
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`) && serverConfig.serverConfig[`serverconf_${msg.guild.id}`].includes(actualCmd)) return;
