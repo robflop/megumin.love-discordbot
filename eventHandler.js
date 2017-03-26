@@ -29,6 +29,8 @@ module.exports = {
 	},
 	"join": function join(client, guild, chalk) {
 		timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+		if(guild.members.filter(m => m.user.bot).size>=(guild.memberCount/100*80)) return guild.leave();
+		// bot percentage check
 		if(blacklist.includes(guild.id)) return guild.leave();
 		// blacklist check
 		console.log(`[${timestamp}]${chalk.yellow("[GUILDS]")} ${client.user.username} has joined a new server! ("${guild.name}")`);
@@ -36,6 +38,8 @@ module.exports = {
 	},
 	"leave": function leave(client, guild, chalk) {
 		timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+		if(guild.members.filter(m => m.user.bot).size>=(guild.memberCount/100*80)) return;
+		// bot percentage check
 		if(blacklist.includes(guild.id)) return;
 		// blacklist check
 		console.log(`[${timestamp}]${chalk.yellow("[GUILDS]")} ${client.user.username} has left a server! ("${guild.name}")`);
