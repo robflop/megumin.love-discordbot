@@ -25,7 +25,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 				};
 				if(error || response.statusCode !== 200) {
 					console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
-					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) ${response.statusCode} | ${body}`);
+					fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`);
 					if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
 					return msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
 				};
