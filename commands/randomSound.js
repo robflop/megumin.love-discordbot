@@ -16,7 +16,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 		if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send('Please wait for the current sound to finish!');
 		return msg.reply('please wait for the current sound to finish!');
 	};
-	request.get('https://megumin.love/includes/cache_counter.php?count=1', function (error, response, body) {
+	request.get('https://megumin.love/counter?inc=1', function (error, response, body) {
 		if(response == undefined) {
 			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when incrementing the counter -- Refer to request logs`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`);

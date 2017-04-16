@@ -20,7 +20,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 		if(msg.author.id !== config.ownerID) return msg.channel.send("You are not authorized to modify the counter history!");
 		var newCounter = "";
 		// define placeholder
-		return request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) {
+		return request.get('https://megumin.love/counter', function (error, response, body) {
 			if(response == undefined) return msg.channel.send("Response undefined when getting the counter, command execution aborted.");
 			if(error || response.statusCode !== 200) return msg.channel.send(`An error has occured or the response code was not "200 OK": \`\`\`${error}\`\`\`\nCommand execution aborted.`);
 			newCounter = `${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} ${moment().format('HH:mm')} ${moment().format('DD/MM/YY')}`;
@@ -41,7 +41,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 			msg.channel.send("Latest history entry successfully removed.");
 		});
 	};
-	request.get('https://megumin.love/includes/get_cache.php?update=1', function (error, response, body) {
+	request.get('https://megumin.love/counter', function (error, response, body) {
 		if(response == undefined) {
 			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when GETting the counter -- Refer to request logs`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`);
