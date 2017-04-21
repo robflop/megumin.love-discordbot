@@ -34,7 +34,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 		// reassign user string to filtered guildmember
 		if(typeof user == 'string') return msg.reply("user not found!");
 		// If no user was matched (input is still a string), abort command execution
-		embed.setAuthor(`Overview for '${user.displayName}#${user.user.discriminator}'`, user.user.avatarURL)
+		embed.setAuthor(`Overview for '${msg.author.tag}'`, user.user.avatarURL)
 			.setColor((Math.random() * 10e4).toFixed(5))
 			.addField("Username", user.user.username, true)
 			.addField("Nickname", user.nickname, true)

@@ -18,13 +18,13 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 			if(index == -1) {
 				ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].push(userID);
 				fs.writeFileSync(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`]));
-				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.tag} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
 				msg.reply(`i am now ignoring ${member.displayName}!`);
 			}
 			else {
 				ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].splice(index, 1);
 				fs.writeFileSync(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`]));
-				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully removed a user from the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.tag} successfully removed a user from the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
 				msg.reply(`i am no longer ignoring ${member.displayName}!`);
 			};
 		};
@@ -35,7 +35,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 			// define as empty to avoid crashes
 			ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].push(userID);
 			fs.writeFileSync(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`]));
-			fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.username}#${msg.author.discriminator} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+			fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.tag} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
 			msg.reply(`i am now ignoring ${member.displayName}!`);
 		};
 	};

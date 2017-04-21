@@ -16,8 +16,8 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	};
 	if(arg.substr(-4, 4) !== ".png" && arg.substr(-4, 4) !== ".jpg" && arg.substr(-4, 4) !== ".gif" && arg.substr(-5, 5) !== ".jpeg" && arg.substr(-5, 5) !== ".webp") return msg.reply("invalid file format! Only png, jpg/jpeg, gif and webp are allowed.");
 	client.user.setAvatar(arg);
-	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][AVATAR] ${msg.author.username}#${msg.author.discriminator} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`);
-	console.log(`[${timestamp}]${chalk.magenta("[AVATAR]")} ${client.user.username}'s avatar set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.username}#${msg.author.discriminator} on '${msg.guild}')`);
+	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][AVATAR] ${msg.author.tag} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`);
+	console.log(`[${timestamp}]${chalk.magenta("[AVATAR]")} ${client.user.username}'s avatar set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.tag} on '${msg.guild}')`);
 	if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send(`Successfully set my avatar to '${arg}' ! \n(May not have worked if ratelimit has been capped)`);
 	msg.reply(`successfully set my avatar to '${arg}' ! \n (May not have worked if ratelimit has been capped)`);
 };

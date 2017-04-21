@@ -22,13 +22,13 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	if(!blacklist.includes(guildID)) {
 		blacklist.push(guildID);
 		fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
-		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully added a server to the blacklist.`);
+		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.tag} successfully added a server to the blacklist.`);
 		msg.reply(`ID '${guildID}' is now blacklisted!`);
 	}
 	else {
 		blacklist.splice(index, 1);
 		fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
-		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.username}#${msg.author.discriminator} successfully removed a server from the blacklist.`);
+		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.tag} successfully removed a server from the blacklist.`);
 		msg.reply(`ID '${guildID}' is no longer blacklisted!`);
 	};
 };

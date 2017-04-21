@@ -66,5 +66,5 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	});
 };
 
-exports.desc = "Evaluate javascript input, provide async argument to use async function -- USE COMMAND WITH CAUTION.";
+exports.desc = "Evaluate javascript input, provide async argument to use async function -- USE COMMAND WITH CAUTION. [Bot owner only]";
 exports.syntax = "<\"async\", optional> <input to evaluate enclosed by \"quotes\">";
