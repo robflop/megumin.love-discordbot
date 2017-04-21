@@ -47,11 +47,24 @@ setInterval(() => {
 	// leave untouched if neither of the default ones
 }, 300000);
 
-client.leave = function leaveGuild(id) {
-	return new Promise((resolve, reject) => {
-		const guild = client.guilds.get(id);
-		if(guild) resolve(guild.leave().then(guild => `Guild '${guild.name}' (${guild.id}) left!`));
-		else reject(`Guild with ID '${id}' could not be found!`);
+client.leave = function leaveGuild(ids) {
+	const guildPromises = [];
+	if(!ids || (ids && ids.length==0)) return "Please provide an array of Guild IDs.";
+	for(var i=0; i<ids.length; i++) {
+		guildPromises.push(
+			new Promise((resolve, reject) => {
+				const guild = client.guilds.get(ids[i]);
+				if(guild) resolve(guild.leave().then(guild => `${guild.name} (${guild.id})`));
+				else reject(ids[i]);
+			})
+		);
+	};
+	return Promise.all(guildPromises).then(guilds => {
+		Array.isArray(guilds) ? guilds = guilds.join(", ") : guilds;
+		return `Success! The following Guilds were left: ${guilds}`;
+	}).catch(guilds => {
+		Array.isArray(guilds) ? guilds = guilds.join(", ") : guilds;
+		return `Execution aborted, following Guild could not be found: ${guilds}`;
 	});
 };
 // shortcut for making bot leave guilds
