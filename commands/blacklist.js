@@ -4,33 +4,44 @@ const moment = require('moment');
 const blacklist = require('../serverconf/blacklist.json');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
-	var command = "blacklist";;
+	var command = "blacklist";
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify an ID to blacklist!");
-	var guildID = msgArray[1];
+	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify IDs to blacklist!");
+	msgArray.splice(0, 1); // remove cmd name
+	var args = msgArray;
 	var toFind, index;
 	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-	if(guildID == "find") {
-		guildID = "find";
-		// redefine to properly use below
-		toFind = msgArray[2];
+	if(msgArray[0] == "find") {
+		toFind = msgArray[1];
 		if(!toFind) return msg.reply("specify a guild ID to search for!");
 		index = blacklist.indexOf(toFind);
 		if(index == -1) return msg.reply(`Guild ID '${toFind}' was not found on the blacklist!`);
 		return msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);
 	};
-	if(!blacklist.includes(guildID)) {
-		blacklist.push(guildID);
-		fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
-		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.tag} successfully added a server to the blacklist.`);
-		msg.reply(`ID '${guildID}' is now blacklisted!`);
-	}
-	else {
-		blacklist.splice(index, 1);
-		fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
-		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.tag} successfully removed a server from the blacklist.`);
-		msg.reply(`ID '${guildID}' is no longer blacklisted!`);
+	const added = [], removed = [];
+	for(var i=0; i<args.length; i++) {
+		index = blacklist.indexOf(args[i]);
+		if(!blacklist.includes(args[i])) {
+			blacklist.push(args[i]);
+			fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.tag} successfully added a server to the blacklist.`);
+			added.push(args[i]);
+		}
+		else {
+			blacklist.splice(index, 1);
+			fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
+			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.tag} successfully removed a server from the blacklist.`);
+			removed.push(args[i]);
+		};
 	};
+	var result = "";
+	if(added.length>0) {
+		result += `added ${added.join(", ")} to the list`;
+	}
+	if(removed.length>0) {
+		result += `${result.includes("added")?" & ":""}removed ${removed.join(", ")} from the list`;
+	}
+	return msg.reply(`successfully ` + result + "!");
 };
 
 exports.desc = "Blacklist a server, making the bot automatically leave it upon joining [Bot owner only]";
