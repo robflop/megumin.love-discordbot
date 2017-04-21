@@ -6,10 +6,10 @@
   "dependencies": {
     "chalk": "^1.1.3",
     "discord.js": "github:hydrabolt/discord.js",
-    "moment": "^2.17.1",
-    "opusscript": "0.0.2",
+    "moment": "^2.18.1",
+    "opusscript": "0.0.3",
     "prism-media": "github:hydrabolt/prism-media",
-    "request": "^2.79.0"
+    "request": "^2.81.0"
   },
   "devDependencies": {},
   "scripts": {},
