@@ -2,10 +2,10 @@ const config = require('../config.json');
 const util = require('util');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
-	var command = "eval";
+	const command = "eval";
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	if(!config.eval) return msg.channel.send('Eval has been disabled in the config.').then(msg => msg.delete(2000));
-	var input = msg.content.substring(msg.content.indexOf('"')+1, msg.content.lastIndexOf('"'));
+	const input = msg.content.substring(msg.content.indexOf('"')+1, msg.content.lastIndexOf('"'));
 	if(input == '' || input == '"' || input == '""') return msg.channel.send("No input given!").then(msg => msg.delete(2000));
     /*
     Credit for all of the below goes to 1Computer1 on GitHub
@@ -35,7 +35,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 		return evaled.message.edit(`📥\u2000**Input**${cb}js\n${input}\n${cb}\n${title}${cb}js\n${evaled.output}\n${cb}`);
 	};
 
-	var result;
+	let result;
 
 	if(msgArray[1] == "async") result = new Promise(resolve => resolve(eval(`(async () => { ${input} })()`)));
 	else result = new Promise(resolve => resolve(eval(input)));

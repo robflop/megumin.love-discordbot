@@ -3,9 +3,9 @@ const moment = require('moment');
 const config = require('../config.json');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
-	var command = "clearGame";
+	const command = "clearGame";
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	client.user.setGame();	// Set game to nothing, clearing it
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][STATUS] ${msg.author.tag} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`);
 	console.log(`[${timestamp}]${chalk.magenta("[STATUS]")} ${client.user.username}'s game status reset! (${msg.author.tag} on '${msg.guild}')`);

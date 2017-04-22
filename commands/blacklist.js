@@ -4,13 +4,13 @@ const moment = require('moment');
 const blacklist = require('../serverconf/blacklist.json');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
-	var command = "blacklist";
+	const command = "blacklist";
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify IDs to blacklist!");
 	msgArray.splice(0, 1); // remove cmd name
-	var args = msgArray;
-	var toFind, index;
-	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	const args = msgArray;
+	let toFind, index;
+	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msgArray[0] == "find") {
 		toFind = msgArray[1];
 		if(!toFind) return msg.reply("specify a guild ID to search for!");
@@ -19,7 +19,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 		return msg.reply(`Guild ID '${toFind}' was found at position ${index} of the blacklist!`);
 	};
 	const added = [], removed = [];
-	for(var i=0; i<args.length; i++) {
+	for(let i=0; i<args.length; i++) {
 		index = blacklist.indexOf(args[i]);
 		if(!blacklist.includes(args[i])) {
 			blacklist.push(args[i]);
@@ -34,7 +34,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 			removed.push(args[i]);
 		};
 	};
-	var result = "";
+	let result = "";
 	if(added.length>0) {
 		result += `added ${added.join(", ")} to the list`;
 	}

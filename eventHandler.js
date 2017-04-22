@@ -2,7 +2,7 @@ const config = require('./config.json');
 const fs = require('fs');
 const moment = require('moment');
 const blacklist = require('./serverconf/blacklist.json');
-var timestamp;
+let timestamp;
 
 module.exports = {
 	"ready": function ready(client, chalk) {

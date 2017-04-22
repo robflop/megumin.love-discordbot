@@ -5,11 +5,11 @@ const moment = require('moment');
 // INFO: The command will execute whether or not the bot can send messages to the channel. Erorr messages will be sent via PM if it can't.
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
-	var command = "setAvatar";
+	const command = "setAvatar";
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a picture (URL) to set the bot's avatar to!");
-	var arg = msgArray[1];
+	const arg = msgArray[1];
 	if(!arg.startsWith("http")) {
 		if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Invalid URL!");
 		return msg.reply("invalid URL!");

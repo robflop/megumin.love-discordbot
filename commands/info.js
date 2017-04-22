@@ -4,10 +4,10 @@ const fs = require('fs');
 const moment = require('moment');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
-	var command = "info";
+	const command = "info";
 	if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
-	var embed = new Discord.RichEmbed();
-	var arg = msgArray[1];
+	const embed = new Discord.RichEmbed();
+	const arg = msgArray[1];
 	if(arg == "server") {
 	// server arg
 		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this argument!").then(msg => msg.delete(2000));
@@ -28,7 +28,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	}
 	else if(arg == "user") {
 	// user arg
-		var user = msg.content.substring(msg.content.indexOf(arg)+arg.length+1);
+		let user = msg.content.substring(msg.content.indexOf(arg)+arg.length+1);
 		if(user == "") return msg.reply("Specify a user to get info on!");
 		user = msg.guild.members.filter(m => m.user.username.toLowerCase().startsWith(user) || m.displayName.toLowerCase().startsWith(user)).first();
 		// reassign user string to filtered guildmember

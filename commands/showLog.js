@@ -3,9 +3,9 @@ const fs = require('fs');
 const moment = require('moment');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
-	var command = "showLog";
-	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-	var possibleLogs = [
+	const command = "showLog";
+	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	const possibleLogs = [
 		config.shutdownLog,
 		config.requestLog,
 		config.serverLog,
@@ -14,8 +14,8 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	];
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a log file to view!");
-	var arg = msgArray[1];
-	var file = "";
+	const arg = msgArray[1];
+	const file = "";
 	if(possibleLogs.includes(arg)) file = possibleLogs[possibleLogs.indexOf(arg)];
 	else return msg.author.send(`Not a configured log file. Valid logs are: ${possibleLogs.join(", ")}`);
 	fs.readFile(`${config.logPath + file}`, "utf-8", (error, data) => {

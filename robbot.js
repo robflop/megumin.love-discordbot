@@ -3,10 +3,10 @@ const client = new Discord.Client();
 const config = require('./config.json');
 const fs = require('fs');
 const chalk = require('chalk');
-var Events = require('./eventHandler.js');
-var ignoreLists = require('./ignoreHandler.js');
-var Commands = require('./commandHandler.js');
-var serverConfig = require('./serverconfigHandler.js');
+const Events = require('./eventHandler.js');
+const ignoreLists = require('./ignoreHandler.js');
+const serverConfig = require('./serverconfigHandler.js');
+let Commands = require('./commandHandler.js');
 
 client.once('ready', () => Events.ready(client, chalk));
 
@@ -20,7 +20,7 @@ client.on('guildCreate', guild => Events.join(client, guild, chalk));
 
 client.on('guildDelete', guild => Events.leave(client, guild, chalk));
 
-let cooldown = {
+const cooldown = {
 // Cooldown function courtesy of u/pilar6195 on reddit
 	"users": new Set(),
 	"onCooldown": function(userID, msg) {
@@ -50,7 +50,7 @@ setInterval(() => {
 client.leave = function leaveGuild(ids) {
 	const guildPromises = [];
 	if(!ids || (ids && ids.length==0)) return "Please provide an array of Guild IDs.";
-	for(var i=0; i<ids.length; i++) {
+	for(let i=0; i<ids.length; i++) {
 		guildPromises.push(
 			new Promise((resolve, reject) => {
 				const guild = client.guilds.get(ids[i]);
@@ -76,18 +76,18 @@ const handleMsg = (msg) => {
 	// ignored user check
 	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`) && serverConfig.serverConfig[`serverconf_${msg.guild.id}`].includes(actualCmd)) return;
 	// disabled commands check
-	var msgArray = msg.content.replace(config.commandPrefix, '').trim().split(' ');
-	var actualCmd = msgArray[0].toLowerCase();
+	const msgArray = msg.content.replace(config.commandPrefix, '').trim().split(' ');
+	const actualCmd = msgArray[0].toLowerCase();
 	const checks = {'cooldown': cooldown, 'botPerm': msg.channel.permissionsFor(client.user), 'userPerm': msg.channel.permissionsFor(msg.member)};
 	if(Object.keys(Commands.commands).includes(actualCmd)) Commands.commands[actualCmd].main(client, msg, msgArray, checks, chalk);
 	// run the command
 	if(actualCmd == "reload") {
 		if(checks.cooldown.onCooldown(msg.author.id, msg)) return;
 		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
-		var arg = msgArray[1];
+		const arg = msgArray[1];
 		if(!arg) return msg.reply('specify a command to reload!');
 		try {
-			var cmdFile = Commands.commands[arg.toLowerCase()].filename;
+			const cmdFile = Commands.commands[arg.toLowerCase()].filename;
 			delete require.cache[require.resolve(`./commands/${cmdFile}`)];
 			delete require.cache[require.resolve('./commands/help.js')];
 			delete require.cache[require.resolve('./commandHandler.js')];

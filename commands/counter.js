@@ -5,9 +5,9 @@ const moment = require('moment');
 const history = require('../counterHistory.json');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
-	var command = "counter";
+	const command = "counter";
 	if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
-	var timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
+	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msgArray[1] == "history") {
 	// history arg
 		return fs.readFile("counterHistory.json", "utf-8", (error, data) => {
@@ -18,7 +18,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	if(msgArray[1] == "append") {
 	// append arg
 		if(msg.author.id !== config.ownerID) return msg.channel.send("You are not authorized to modify the counter history!");
-		var newCounter = "";
+		let newCounter = "";
 		// define placeholder
 		return request.get('https://megumin.love/counter', function (error, response, body) {
 			if(response == undefined) return msg.channel.send("Response undefined when getting the counter, command execution aborted.");
