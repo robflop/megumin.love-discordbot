@@ -15,7 +15,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
 	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a log file to view!");
 	const arg = msgArray[1];
-	const file = "";
+	let file = "";
 	if(possibleLogs.includes(arg)) file = possibleLogs[possibleLogs.indexOf(arg)];
 	else return msg.author.send(`Not a configured log file. Valid logs are: ${possibleLogs.join(", ")}`);
 	fs.readFile(`${config.logPath + file}`, "utf-8", (error, data) => {
