@@ -47,27 +47,21 @@ setInterval(() => {
 	// leave untouched if neither of the default ones
 }, 300000);
 
-client.leave = function leaveGuild(ids) {
+Discord.Client.prototype.leave = function leave(guildIDs) {
 	const guildPromises = [];
-	if(!ids || (ids && ids.length==0)) return "Please provide an array of Guild IDs.";
-	for(let i=0; i<ids.length; i++) {
-		guildPromises.push(
-			new Promise((resolve, reject) => {
-				const guild = client.guilds.get(ids[i]);
-				if(guild) resolve(guild.leave().then(guild => `${guild.name} (${guild.id})`));
-				else reject(ids[i]);
-			})
-		);
-	};
+	if(!guildIDs || !guildIDs.length) return Promise.reject(new Error('An array of guild IDs must be provided.'));
+	for(const id of guildIDs) {
+		const guild = client.guilds.get(id);
+		if(guild) guildPromises.push(guild.leave());
+		else guildPromises.push(Promise.reject(new Error(`Guild with ID ${id} not found.`)));
+	}
+
 	return Promise.all(guildPromises).then(guilds => {
-		Array.isArray(guilds) ? guilds = guilds.join(", ") : guilds;
-		return `Success! The following Guilds were left: ${guilds}`;
-	}).catch(guilds => {
-		Array.isArray(guilds) ? guilds = guilds.join(", ") : guilds;
-		return `Execution aborted, following Guild could not be found: ${guilds}`;
-	});
+		const g = guilds.map(g => `${g.name} (${g.id})`).join(", ");
+		return `Success! The following Guilds were left: ${g}`;
+	}).catch(err => err);
 };
-// shortcut for making bot leave guilds
+// // shortcut for making bot leave guilds
 
 const handleMsg = (msg) => {
 	if(msg.author.bot || !msg.content.startsWith(config.commandPrefix) || msg.content == config.commandPrefix || cooldown.onCooldown(msg.author.id, msg)) return;
