@@ -15,5 +15,6 @@
 	"commandPrefix": "robbot,",
 	"useDiscordBots": false,
 	"discordBotsAPI": "<if used, fill in API token here>",
-    "eval": false
+    "eval": false,
+	"pm2": false
 }
