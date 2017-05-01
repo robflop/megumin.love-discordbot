@@ -6,7 +6,6 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "showLog";
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	const possibleLogs = [
-		config.shutdownLog,
 		config.requestLog,
 		config.serverLog,
 		config.profileLog,
