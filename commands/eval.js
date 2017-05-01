@@ -3,7 +3,7 @@ const util = require('util');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "eval";
-	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!");
 	if(!config.eval) return msg.channel.send('Eval has been disabled in the config.').then(msg => msg.delete(2000));
 	const input = msg.content.substring(msg.content.indexOf('"')+1, msg.content.lastIndexOf('"'));
 	if(input == '' || input == '"' || input == '""') return msg.channel.send("No input given!").then(msg => msg.delete(2000));

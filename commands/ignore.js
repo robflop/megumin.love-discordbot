@@ -7,7 +7,7 @@ INFO: The ignore command goes into effect whether the bot can send the confirmat
 */
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "ignore";
-	if(msg.author.id !== config.ownerID && (!checks.userPerm.hasPermission("KICK_MEMBERS") || !checks.userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+	if(msg.author.id !== config.ownerID && (!checks.userPerm.hasPermission("KICK_MEMBERS") || !checks.userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!");
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msg.mentions.users.size==0) return msg.reply("mention a user to ignore!");
 	const mentioned = msg.mentions.users.first(), userID = mentioned.id, member = msg.guild.member(userID);

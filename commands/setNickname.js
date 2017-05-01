@@ -6,7 +6,7 @@ const moment = require('moment');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "setNickname";
-	if(msg.author.id !== config.ownerID && (!checks.userPerm.hasPermission("KICK_MEMBERS") || !checks.userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+	if(msg.author.id !== config.ownerID && (!checks.userPerm.hasPermission("KICK_MEMBERS") || !checks.userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!");
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	msgArray.shift(); // remove command call
 	const arg = msgArray.join(" "); // join the rest

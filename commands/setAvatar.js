@@ -6,7 +6,7 @@ const moment = require('moment');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "setAvatar";
-	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!");
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a picture (URL) to set the bot's avatar to!");
 	const arg = msgArray[1];

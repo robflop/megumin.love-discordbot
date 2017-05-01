@@ -9,7 +9,7 @@ Some messages will be PM'd if there is no send permission, some will not be sent
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	if(config.useDiscordBots) {
 		const command = "POST";
-		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!");
 		const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 		request.post(
 			{ headers: { 'Authorization': `${config.discordBotsAPI}`, 'Content-type': 'application/json; charset=utf-8' },

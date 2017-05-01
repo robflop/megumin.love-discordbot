@@ -11,7 +11,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 		config.profileLog,
 		config.ignoreLog
 	];
-	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!");
 	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a log file to view!");
 	const arg = msgArray[1];
 	let file = "";

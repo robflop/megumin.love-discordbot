@@ -10,7 +10,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const arg = msgArray[1];
 	if(arg == "server") {
 	// server arg
-		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this argument!").then(msg => msg.delete(2000));
+		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this argument!");
 		return msg.channel.send(`__**${client.user.username} is currently on the following servers:**__ \n\n${client.guilds.map(g => `${g.name} - **${g.memberCount} Members**`).join(`\n`)}`, {split: true});
 		// Send a list of the bot's current servers and the amount of their members
 	}
