@@ -7,7 +7,7 @@ let timestamp;
 module.exports = {
 	"ready": function ready(client, chalk) {
 		timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-		console.log(`[${timestamp}]${chalk.green("[POWER]")} ${client.user.username} ready!`);
+		console.log(`[${timestamp}]${chalk.green("[POWER]")} ${client.user.username} ready! ${config.pm2?"(Using PM2)":""}`);
 		client.user.setGame(`try '${config.commandPrefix} help' !`);
 	},
 	"error": function error(client, error, chalk) {
