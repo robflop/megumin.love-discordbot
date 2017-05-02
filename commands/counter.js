@@ -10,10 +10,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msgArray[1] == "history") {
 	// history arg
-		return fs.readFile("counterHistory.json", "utf-8", (error, data) => {
-			if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
-			msg.channel.send(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${JSON.parse(data).join("\n")}\`\`\``,  {split: {prepend: "\`\`\`", append: "\`\`\`"}});
-		});
+		msg.channel.send(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${history}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 	};
 	if(msgArray[1] == "append") {
 	// append arg
