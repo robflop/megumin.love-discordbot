@@ -10,7 +10,6 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	msgArray.shift(); // remove command call
 	const arg = msgArray.join(" "); // join the rest
-	if(msg.content.length == config.commandPrefix.length + command.length + 1) return msg.reply("specify a username to set the bot to!");
 	if(arg.length<2 || arg.length>32) return msg.reply("username must be at least 2 characters long but shorter than 32!");
 	client.user.setUsername(arg);
 	fs.appendFileSync(`./${config.logPath}${config.profileLog}`, `\n[${timestamp}][USERNAME] ${msg.author.tag} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`); // ...and log command use, when and by whom.

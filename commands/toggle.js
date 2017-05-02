@@ -8,7 +8,7 @@ INFO: The toggle command goes into effect whether the bot can send the confirmat
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "toggle";
 	if(msg.author.id !== config.ownerID && (!checks.userPerm.hasPermission("KICK_MEMBERS") || !checks.userPerm.hasPermission("BAN_MEMBERS"))) return msg.reply("you are not authorized to use this command!");
-	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a command to toggle!");
+	if(msgArray.length<2) return msg.reply("specify a command to toggle!");
 	const arg = msgArray[1].toLowerCase();
 	if(arg == "toggle" || arg == "help" || !Object.keys(Commands.commands).includes(arg)) return;
 	const index = serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(arg);

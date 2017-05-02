@@ -12,7 +12,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 		config.ignoreLog
 	];
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!");
-	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a log file to view!");
+	if(msgArray.length<2) return msg.reply("specify a log file to view!");
 	const arg = msgArray[1];
 	let file = "";
 	if(possibleLogs.includes(arg)) file = possibleLogs[possibleLogs.indexOf(arg)];

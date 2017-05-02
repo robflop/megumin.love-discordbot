@@ -8,7 +8,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "setAvatar";
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!");
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a picture (URL) to set the bot's avatar to!");
+	if(msgArray.length<2) return msg.reply("specify a picture (URL) to set the bot's avatar to!");
 	const arg = msgArray[1];
 	if(!arg.startsWith("http")) {
 		if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Invalid URL!");

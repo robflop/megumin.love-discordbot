@@ -6,7 +6,7 @@ const blacklist = require('../serverconf/blacklist.json');
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "blacklist";
 	if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!");
-	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify IDs to blacklist!");
+	if(msgArray.length<2) return msg.reply("specify IDs to blacklist!");
 	msgArray.splice(0, 1); // remove cmd name
 	const args = msgArray;
 	let toFind, index;

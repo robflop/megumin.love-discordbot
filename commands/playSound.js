@@ -6,7 +6,7 @@ const moment = require('moment');
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "playSound";
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
-	if(msg.content.length == config.commandPrefix.length + 1 + command.length) return msg.reply("specify a sound to play!");
+	if(msgArray.length<2) return msg.reply("specify a sound to play!");
 	if(!msg.member.voiceChannel) {
 		if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Join a voice channel first!");
 		return msg.reply("join a voice channel first!");

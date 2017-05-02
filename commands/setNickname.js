@@ -10,7 +10,6 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	msgArray.shift(); // remove command call
 	const arg = msgArray.join(" "); // join the rest
-	if(msg.content.length == config.commandPrefix.length + command.length + 1) return msg.reply("specify a nickname to set the bot to!");
 	if(arg.length<2 || arg.length>32) return msg.reply("nickname must be at least 2 characters long but shorter than 32!");
 	msg.guild.member(client.user).setNickname(arg);
 	fs.appendFileSync(`./${config.logPath}${config.profileLog}`, `\n[${timestamp}][NICKNAME] ${msg.author.tag} set ${client.user.username}'s nickname to '${arg}' on the '${msg.guild}' server!`);
