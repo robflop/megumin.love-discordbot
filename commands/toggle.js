@@ -12,27 +12,23 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const arg = msgArray[1].toLowerCase();
 	if(arg == "toggle" || arg == "help" || !Object.keys(Commands.commands).includes(arg)) return;
 	const index = serverConfig.serverConfig[`serverconf_${msg.guild.id}`].indexOf(arg);
-	if(fs.existsSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`)) {
+	if(fs.existsSync(`./${config.serverConfPath}serverconf_${msg.guild.id}.json`)) {
 		if(index == -1) {
 			serverConfig.serverConfig[`serverconf_${msg.guild.id}`].push(arg);
-			fs.writeFileSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`, JSON.stringify(serverConfig.serverConfig[`serverconf_${msg.guild.id}`]));
+			fs.writeFileSync(`./${config.serverConfPath}serverconf_${msg.guild.id}.json`, JSON.stringify(serverConfig.serverConfig[`serverconf_${msg.guild.id}`]));
 			return msg.reply(`command '${arg}' has been disabled!`);
 		};
 		serverConfig.serverConfig[`serverconf_${msg.guild.id}`].splice(index, 1);
-		fs.writeFileSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`, JSON.stringify(serverConfig.serverConfig[`serverconf_${msg.guild.id}`]));
+		fs.writeFileSync(`./${config.serverConfPath}serverconf_${msg.guild.id}.json`, JSON.stringify(serverConfig.serverConfig[`serverconf_${msg.guild.id}`]));
 		return msg.reply(`command '${arg}' has been enabled!`);
 	}
 	else {
 		serverConfig.serverConfig[`serverconf_${msg.guild.id}`] = [];
 		// define as empty to avoid crashes
-		if(index == -1) {
-			serverConfig.serverConfig[`serverconf_${msg.guild.id}`].push(arg);
-			fs.writeFileSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`, JSON.stringify(serverConfig.serverConfig[`serverconf_${msg.guild.id}`]));
-			return msg.reply(`command '${arg}' has been disabled!`);
-		};
-		serverConfig.serverConfig[`serverconf_${msg.guild.id}`].splice(index, 1);
-		fs.writeFileSync(`${config.serverConfPath}serverconf_${msg.guild.id}.json`, JSON.stringify(serverConfig.serverConfig[`serverconf_${msg.guild.id}`]));
-		return msg.reply(`command '${arg}' has been enabled!`);
+		serverConfig.serverConfig[`serverconf_${msg.guild.id}`].push(arg);
+		fs.writeFileSync(`./${config.serverConfPath}serverconf_${msg.guild.id}.json`, JSON.stringify(serverConfig.serverConfig[`serverconf_${msg.guild.id}`]));
+		return msg.reply(`command '${arg}' has been disabled!`);
+		// no check if already on list needed because, well, the list doesn't exist if it gets here lol
 	}
 };
 

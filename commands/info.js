@@ -1,6 +1,5 @@
 const config = require('../config.json');
 const Discord = require('discord.js');
-const fs = require('fs');
 const moment = require('moment');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {

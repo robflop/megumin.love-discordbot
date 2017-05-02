@@ -11,20 +11,20 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msg.mentions.users.size==0) return msg.reply("mention a user to ignore!");
 	const mentioned = msg.mentions.users.first(), userID = mentioned.id, member = msg.guild.member(userID);
-	if(fs.existsSync(`${config.ignorePath}ignore_${msg.guild.id}.json`)) {
+	if(fs.existsSync(`./${config.ignorePath}ignore_${msg.guild.id}.json`)) {
 		const index = ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].indexOf(userID);
 		// search for the mentioned user on the list
 		if(userID !== config.ownerID) {
 			if(index == -1) {
 				ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].push(userID);
-				fs.writeFileSync(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`]));
-				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.tag} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+				fs.writeFileSync(`./${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`]));
+				fs.appendFileSync(`./${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.tag} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
 				msg.reply(`i am now ignoring ${member.displayName}!`);
 			}
 			else {
 				ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].splice(index, 1);
-				fs.writeFileSync(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`]));
-				fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.tag} successfully removed a user from the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+				fs.writeFileSync(`./${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`]));
+				fs.appendFileSync(`./${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.tag} successfully removed a user from the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
 				msg.reply(`i am no longer ignoring ${member.displayName}!`);
 			};
 		};
@@ -34,8 +34,8 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 			ignoreLists.ignoreLists[`ignore_${msg.guild.id}`] = [];
 			// define as empty to avoid crashes
 			ignoreLists.ignoreLists[`ignore_${msg.guild.id}`].push(userID);
-			fs.writeFileSync(`${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`]));
-			fs.appendFileSync(`${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.tag} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
+			fs.writeFileSync(`./${config.ignorePath}ignore_${msg.guild.id}.json`, JSON.stringify(ignoreLists.ignoreLists[`ignore_${msg.guild.id}`]));
+			fs.appendFileSync(`./${config.logPath}${config.ignoreLog}`, `\n[${timestamp}][USERS] ${msg.author.tag} successfully added a user to the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" list of the '${msg.guild}' server!`);
 			msg.reply(`i am now ignoring ${member.displayName}!`);
 		};
 	};

@@ -23,13 +23,13 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 		index = blacklist.indexOf(args[i]);
 		if(!blacklist.includes(args[i])) {
 			blacklist.push(args[i]);
-			fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
+			fs.writeFileSync(`./serverconf/blacklist.json`, JSON.stringify(blacklist));
 			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.tag} successfully added a server to the blacklist.`);
 			added.push(args[i]);
 		}
 		else {
 			blacklist.splice(index, 1);
-			fs.writeFileSync(`serverconf/blacklist.json`, JSON.stringify(blacklist));
+			fs.writeFileSync(`./serverconf/blacklist.json`, JSON.stringify(blacklist));
 			fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][BLACKLIST] ${msg.author.tag} successfully removed a server from the blacklist.`);
 			removed.push(args[i]);
 		};

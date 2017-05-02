@@ -23,7 +23,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 			newCounter = `${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} ${moment().format('HH:mm')} ${moment().format('DD/MM/YY')}`;
 			// format counter to x.xxx.xxx
 			history.push(newCounter);
-			fs.writeFile("counterHistory.json", JSON.stringify(history), "utf-8", (error, data) => {
+			fs.writeFile("./counterHistory.json", JSON.stringify(history), "utf-8", (error, data) => {
 				if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
 				msg.channel.send(`New entry successfully added: \`\`${newCounter}\`\``);
 			});
@@ -33,7 +33,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	// revert arg
 		if(msg.author.id !== config.ownerID) return msg.channel.send("You are not authorized to modify the counter history!");
 		history.pop();
-		return fs.writeFile("counterHistory.json", JSON.stringify(history), "utf-8", (error, data) => {
+		return fs.writeFile("./counterHistory.json", JSON.stringify(history), "utf-8", (error, data) => {
 			if(error) return msg.channel.send(`An error has occured: \`\`\`${error}\`\`\``);
 			msg.channel.send("Latest history entry successfully removed.");
 		});

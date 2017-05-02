@@ -17,12 +17,12 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	let file = "";
 	if(possibleLogs.includes(arg)) file = possibleLogs[possibleLogs.indexOf(arg)];
 	else return msg.author.send(`Not a configured log file. Valid logs are: ${possibleLogs.join(", ")}`);
-	fs.readFile(`${config.logPath + file}`, "utf-8", (error, data) => {
+	fs.readFile(`./${config.logPath + file}`, "utf-8", (error, data) => {
 		if(error) msg.author.send(`An error has occured: \`\`\`${error}\`\`\``).then(msg => fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][SHOWLOG] ${msg.author.tag} tried using the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server, but an error occurred!`));
 		msg.author.send(`\`\`\`${data}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
-		console.log(`[${timestamp}]${chalk.cyan("[SHOWLOG]")} ${msg.author.tag} on the '${msg.guild}' server displayed a log file!`);
-		fs.appendFileSync(`${config.logPath}${config.serverLog}`, `\n[${timestamp}][SHOWLOG] ${msg.author.tag} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server!`);
 	});
+	console.log(`[${timestamp}]${chalk.cyan("[SHOWLOG]")} ${msg.author.tag} on the '${msg.guild}' server displayed a log file!`);
+	fs.appendFileSync(`./${config.logPath}${config.serverLog}`, `\n[${timestamp}][SHOWLOG] ${msg.author.tag} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command  on the '${msg.guild}' server!`);
 };
 
 exports.desc = "easily display one of the configured log files [Bot owner only]";
