@@ -10,7 +10,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msgArray[1] == "history") {
 	// history arg
-		msg.channel.send(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${history}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
+		return msg.channel.send(`**__Here is an overview of the counter's saved progress history__**:\n\`\`\`${history.join("\n")}\`\`\``, {split: {prepend: "\`\`\`", append: "\`\`\`"}});
 	};
 	if(msgArray[1] == "append") {
 	// append arg

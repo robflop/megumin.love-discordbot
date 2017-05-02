@@ -27,20 +27,20 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	}
 	else if(arg == "user") {
 	// user arg
-		let user = msg.content.substring(msg.content.indexOf(arg)+arg.length+1);
-		if(user == "") return msg.reply("Specify a user to get info on!");
-		user = msg.guild.members.filter(m => m.user.username.toLowerCase().startsWith(user) || m.displayName.toLowerCase().startsWith(user)).first();
+		let member = msg.content.substring(msg.content.indexOf(arg)+arg.length+1);
+		if(member == "") return msg.reply("Specify a user to get info on!");
+		member = msg.guild.members.filter(m => m.user.username.toLowerCase().startsWith(member) || m.displayName.toLowerCase().startsWith(member)).first();
 		// reassign user string to filtered guildmember
-		if(typeof user == 'string') return msg.reply("user not found!");
+		if(typeof member == 'string') return msg.reply("user not found!");
 		// If no user was matched (input is still a string), abort command execution
-		embed.setAuthor(`Overview for '${msg.author.tag}'`, user.user.avatarURL)
+		embed.setAuthor(`Overview for '${member.user.tag}'`, member.user.avatarURL)
 			.setColor((Math.random() * 10e4).toFixed(5))
-			.addField("Username", user.user.username, true)
-			.addField("Nickname", user.nickname, true)
-			.addField("UserID", user.user.id, true)
-			.addField("Join date", moment(user.joinedAt).format("DD/MM/YY"), true)
-			.addField("Creation date", moment(user.user.createdAt).format("DD/MM/YY"), true)
-			.addField("Roles", user.roles.array().join(", "), true);
+			.addField("Username", member.user.username, true)
+			.addField("Nickname", member.nickname, true)
+			.addField("UserID", member.user.id, true)
+			.addField("Join date", moment(member.joinedAt).format("DD/MM/YY"), true)
+			.addField("Creation date", moment(member.user.createdAt).format("DD/MM/YY"), true)
+			.addField("Roles", member.roles.array().join(", "), true);
 		return msg.channel.send('', {embed: embed});
 	};
 	embed.setAuthor("robbot Status Overview", client.user.avatarURL)
