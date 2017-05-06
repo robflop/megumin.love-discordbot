@@ -58,7 +58,7 @@ Discord.Client.prototype.leave = function leave(guildIDs) {
 
 	return Promise.all(guildPromises).then(guilds => {
 		const g = guilds.map(g => `${g.name} (${g.id})`).join(", ");
-		return `Success! The following Guilds were left: ${g}`;
+		return `Success! The following guilds were left: ${g}`;
 	}).catch(err => err);
 };
 // // shortcut for making bot leave guilds
@@ -77,7 +77,7 @@ const handleMsg = (msg) => {
 	// run the command
 	if(actualCmd == "reload") {
 		if(checks.cooldown.onCooldown(msg.author.id, msg)) return;
-		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!").then(msg => msg.delete(2000));
+		if(msg.author.id !== config.ownerID) return msg.reply("you are not authorized to use this command!");
 		const arg = msgArray[1];
 		if(!arg) return msg.reply('specify a command to reload!');
 		try {
@@ -89,7 +89,7 @@ const handleMsg = (msg) => {
 			// also reload help cmd to update output
 		}
 		catch(error) { return msg.reply(`error while reloading the '${arg}' command: \`\`\`${error}\`\`\`\n(Command may not exist, check for typos)`); };
-		msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
+		return msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
 	};
 	return; // Just in case, return empty for anything else.
 };
