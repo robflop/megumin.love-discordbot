@@ -89,7 +89,7 @@ const handleMsg = (msg) => {
 			// also reload help cmd to update output
 		}
 		catch(error) { return msg.reply(`error while reloading the '${arg}' command: \`\`\`${error}\`\`\`\n(Command may not exist, check for typos)`); };
-		return msg.reply(`command '${cmdFile.slice(0, -3)}' successfully reloaded!`);
+		return msg.reply(`command '${arg}' successfully reloaded!`);
 	};
 	return; // Just in case, return empty for anything else.
 };

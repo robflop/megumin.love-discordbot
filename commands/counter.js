@@ -1,4 +1,5 @@
 const config = require('../config.json');
+const { RichEmbed } = require('discord.js');
 const request = require('request');
 const fs = require('fs');
 const moment = require('moment');
@@ -38,6 +39,37 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 			msg.channel.send("Latest history entry successfully removed.");
 		});
 	};
+	if(msgArray[1] == "statistics") {
+	// statistics arg
+		return request.get('https://megumin.love/counter?statistics', function (error, response, body) {
+			if(response == undefined) {
+				console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when GETting the counter -- Refer to request logs`);
+				fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`);
+				if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is undefined. Please refer to request logs.");
+				return msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
+			};
+			if(error || response.statusCode !== 200) {
+				console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
+				fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`);
+				// ...log the unusual request responses/errors...
+				if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is not 200 (OK) or an error occurred. request logs.");
+				msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
+			};
+			const statistics = JSON.parse(body);
+			console.log(statistics);
+			const embed = new RichEmbed();
+			embed.setAuthor('megumin.love Counter Statistics', 'https://megumin.love/images/favicon.ico')
+				.setURL('https://megumin.love/')
+				.setColor((Math.random() * 10e4).toFixed(5))
+				.addField('Alltime', statistics.alltime.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
+				.addField('Today', statistics.today.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
+				.addField('Past 7 days', statistics.week.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
+				.addField('Past 31 days', statistics.month.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
+				.addBlankField(true)
+				.addField('Average/day', statistics.average.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
+			return msg.channel.send({embed: embed});
+		});
+	};
 	request.get('https://megumin.love/counter', function (error, response, body) {
 		if(response == undefined) {
 			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when GETting the counter -- Refer to request logs`);
@@ -60,4 +92,4 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 };
 
 exports.desc = "display the website's current counter";
-exports.syntax = "<history/append/revert, all optional>";
+exports.syntax = "<history/append/revert/statistics, all optional>";
