@@ -56,7 +56,6 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 				msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
 			};
 			const statistics = JSON.parse(body);
-			console.log(statistics);
 			const embed = new RichEmbed();
 			embed.setAuthor('megumin.love Counter Statistics', 'https://megumin.love/images/favicon.ico')
 				.setURL('https://megumin.love/')
