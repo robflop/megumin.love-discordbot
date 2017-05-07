@@ -8,26 +8,26 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msgArray.length<2) return msg.reply("specify a sound to play!");
 	if(!msg.member.voiceChannel) {
-		if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Join a voice channel first!");
+		if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("Join a voice channel first!");
 		return msg.reply("join a voice channel first!");
 	};
 	if(!msg.member.voiceChannel.joinable) return msg.author.send("I can't connect to that voice channel!");
 	if(msg.guild.voiceConnection !== null) {
 	// connection already exists
-		if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send('Please wait for the current sound to finish!');
+		if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send('Please wait for the current sound to finish!');
 		return msg.reply('please wait for the current sound to finish!');
 	};
 	request.get('https://megumin.love/counter?inc=1', function (error, response, body) {
 		if(response == undefined) {
 			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when incrementing the counter -- Refer to request logs`);
 			fs.appendFileSync(`./${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`);
-			if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send(`Error contacting the website, response code is undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
+			if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send(`Error contacting the website, response code is undefined. Please refer to '${config.logPath}${config.requestLog}'.`);
 			return msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
 		};
 		if(error || response.statusCode !== 200) {
 			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 			fs.appendFileSync(`./${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`);
-			if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
+			if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send(`Error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to '${config.logPath}${config.requestLog}'.`);
 			return msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
 		};
 	});

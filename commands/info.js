@@ -4,7 +4,7 @@ const moment = require('moment');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "info";
-	if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
+	if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	const embed = new RichEmbed();
 	const arg = msgArray[1];
 	if(arg == "server") {

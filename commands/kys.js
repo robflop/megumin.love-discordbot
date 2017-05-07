@@ -1,5 +1,5 @@
 exports.main = function(client, msg, msgArray, checks, chalk) {
-	if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
+	if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	const command = "kys";
 	if(client.user.presence.status == "invisible") { return; };
 	msg.reply('kms');

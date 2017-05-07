@@ -11,7 +11,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	if(msgArray.length<2) return msg.reply("specify a picture (URL) to set the bot's avatar to!");
 	const arg = msgArray[1];
 	if(!arg.startsWith("http")) {
-		if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Invalid URL!");
+		if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("Invalid URL!");
 		return msg.reply("invalid URL!");
 	};
 	const validFormats = [".png", ".jpg", ".gif", ".webp"];
@@ -19,7 +19,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	client.user.setAvatar(arg);
 	fs.appendFileSync(`./${config.logPath}${config.profileLog}`, `\n[${timestamp}][AVATAR] ${msg.author.tag} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`);
 	console.log(`[${timestamp}]${chalk.magenta("[AVATAR]")} ${client.user.username}'s avatar set to '${msg.content.substr(config.commandPrefix.length + command.length + 2)}' ! (${msg.author.tag} on '${msg.guild}')`);
-	if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send(`Successfully set my avatar to '${arg}' ! \n(May not have worked if ratelimit has been capped)`);
+	if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send(`Successfully set my avatar to '${arg}' ! \n(May not have worked if ratelimit has been capped)`);
 	msg.reply(`successfully set my avatar to '${arg}' ! \n (May not have worked if ratelimit has been capped)`);
 };
 

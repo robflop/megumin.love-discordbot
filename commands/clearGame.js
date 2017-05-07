@@ -9,7 +9,7 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 	client.user.setGame();	// Set game to nothing, clearing it
 	fs.appendFileSync(`${config.logPath}${config.profileLog}`, `\n[${timestamp}][STATUS] ${msg.author.tag} successfully used the "${msg.content.substr(config.commandPrefix.length + 1, command.length)}" command on the '${msg.guild}' server!`);
 	console.log(`[${timestamp}]${chalk.magenta("[STATUS]")} ${client.user.username}'s game status reset! (${msg.author.tag} on '${msg.guild}')`);
-	if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Game status cleared! \n(May not have worked if ratelimit has been capped)");
+	if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("Game status cleared! \n(May not have worked if ratelimit has been capped)");
 	msg.reply("game status cleared! \n(May not have worked if ratelimit has been capped)");
 };
 

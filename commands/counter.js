@@ -7,7 +7,7 @@ const history = require('../counterHistory.json');
 
 exports.main = function(client, msg, msgArray, checks, chalk) {
 	const command = "counter";
-	if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
+	if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("I can't send messages to that channel!");
 	const timestamp = moment().format('DD/MM/YYYY HH:mm:ss');
 	if(msgArray[1] == "history") {
 	// history arg
@@ -45,14 +45,14 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 			if(response == undefined) {
 				console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when GETting the counter -- Refer to request logs`);
 				fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`);
-				if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is undefined. Please refer to request logs.");
+				if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is undefined. Please refer to request logs.");
 				return msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
 			};
 			if(error || response.statusCode !== 200) {
 				console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 				fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`);
 				// ...log the unusual request responses/errors...
-				if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is not 200 (OK) or an error occurred. request logs.");
+				if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is not 200 (OK) or an error occurred. request logs.");
 				msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
 			};
 			const statistics = JSON.parse(body);
@@ -73,14 +73,14 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 		if(response == undefined) {
 			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} No response was emitted when GETting the counter -- Refer to request logs`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Undefined response | ${error}`);
-			if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is undefined. Please refer to request logs.");
+			if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is undefined. Please refer to request logs.");
 			return msg.reply("error contacting the website, response is undefined. Please refer to request logs.");
 		};
 		if(error || response.statusCode !== 200) {
 			console.log(`[${timestamp}]${chalk.red("[REQUEST-ERROR]")} An unusual response code was emitted when POSTing the bot stats: ${response.statusCode}`);
 			fs.appendFileSync(`${config.logPath}${config.requestLog}`, `\n[${timestamp}][REQUEST-ERROR] (${command}) Unusual response code | ${response.statusCode}`);
 			// ...log the unusual request responses/errors...
-			if(!checks.botPerm.hasPermission('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is not 200 (OK) or an error occurred. request logs.");
+			if(!checks.botPerm.has('SEND_MESSAGES')) return msg.author.send("Error contacting the website, response code is not 200 (OK) or an error occurred. request logs.");
 			msg.reply("error contacting the website, response code is not 200 (OK) or an error occurred. Please refer to request logs.");
 		};
 		if(body % 1000000 == 0) return msg.channel.send(`Current https://megumin.love count is: 🎊🎉 **${body.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}** 🎉🎊`);
