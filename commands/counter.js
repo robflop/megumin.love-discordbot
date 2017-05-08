@@ -60,10 +60,10 @@ exports.main = function(client, msg, msgArray, checks, chalk) {
 			embed.setAuthor('megumin.love Counter Statistics', 'https://megumin.love/images/favicon.ico')
 				.setURL('https://megumin.love/')
 				.setColor((Math.random() * 10e4).toFixed(5))
-				.addField('Alltime', statistics.alltime.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
+				.addField('All-time', statistics.alltime.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
 				.addField('Today', statistics.today.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
-				.addField('Past 7 days', statistics.week.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
-				.addField('Past 31 days', statistics.month.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
+				.addField('This week', statistics.week.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
+				.addField('This month', statistics.month.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
 				.addBlankField(true)
 				.addField('Average/day', statistics.average.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."), true)
 			return msg.channel.send({embed: embed});
