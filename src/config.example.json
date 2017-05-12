@@ -1,0 +1,9 @@
+{
+	"token": "<fill in bot token here>",
+	"ownerID": ["<fill in your ID(s) here>"],
+	"commandPrefix": "robbot,",
+	"useDiscordBots": false,
+	"eval": false,
+	"pm2": false,
+	"discordBotsAPI": "<if used, fill in API token here>"
+}
