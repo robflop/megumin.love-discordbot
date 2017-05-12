@@ -46,6 +46,7 @@ class CommandController {
 		if (!client.config.owners.includes(message.author.id)) {
 			const cooldown = this.cooldownCheck(message.author.id, command);
 			if (cooldown) {
+				// eslint-disable-next-line max-len
 				return message.reply(`please wait ${cooldown} more ${cooldown !== 1 ? 'seconds' : 'second'} before reusing the \`${command.name}\` command.`);
 			}
 		}
@@ -91,9 +92,10 @@ class CommandController {
 
 	async parseArguments(args, command, message) {
 		const parsedArgs = {};
+		const beginning = args.slice(0, command.args.length - 1);
+		const end = args.slice(beginning.length, args.length).join(' ');
 
-		for (let i = 0; i < command.args.length; i++) {
-			const arg = args[i];
+		for (const [i, arg] of beginning.concat(end).entries()) {
 			const { name, type, defaultVal } = command.args[i];
 
 			parsedArgs[name] = 'defaultVal' in command.args[i] && !arg ? defaultVal : ArgumentParser.parse(type, message, arg);
