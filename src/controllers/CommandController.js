@@ -3,6 +3,7 @@ const { join } = require('path');
 const { readdirSync } = require('fs');
 const { Collection } = require('discord.js');
 
+require('../util/prototypes');
 const ArgumentParser = require('./ArgumentParser');
 
 class CommandController {
@@ -60,6 +61,11 @@ class CommandController {
 		}
 
 		if ((this.disabledCommandLists.get(message.guild.id) || []).includes(command.name)) return;
+
+		if (command.args.length && args.length < command.args.length && !('defaultVal' in command.args.last())) {
+			const correctSyntax = `${client.config.commandPrefix} ${command.name} ${command.args.map(a => `<${a.name}>`).join(' ')}`;
+			return message.reply(`you didn't provide enough arguments! The correct format would be:\n\`${correctSyntax}\``);
+		}
 
 		const parsedArgs = command.args.length ? await this.parseArguments(args, command, message) : args;
 
