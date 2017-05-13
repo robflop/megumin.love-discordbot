@@ -4,10 +4,12 @@ logs
 npm-debug.log*
 .vscode
 
-# ignore some files
+# ignore some settings
 src/config.json
-src/data/guilds
-src/data/blacklist.json
+src/data
+
+# unignore relevant files/folders
+!src/data/sounds
 
 # Runtime data
 pids
