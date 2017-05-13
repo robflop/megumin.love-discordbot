@@ -8,6 +8,7 @@ class InfoCommand extends Command {
 			name: 'info',
 			description: 'Get various bot-related information',
 			aliases: ['i'],
+			guildOnly: true,
 			args: [
 				{
 					type: 'string',

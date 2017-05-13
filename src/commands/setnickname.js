@@ -6,6 +6,7 @@ class SetNicknameCommand extends Command {
 			name: 'setnickname',
 			description: 'Change robbot\'s nickname',
 			ownersOnly: true,
+			guildOnly: true,
 			aliases: ['sn', 'nickname'],
 			args: [
 				{
