@@ -5,7 +5,7 @@ async function guildDelete(client, guild) {
 	// bot percentage check
 	if (blacklist.includes(guild.id)) return;
 	// blacklist check
-	return client.logger.info(`robbot has left a server! ("${guild.name}")`);
+	return client.logger.info(`robbot has left a guild! ('${guild.name}')`);
 }
 
 module.exports = guildDelete;

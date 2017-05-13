@@ -5,7 +5,7 @@ async function guildCreate(client, guild) {
 	// bot percentage check
 	if (blacklist.includes(guild.id)) return guild.leave();
 	// blacklist check
-	return client.logger.info(`robbot has joined a new server! ("${guild.name}")`);
+	return client.logger.info(`robbot has joined a new guild! ('${guild.name}')`);
 }
 
 module.exports = guildCreate;
