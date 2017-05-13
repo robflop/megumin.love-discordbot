@@ -9,7 +9,7 @@ class Command {
 		this.args = config.args || [];
 	}
 
-	run() {
+	async run() {
 		throw Error(`Command ${this.name} does not possess a run() method.`);
 	}
 }

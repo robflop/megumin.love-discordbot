@@ -1,4 +1,4 @@
-async function warn(client, info) {
+function warn(client, info) {
 	return client.logger.warn(info);
 }
 

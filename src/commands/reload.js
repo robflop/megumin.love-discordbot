@@ -24,7 +24,7 @@ class ReloadCommand extends Command {
 		return this.reloadCommand(command, message);
 	}
 
-	async reloadCommand(command, message) {
+	reloadCommand(command, message) {
 		const client = message.client;
 		const CommandClass = require(`./${command}.js`);
 		const cmd = new CommandClass();

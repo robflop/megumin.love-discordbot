@@ -75,7 +75,7 @@ class CommandController {
 		});
 	}
 
-	async cooldownCheck(id, command) {
+	cooldownCheck(id, command) {
 		if (!this.cooldowns.has(command.name)) {
 			const data = new Map();
 			this.cooldowns.set(command.name, data);

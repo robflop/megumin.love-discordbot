@@ -1,6 +1,6 @@
 const { exec } = require('child_process');
 
-async function disconnect(client, event) {
+function disconnect(client, event) {
 	if (event.code === 1000) {
 		client.logger.info(`Automatically restarting due to WS error code ${event.code}...`);
 		// Restart if disconnect code is 1000 (gracefully exited) because it won't reconnect automatically

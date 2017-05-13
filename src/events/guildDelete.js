@@ -1,6 +1,6 @@
 const blacklist = require('../data/blacklist.json');
 
-async function guildDelete(client, guild) {
+function guildDelete(client, guild) {
 	if (guild.members.filter(m => m.user.bot).size >= (guild.memberCount / 100 * 80)) return;
 	// bot percentage check
 	if (blacklist.includes(guild.id)) return;
