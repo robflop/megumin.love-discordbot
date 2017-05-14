@@ -1,7 +1,7 @@
 {
 	"token": "<fill in bot token here>",
 	"owners": ["<fill in your ID(s) here>"],
-	"commandPrefix": "robbot,",
+	"commandPrefix": "robbot, ",
 	"useDiscordBots": false,
 	"eval": false,
 	"pm2": false,

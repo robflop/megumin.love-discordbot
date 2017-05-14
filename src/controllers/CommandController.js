@@ -34,7 +34,7 @@ class CommandController {
 
 	async handleCommand(message) {
 		if (message.author.bot || !message.content.startsWith(message.client.config.commandPrefix)) return;
-		if ((this.ignoredLists.get(message.guild.id) || []).includes(message.author.id)) return;
+		if (message.channel.type === 'text' && (this.ignoredLists.get(message.guild.id) || []).includes(message.author.id)) return;
 
 		const { commands, aliases, config, logger } = message.client;
 
@@ -64,7 +64,7 @@ class CommandController {
 			if (!permsCheck) return;
 		}
 
-		if ((this.disabledCommandLists.get(message.guild.id) || []).includes(command.name)) return;
+		if (message.channel.type === 'text' && (this.disabledCommandLists.get(message.guild.id) || []).includes(command.name)) return;
 
 		if (command.args.length && args.length < command.args.length && !('defaultVal' in command.args.last())) {
 			const correctSyntax = `${config.commandPrefix} ${command.name} ${command.args.map(a => `<${a.name}>`).join(' ')}`;

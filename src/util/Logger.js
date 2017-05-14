@@ -1,6 +1,6 @@
 const { blue, cyan, magenta, red, yellow } = require('chalk');
 const moment = require('moment');
-const { writeFile } = require('fs');
+const { writeFile, appendFile } = require('fs');
 const { join } = require('path');
 
 class Logger {
@@ -27,6 +27,16 @@ class Logger {
 			writeFile(joinedPath, data, 'utf-8', error => {
 				if (error) reject(error);
 				else resolve(data);
+			});
+		});
+	}
+
+	static writeLog(content, path) {
+		const joinedPath = join(__dirname, '..', path);
+		return new Promise((resolve, reject) => {
+			appendFile(joinedPath, content, error => {
+				if (error) reject(error);
+				else resolve(content);
 			});
 		});
 	}
