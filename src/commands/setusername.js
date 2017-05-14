@@ -22,8 +22,8 @@ class SetUsernameCommand extends Command {
 		}
 		message.client.user.setUsername(args.newUsername).then(user => {
 			message.reply(`successfully set my username to '${args.newUsername}'!`);
+			message.client.logger.info(`Username set to '${args.newUsername}'`);
 		});
-		message.client.logger.info(`Username set to '${args.newUsername}'`);
 	}
 }
 

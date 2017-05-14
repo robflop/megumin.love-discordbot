@@ -33,13 +33,13 @@ class EvalCommand extends Command {
     */
 
 	async run(message, args) {
-		const client = message.client;
+		const { token } = message.client;
 		args.asyncFlag === 'async' ? '' : args.code = args.asyncFlag + args.code;
 
 		const evaled = {}; // Stores outputs
 		const logs = []; // Stores logs
 
-		const tokenRegex = new RegExp(client.token.replace(/\./g, '\\.').split('').join('.?'), 'g'); // Regex for tokens
+		const tokenRegex = new RegExp(token.replace(/\./g, '\\.').split('').join('.?'), 'g'); // Regex for tokens
 
 		// This is put here instead of outside the command execution because we need a reference to the message and other things
 		const print = (...a) => { // ...a means all arguments

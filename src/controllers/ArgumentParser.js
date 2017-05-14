@@ -46,13 +46,13 @@ class ArgumentParser {
 	}
 
 	static toUser(message, arg) {
-		return message.mentions.users.filter(user => user.id === (arg.match(discordIDRegex) ? arg.match(discordIDRegex)[0] : null)).first()
+		return message.mentions.users.get((arg.match(discordIDRegex) || [])[0])
 			|| message.client.users.get(arg)
 			|| message.client.users.find(user => user.username.toLowerCase().includes(arg.toLowerCase()));
 	}
 
 	static toMember(message, arg) {
-		return message.guild.member(arg.match(discordIDRegex) ? arg.match(discordIDRegex)[0] : null)
+		return message.mentions.users.get((arg.match(discordIDRegex) || [])[0])
 			|| message.guild.members.get(arg)
 			|| message.guild.members.find(member => member.displayName.toLowerCase().includes(arg.toLowerCase()));
 	}

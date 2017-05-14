@@ -25,7 +25,7 @@ class CounterCommand extends Command {
 	}
 
 	async run(message, args) {
-		const client = message.client;
+		const { logger, config } = message.client;
 		const cb = '```', icb = '``';
 		const formatNumber = num => num.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.');
 		const newDate = new Date();
@@ -41,27 +41,27 @@ class CounterCommand extends Command {
 				return message.channel.send(`${historyHeader}${historyBody}`, { split: { prepend: cb, append: cb } });
 			}
 
-			if (args.historyArg === 'append' && client.config.owners.includes(message.author.id)) {
+			if (args.historyArg === 'append' && config.owners.includes(message.author.id)) {
 				return snekfetch.get('https://megumin.love/counter').then(counter => {
 					const newCounter = `${formatNumber(counter.text)} ${time} ${date}`;
 					history.push(newCounter);
-					client.logger.writeJSON(history, './data/counterHistory.json')
+					logger.writeJSON(history, './data/counterHistory.json')
 					.then(data => message.reply(`new entry successfully added: ${icb}${newCounter}${icb}`))
 					.catch(err => message.reply(`an error occurred writing to the file: ${cb}${err}${cb}`));
 				}).catch(err => {
 					const errorDetails = `${err.host ? err.host : ''} ${err.message ? err.message : ''}`.trim();
 					message.reply(`an error occurred getting the counter: ${icb}${err.code}: ${errorDetails}${icb}`);
-					client.logger.error(inspect(err));
+					logger.error(inspect(err));
 				});
 			}
 
-			if (args.historyArg === 'revert' && client.config.owners.includes(message.author.id)) {
+			if (args.historyArg === 'revert' && config.owners.includes(message.author.id)) {
 				history.pop();
-				client.logger.writeJSON(history, './data/counterHistory.json')
+				logger.writeJSON(history, './data/counterHistory.json')
 				.then(data => message.reply('latest history entry successfully removed.'))
 				.catch(err => {
 					message.reply(`an error occurred writing to the file: ${cb}${err}${cb}`);
-					client.logger.error(inspect(err));
+					logger.error(inspect(err));
 				});
 			}
 		}
@@ -83,7 +83,7 @@ class CounterCommand extends Command {
 			}).catch(err => {
 				const errorDetails = `${err.host ? err.host : ''} ${err.message ? err.message : ''}`.trim();
 				message.reply(`an error occurred getting the statistics: ${cb}${err.code}: ${errorDetails}${cb}`);
-				client.logger.error(inspect(err));
+				logger.error(inspect(err));
 			});
 		}
 
@@ -95,7 +95,7 @@ class CounterCommand extends Command {
 			}).catch(err => {
 				const errorDetails = `${err.host ? err.host : ''} ${err.message ? err.message : ''}`.trim();
 				message.reply(`an error occurred getting the counter: ${icb}${err.code}: ${errorDetails}${icb}`);
-				client.logger.error(inspect(err));
+				logger.error(inspect(err));
 			});
 		}
 	}

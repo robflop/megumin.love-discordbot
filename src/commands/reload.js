@@ -17,32 +17,31 @@ class ReloadCommand extends Command {
 	}
 
 	async run(message, args) {
-		const client = message.client;
+		const { aliases } = message.client;
 		let command = args.command.toLowerCase();
-		if (client.aliases.has(command)) command = client.aliases.get(command);
+		if (aliases.has(command)) command = aliases.get(command);
 
-		return this.reloadCommand(command, message);
+		await this.reloadCommand(command, message);
+		return message.reply(`'${command}' command reloaded!`);
 	}
 
 	reloadCommand(command, message) {
-		const client = message.client;
+		const { commands, aliases } = message.client;
 		const CommandClass = require(`./${command}.js`);
 		const cmd = new CommandClass();
 
 		delete require.cache[require.resolve(`./${command}`)];
-		client.commands.delete(command);
+		commands.delete(command);
 
-		for (const alias of client.aliases.keys()) {
-			if (client.aliases.get(alias) === command) client.aliases.delete(alias);
+		for (const alias of aliases.keys()) {
+			if (aliases.get(alias) === command) aliases.delete(alias);
 		}
 
-		client.commands.set(cmd.name, cmd);
+		commands.set(cmd.name, cmd);
 
 		for (const alias of cmd.aliases) {
-			client.aliases.set(alias, cmd.name);
+			aliases.set(alias, cmd.name);
 		}
-
-		return message.reply(`${cmd.name} command reloaded!`);
 	}
 }
 

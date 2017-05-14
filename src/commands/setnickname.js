@@ -27,8 +27,8 @@ class SetNicknameCommand extends Command {
 
 		message.guild.member(message.client.user).setNickname(args.newNickname).then(member => {
 			message.reply(`successfully ${action}!`);
+			message.client.logger.info(`${action.capitalize()} on the '${message.guild.name}' guild`);
 		});
-		message.client.logger.info(`${action.capitalize()} on the '${message.guild.name}' guild`);
 	}
 }
 

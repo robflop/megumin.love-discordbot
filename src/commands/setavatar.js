@@ -22,8 +22,8 @@ class SetAvatarCommand extends Command {
 		if (!validFormats.includes(args.imageURL.substr(-4, 4))) return message.reply('invalid file format! Only pngs, jpgs, gifs are allowed.');
 		message.client.user.setAvatar(args.imageURL).then(user => {
 			message.reply(`successfully set my avatar to '<${args.imageURL}>'!`);
+			message.client.logger.info(`Avatar set to '${args.imageURL}'`);
 		});
-		message.client.logger.info(`Avatar set to '${args.imageURL}'`);
 	}
 }
 

@@ -26,8 +26,8 @@ class SetGameCommand extends Command {
 
 		message.client.user.setGame(args.newGame).then(user => {
 			message.reply(`successfully ${action}!`);
+			message.client.logger.info(action.capitalize());
 		});
-		message.client.logger.info(action.capitalize());
 	}
 }
 

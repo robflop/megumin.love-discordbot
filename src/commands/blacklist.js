@@ -22,7 +22,6 @@ class BlacklistCommand extends Command {
 	}
 
 	async run(message, args) {
-		const client = message.client;
 		const blacklist = require('../data/blacklist.json');
 		let index;
 
@@ -61,7 +60,7 @@ class BlacklistCommand extends Command {
 		if (removed.length > 0) {
 			result += `${result.includes('added') ? ' & ' : ''}removed \`${removed.join(', ')}\` from the list`;
 		}
-		return client.logger.writeJSON(blacklist, './data/blacklist.json')
+		return message.client.logger.writeJSON(blacklist, './data/blacklist.json')
 		.then(blacklist => message.reply(`successfully ${result}!`));
 	}
 }
