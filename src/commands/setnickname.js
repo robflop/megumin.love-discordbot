@@ -14,7 +14,10 @@ class SetNicknameCommand extends Command {
 					name: 'newNickname',
 					defaultVal: ''
 				}
-			]
+			],
+			perms: {
+				client: ['CHANGE_NICKNAME']
+			}
 		});
 	}
 
