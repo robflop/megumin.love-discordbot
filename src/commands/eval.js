@@ -12,6 +12,7 @@ class EvalCommand extends Command {
 				{
 					type: 'string',
 					name: 'asyncFlag',
+					defaultVal: ''
 				},
 				{
 					type: 'string',
