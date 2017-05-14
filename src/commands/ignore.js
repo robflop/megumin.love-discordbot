@@ -18,7 +18,7 @@ class IgnoreCommand extends Command {
 		});
 	}
 
-	async run(message, args, configLists) {
+	async run(message, args, guildConfigs) {
 		const { logger, config } = message.client;
 		const cb = '```';
 
@@ -28,7 +28,7 @@ class IgnoreCommand extends Command {
 		}
 		if (args.targetUser.bot) return message.reply('other bots are already ignored by default.');
 
-		const ignoredLists = configLists.ignoredLists;
+		const ignoredLists = guildConfigs.ignoredLists;
 		let ignoredList = ignoredLists.get(message.guild.id);
 
 		if (ignoredList) {

@@ -18,7 +18,7 @@ class ToggleCommand extends Command {
 		});
 	}
 
-	async run(message, args, configLists) {
+	async run(message, args, guildConfigs) {
 		const { logger, config, commands, aliases } = message.client;
 		const cb = '```', icb = '``';
 
@@ -30,7 +30,7 @@ class ToggleCommand extends Command {
 			return message.reply(`the ${icb}${args.targetCommand}${icb} command does not exist.`);
 		}
 
-		const { disabledCommandLists } = configLists;
+		const { disabledCommandLists } = guildConfigs;
 		let disabledCommandList = disabledCommandLists.get(message.guild.id);
 
 		if (disabledCommandList) {

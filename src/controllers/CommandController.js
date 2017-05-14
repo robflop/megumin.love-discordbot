@@ -73,11 +73,11 @@ class CommandController {
 
 		const parsedArgs = command.args.length ? await this.parseArguments(args, command, message) : args;
 
-		const configLists = ['toggle', 'ignore'].includes(command.name)
+		const guildConfigs = ['toggle', 'ignore'].includes(command.name)
 		? { ignoredLists: this.ignoredLists, disabledCommandLists: this.disabledCommandLists }
 		: null;
 
-		return command.run(message, parsedArgs, configLists).catch(e => {
+		return command.run(message, parsedArgs, guildConfigs).catch(e => {
 			logger.error(inspect(e));
 			return message.reply(`an error occurred while executing the \`${command.name}\` command.`);
 		});
