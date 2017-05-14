@@ -23,7 +23,7 @@ class BlacklistCommand extends Command {
 
 	async run(message, args) {
 		const blacklist = require('../data/blacklist.json');
-		let index;
+		const icb = '``';
 
 		if (args.guildIDs !== 'find') args.guildIDs += ` ${args.searchArg}`;
 		// attach other to-be-blacklisted IDs to the array if no search arg passed
@@ -31,19 +31,19 @@ class BlacklistCommand extends Command {
 		if (args.guildIDs === 'find') {
 			if (args.searchArg === '') return message.reply('provide input to search for!');
 
-			index = blacklist.indexOf(args.searchArg);
+			const index = blacklist.indexOf(args.searchArg);
 			if (index !== -1) {
-				return message.reply(`guild ID '${args.searchArg}' was found at position ${index} of the blacklist!`);
+				return message.reply(`guild ID ${icb}${args.searchArg}${icb} was found at position ${index} of the blacklist!`);
 			}
 			else {
-				return message.reply(`guild ID '${args.searchArg}' was not found on the blacklist!`);
+				return message.reply(`guild ID ${icb}${args.searchArg}${icb} was not found on the blacklist!`);
 			}
 		}
 
 		const added = [], removed = [];
 		const guildIDs = args.guildIDs.split(' ');
 		for (let i = 0; i < guildIDs.length; i++) {
-			index = blacklist.indexOf(guildIDs[i]);
+			const index = blacklist.indexOf(guildIDs[i]);
 			if (!blacklist.includes(guildIDs[i])) {
 				blacklist.push(guildIDs[i]);
 				added.push(guildIDs[i]);
@@ -55,10 +55,10 @@ class BlacklistCommand extends Command {
 		}
 		let result = '';
 		if (added.length > 0) {
-			result += `added \`${added.join(', ')}\` to the list`;
+			result += `added ${icb}${added.join(', ')}${icb} to the list`;
 		}
 		if (removed.length > 0) {
-			result += `${result.includes('added') ? ' & ' : ''}removed \`${removed.join(', ')}\` from the list`;
+			result += `${result.includes('added') ? ' & ' : ''}removed ${icb}${removed.join(', ')}${icb} from the list`;
 		}
 		return message.client.logger.writeJSON(blacklist, './data/blacklist.json')
 		.then(blacklist => message.reply(`successfully ${result}!`));

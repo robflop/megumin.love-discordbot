@@ -20,6 +20,7 @@ class IgnoreCommand extends Command {
 
 	async run(message, args, configLists) {
 		const { logger, config } = message.client;
+		const cb = '```';
 
 		if ([message.client.user.id, ...config.owners].includes(args.targetUser.id)) {
 			const targetIs = message.client.user.id === args.targetUser.id ? 'myself' : 'owners';
@@ -36,20 +37,20 @@ class IgnoreCommand extends Command {
 				ignoredList.push(args.targetUser.id);
 				logger.writeJSON(ignoredList, `./data/guilds/ignored_${message.guild.id}.json`)
 				.then(ignoredList => message.reply(`i am now ignoring ${args.targetUser.username}!`))
-				.catch(err => message.reply(`an error occurred writing to the file: \`\`\`${err}\`\`\``));
+				.catch(err => message.reply(`an error occurred writing to the file: ${cb}${err}${cb}`));
 			}
 			else {
 				ignoredList.splice(index, 1);
 				logger.writeJSON(ignoredList, `./data/guilds/ignored_${message.guild.id}.json`)
 				.then(ignoredList => message.reply(`i am no longer ignoring ${args.targetUser.username}!`))
-				.catch(err => message.reply(`an error occurred writing to the file: \`\`\`${err}\`\`\``));
+				.catch(err => message.reply(`an error occurred writing to the file: ${cb}${err}${cb}`));
 			}
 		}
 		else {
 			ignoredList = ignoredLists.set(message.guild.id, [args.targetUser.id]);
 			logger.writeJSON(ignoredLists.get(message.guild.id), `./data/guilds/ignored_${message.guild.id}.json`)
 			.then(ignoredList => message.reply(`i am now ignoring ${args.targetUser.username}!`))
-			.catch(err => message.reply(`an error occurred writing to the file: \`\`\`${err}\`\`\``));
+			.catch(err => message.reply(`an error occurred writing to the file: ${cb}${err}${cb}`));
 		}
 	}
 }
