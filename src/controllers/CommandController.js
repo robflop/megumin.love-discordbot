@@ -60,6 +60,11 @@ class CommandController {
 			return message.channel.send(`The ${command.name} command is only usable by bot owners.`);
 		}
 
+		if (message.channel.type === 'text' && ('client' in command.perms || 'member' in command.perms || 'hasPermission' in command)) {
+			const permsCheck = this.permissionsCheck(command, message);
+			if (!permsCheck) return;
+		}
+
 		if ((this.disabledCommandLists.get(message.guild.id) || []).includes(command.name)) return;
 
 		if (command.args.length && args.length < command.args.length && !('defaultVal' in command.args.last())) {
@@ -69,10 +74,44 @@ class CommandController {
 
 		const parsedArgs = command.args.length ? await this.parseArguments(args, command, message) : args;
 
-		return command.run(message, parsedArgs).catch(e => {
+		const configLists = ['blacklist', 'ignore'].includes(command.name)
+		? { ignoredLists: this.ignoredLists, disabledCommandLists: this.disabledCommandLists }
+		: null;
+
+		return command.run(message, parsedArgs, configLists).catch(e => {
 			client.logger.error(inspect(e));
 			return message.reply(`an error occurred while executing the \`${command.name}\` command.`);
 		});
+	}
+
+	permissionsCheck(command, message) {
+		let type = '';
+		const clientMember = message.guild.member(message.client.user);
+		const perms = command.perms;
+
+		if ('hasPermission' in command) {
+			const result = command.hasPermission(message);
+			if (typeof result === 'string' || result === false) {
+				message.reply(result || 'you do not have permissions to execute this command.');
+				return false;
+			}
+		}
+
+		if ('client' in perms && !clientMember.permissions.has(perms.client)) type = 'client';
+		if ('member' in perms && !message.member.permissions.has(perms.member)) type = 'member';
+		if (!type) return true;
+
+		const permissions = perms[type].map(perm => {
+			const name = perm.toString().replace(/_/g, ' ').toLowerCase().toTitleCase();
+			return `\`${name}\``;
+		}).join(', ');
+
+		const permsResult = `${type === 'client' ? 'I' : 'You'} don't have enough permission to execute that command!`;
+		const permsDetails = `${type === 'client' ? 'I' : 'You'} need the following permissions: ${permissions}`;
+
+		message.reply(`${permsResult}\n${permsDetails}`);
+
+		return false;
 	}
 
 	cooldownCheck(id, command) {

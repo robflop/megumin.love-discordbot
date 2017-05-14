@@ -7,6 +7,7 @@ class Command {
 		this.guildOnly = config.guildOnly || false;
 		this.ownersOnly = config.ownersOnly || false;
 		this.args = config.args || [];
+		this.perms = config.perms || {};
 	}
 
 	async run() {
