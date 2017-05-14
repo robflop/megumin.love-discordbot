@@ -79,7 +79,7 @@ class CounterCommand extends Command {
 					.addField('This month', formatNumber(parsedStats.month), true)
 					.addBlankField(true)
 					.addField('Average/day', formatNumber(parsedStats.average), true);
-				return message.channel.send({ embed: embed });
+				return message.channel.send({ embed });
 			}).catch(err => {
 				const errorDetails = `${err.host ? err.host : ''} ${err.message ? err.message : ''}`.trim();
 				message.reply(`an error occurred getting the statistics: ${cb}${err.code}: ${errorDetails}${cb}`);

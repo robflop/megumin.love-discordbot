@@ -43,7 +43,7 @@ class InfoCommand extends Command {
 			.addField('Roles', message.guild.roles.size, true)
 			.addField('Server ID', message.guild.id, true)
 			.addField('Region', message.guild.region, true);
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embed });
 		}
 
 		if (args.selector === 'user') {
@@ -56,7 +56,7 @@ class InfoCommand extends Command {
 			.addField('Join date', moment(args.targetMember.joinedAt).format('DD/MM/YY'), true)
 			.addField('Creation date', moment(args.targetMember.user.createdAt).format('DD/MM/YY'), true)
 			.addField('Roles', args.targetMember.roles.array().join(', '), true);
-			return message.channel.send({ embed: embed });
+			return message.channel.send({ embed });
 		}
 
 		if (args.selector === 'general') {
@@ -68,7 +68,7 @@ class InfoCommand extends Command {
 			.addField('Total VoiceChannels', client.channels.filter(channel => channel.type === 'voice').size, true)
 			.addField('Websocket Ping', `${Math.round(client.ping)}ms`, true)
 			.addField('Bot Uptime', moment.duration(client.uptime).humanize(), true);
-			message.channel.send({ embed: embed });
+			message.channel.send({ embed });
 		}
 	}
 }
