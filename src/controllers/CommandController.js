@@ -36,15 +36,14 @@ class CommandController {
 		if (message.author.bot || !message.content.startsWith(message.client.config.commandPrefix)) return;
 		if ((this.ignoredLists.get(message.guild.id) || []).includes(message.author.id)) return;
 
-		const client = message.client;
-		const config = client.config;
+		const { commands, aliases, config, logger } = message.client;
 
 		const [name, ...args] = message.content.replace(config.commandPrefix, '').trim().split(/ +/g);
-		const command = client.commands.get(name.toLowerCase()) || client.commands.get(client.aliases.get(name.toLowerCase()));
+		const command = commands.get(name.toLowerCase()) || commands.get(aliases.get(name.toLowerCase()));
 
 		if (!command) return;
 
-		if (!client.config.owners.includes(message.author.id)) {
+		if (!config.owners.includes(message.author.id)) {
 			const cooldown = this.cooldownCheck(message.author.id, command);
 			if (cooldown) {
 				// eslint-disable-next-line max-len
@@ -68,7 +67,7 @@ class CommandController {
 		if ((this.disabledCommandLists.get(message.guild.id) || []).includes(command.name)) return;
 
 		if (command.args.length && args.length < command.args.length && !('defaultVal' in command.args.last())) {
-			const correctSyntax = `${client.config.commandPrefix} ${command.name} ${command.args.map(a => `<${a.name}>`).join(' ')}`;
+			const correctSyntax = `${config.commandPrefix} ${command.name} ${command.args.map(a => `<${a.name}>`).join(' ')}`;
 			return message.reply(`you didn't provide enough arguments! The correct format would be:\n\`${correctSyntax}\``);
 		}
 
@@ -79,7 +78,7 @@ class CommandController {
 		: null;
 
 		return command.run(message, parsedArgs, configLists).catch(e => {
-			client.logger.error(inspect(e));
+			logger.error(inspect(e));
 			return message.reply(`an error occurred while executing the \`${command.name}\` command.`);
 		});
 	}
@@ -88,6 +87,7 @@ class CommandController {
 		let type = '';
 		const clientMember = message.guild.member(message.client.user);
 		const perms = command.perms;
+		const { owners } = message.client.config;
 
 		if ('hasPermission' in command) {
 			const result = command.hasPermission(message);
@@ -99,7 +99,7 @@ class CommandController {
 
 		if ('client' in perms && !clientMember.permissions.has(perms.client)) type = 'client';
 		if ('member' in perms && !message.member.permissions.has(perms.member)) type = 'member';
-		if (!type) return true;
+		if (!type || (owners.includes(message.member.user.id) && type !== 'client')) return true;
 
 		const permissions = perms[type].map(perm => {
 			const name = perm.toString().replace(/_/g, ' ').toLowerCase().toTitleCase();
