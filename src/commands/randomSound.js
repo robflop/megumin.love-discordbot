@@ -7,7 +7,7 @@ class RandomSoundCommand extends Command {
 	constructor() {
 		super({
 			name: 'randomsound',
-			description: 'Play random sound from https://megumin.love',
+			description: 'Play random sound from <https://megumin.love>',
 			guildOnly: true,
 			aliases: ['rs'],
 			perms: {

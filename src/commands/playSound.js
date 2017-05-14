@@ -7,7 +7,7 @@ class PlaySoundCommand extends Command {
 	constructor() {
 		super({
 			name: 'playsound',
-			description: 'Play a chosen sound from https://megumin.love',
+			description: 'Play a chosen sound from <https://megumin.love>',
 			guildOnly: true,
 			aliases: ['ps'],
 			perms: {

@@ -7,7 +7,7 @@ class CounterCommand extends Command {
 	constructor() {
 		super({
 			name: 'counter',
-			description: 'Display various information regarding the counter of https://megumin.love',
+			description: 'Display various information regarding the counter of <https://megumin.love>',
 			aliases: ['c'],
 			args: [
 				{
