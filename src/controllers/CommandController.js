@@ -73,7 +73,7 @@ class CommandController {
 
 		const parsedArgs = command.args.length ? await this.parseArguments(args, command, message) : args;
 
-		const guildConfigs = ['toggle', 'ignore'].includes(command.name)
+		const guildConfigs = ['toggle', 'ignore', 'help'].includes(command.name)
 		? { ignoredLists: this.ignoredLists, disabledCommandLists: this.disabledCommandLists }
 		: null;
 

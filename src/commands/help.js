@@ -19,7 +19,9 @@ class HelpCommand extends Command {
 
 	async run(message, args, guildConfigs) {
 		const { config: { commandPrefix }, commands, aliases } = message.client;
+		const { disabledCommandLists, ignoredLists } = guildConfigs;
 		const avatar = message.client.user.avatarURL();
+		const icb = '``';
 
 		if (args.command) {
 			const command = commands.get(args.command) || commands.get(aliases.get(command));
@@ -47,10 +49,16 @@ class HelpCommand extends Command {
 			return message.channel.send({ embed });
 		}
 
+		const disabledCommandList = disabledCommandLists.has(message.guild.id) ? disabledCommandLists.get(message.guild.id).join(', ') : 'None';
+		const ignoredList = ignoredLists.has(message.guild.id) ? ignoredLists.get(message.guild.id).join(', ') : 'None';
+
 		let help = '**__Available Commands:__**\n\n';
-		help += this.listCommands(commands);
+		help += `${this.listCommands(commands)}\n\n`;
+		help += `Disabled commands on the ${icb}${message.guild.name}${icb} server: ${icb}${disabledCommandList}${icb}\n\n`;
+		help += `Ignored users on the ${icb}${message.guild.name}${icb} server: ${icb}${ignoredList}${icb}\n\n`;
 
 		return message.author.send(help, { split: true })
+		.then(msg => message.reply('i\'ve sent you a list with all of my commands!'))
 		.catch(() => message.reply('i ran into an error DM\'ing you!'));
 	}
 
