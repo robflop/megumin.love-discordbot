@@ -11,7 +11,7 @@
     "moment": "^2.22.2",
     "opusscript": "^0.0.6",
     "prism-media": "github:hydrabolt/prism-media",
-    "uws": "10.148.1",
+    "uws": "99.0.0",
     "zlib-sync": "^0.1.4"
   },
   "devDependencies": {
